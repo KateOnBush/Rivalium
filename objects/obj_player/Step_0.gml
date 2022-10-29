@@ -1,6 +1,8 @@
 /// @description Insert description here
 // You can write your code in this editor
 
+//Really Cool!
+
 
 health_blend = dtlerp(health_blend, playerhealth/playerhealthmax, 0.5);
 
