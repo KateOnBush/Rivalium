@@ -3,4 +3,4 @@
 
 //Gravity
 #macro grav 0.35
-
+#macro gay "not gay"
