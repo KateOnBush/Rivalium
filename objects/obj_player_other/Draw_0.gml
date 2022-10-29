@@ -3,6 +3,8 @@
 
 if dir==0 dir=1;
 
+//HEHE BITCH
+
 draw_set_color(c_black)
 if grappling draw_line(x,y,grappling_coords[0],grappling_coords[1])
 
