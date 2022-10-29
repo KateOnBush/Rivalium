@@ -7,6 +7,8 @@ health_blend = dtlerp(health_blend, playerhealth/playerhealthmax, 0.5);
 if healthbefore != playerhealth {
 	healthbefore = playerhealth
 	health_red_go = 0.5;
+	
+	
 } else {
 	health_red_go = max(0, health_red_go - dtime/60);
 	if health_red_go == 0 health_blend_red = dtlerp(health_blend_red, health_blend, 0.04);
