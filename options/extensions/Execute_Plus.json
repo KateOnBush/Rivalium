@@ -1,0 +1,9 @@
+{
+  "extensionId": {
+    "name": "Execute_Plus",
+    "path": "extensions/Execute_Plus/Execute_Plus.yy"
+  },
+  "resourceVersion": "1.0",
+  "resourceType": "GMExtensionConfigSet",
+  "configurables": null
+}

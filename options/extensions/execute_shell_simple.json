@@ -1,0 +1,9 @@
+{
+  "extensionId": {
+    "name": "execute_shell_simple",
+    "path": "extensions/execute_shell_simple/execute_shell_simple.yy"
+  },
+  "resourceVersion": "1.0",
+  "resourceType": "GMExtensionConfigSet",
+  "configurables": null
+}
