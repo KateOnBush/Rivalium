@@ -37,7 +37,27 @@ var resetbones = draw_button_simple(10,10+dep,140,20+dep,"Reset keyframe")
 dep+=d;
 var resetbon = draw_button_simple(10,10+dep,140,20+dep,"Reset bone")
 dep+=d*1.5;
-var resetani = draw_button_simple(10,10+dep,140,20+dep,"RESET ANIMATION")
+var resetani = draw_button_simple(10,10+dep,140,20+dep,"Reset Animation")
+
+for(var l = 0; l < sprite_get_number(sprite); l++){
+
+	sprite_set_offset(sprite,base[l][0],base[l][1]);
+	var t = draw_button_simple(390, 10+l*26, 390+24, 34+l*26, "");
+	if global.selected_bone == l {
+		
+		draw_set_color(c_green);
+		draw_rectangle(390, 10+l*26, 390+24, 34+l*26, false);
+		draw_set_color(c_black)
+	
+	}
+	draw_sprite_ext(sprite, l, 390+12, 22+l*26, 0.75, 0.75, 0, c_white, 1);
+	if t {
+	
+		global.selected_bone = l;
+	
+	}
+}
+
 
 if resetani and !global.playing{
 
@@ -77,23 +97,14 @@ if setquad play_quad = !play_quad;
 
 if saveanim and !global.playing {
 
+	//New file system (json)
 	var file = get_save_filename("animation file|*.anim","")
 	if file!=""{
 	
-		ini_open(file);
-		ini_write_real("animation","length",array_length(global.animation))
-		for(var i = 0; i < array_length(global.animation); i++){
-		
-			ini_write_real("keyframe"+string(i),"position",global.animation[i][1])
-			for(var n =0; n < array_length(global.animation[i][0]); n++){
-			
-				ini_write_real("keyframe"+string(i),"bone"+string(n),global.animation[i][0][n]);
-				
-			}
-		
-		}
-		
-		ini_close()
+		var str = json_stringify(global.animation);
+		var f = file_text_open_write(file);
+		file_text_write_string(f, str);
+		file_text_close(f);
 	
 	}
 
@@ -104,28 +115,19 @@ if openanim and !global.playing {
 	var file = get_open_filename("animation file|*.anim","")
 	if file!="" and file_exists(file){
 	
-		global.animation=[];
-		ini_open(file);
-		var len = ini_read_real("animation","length",0)
-		for(var i = 0; i < len; i++){
+		var f = file_text_open_read(file);
+		var str = file_text_read_string(f);
+		try{
+			
+			var t = json_parse(str);
+			if typeof(t) != "array" throw "nig";
+			global.animation = t;
+			
+		}catch(err){
 		
-			var pos = ini_read_real("keyframe"+string(i),"position",0)
-			var fr = [];
-			for(var n =0; ini_read_real("keyframe"+string(i),"bone"+string(n),-1) != -1; n++){
-			
-				fr[n] = ini_read_real("keyframe"+string(i),"bone"+string(n),-1);
-				
-			}
-			global.animation[i] = [fr,pos];
-			
+			show_message_async("Corrupted file");
 		
 		}
-		
-		global.selected_keyframe = 0;
-		global.selected_bone = 0;
-		
-		ini_close()
-	
 	}
 	
 	update_frame();
@@ -195,24 +197,7 @@ if addk and !global.playing{
 
 if (delk or keyboard_check_released(vk_delete)) and !global.playing and global.selected_keyframe!=0{
 
-	if global.selected_keyframe == array_length(global.animation)-1{
-		
-		global.animation = array_delete(global.animation,global.selected_keyframe,1);
-		global.selected_keyframe = global.selected_keyframe-1;
-		
-		
-	} else {
-	
-		var mx = array_length(global.animation)
-		for(var k = global.selected_keyframe; k < mx-1; k++){
-
-			var temp = global.animation[k+1]
-			global.animation[k] = [temp[0],temp[1]];
-			
-		}
-		global.animation = array_delete(global.animation,mx-1,1);
-	
-	}
+	array_delete(global.animation, global.selected_keyframe--, 1);
 	
 	update_frame();
 
@@ -372,10 +357,6 @@ for(var i = sprite_get_number(sprite)-1; i >= 0;i--){
 	}
 	
 	selected+=0.001;
-	
-	objs[i].image_angle = rotation;
-	objs[i].x = x+coords[0]-offset[0];
-	objs[i].y = y+coords[1]-offset[1];
 	
 	var _last = array_length(currentframe)-1;
 	
