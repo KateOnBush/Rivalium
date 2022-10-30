@@ -125,9 +125,12 @@ characters = [{
 		
 			var _d = point_direction(x, y, mousex, mousey);
 			
+			var _ult = char.abilities.ultimate.active;
+			var bull = _ult ? obj_projectile_gramin_ult_bullet : obj_projectile_gramin_gun1bullet;
+			
 			if n = 0 {
 				
-				projectile_create_request(obj_projectile_gramin_gun1bullet, x, y-10, 80, _d+random_range(-5,5), true, true, 50, 20, 0, 0);
+				projectile_create_request(bull, x, y-10, 80, _d+random_range(-5,5), true, true, 50, 20, 0, 0);
 				
 			}
 			if n = 1 {
@@ -135,8 +138,10 @@ characters = [{
 				var anon = function(){
 				
 					var _d = point_direction(x, y, mousex, mousey);
+					var _ult = char.abilities.ultimate.active;
+					var bull = _ult ? obj_projectile_gramin_ult_bullet : obj_projectile_gramin_gun1bullet;
 				
-					projectile_create_request(obj_projectile_gramin_gun1bullet, x, y-10, 80, _d+random_range(-5,5), true, true, 50, 20, 0, 0);
+					projectile_create_request(bull, x, y-10, 80, _d+random_range(-5,5), true, true, 50, 20, 0, 0);
 				
 				}
 				
@@ -191,7 +196,13 @@ characters = [{
 		
 		}, function(){}, function(){}, 0, kennability2, 0),
 		
-		ultimate: new Ability(0.2, ability_type.activecharges, {charges: 4, cooldown_charge: 2, charge_cast_time: 0, charge_time: 0, active_time: 20, active_func: function(){}, end_func: function(){}, castCondition: function(){
+		ultimate: new Ability(0.2, ability_type.activecharges, {charges: 4, cooldown_charge: 2, charge_cast_time: 0, charge_time: 0, active_time: 20, active_func: function(){}, 
+		end_func: function(){
+		
+			removeFilter(base_character_gramin_ult);
+		
+		}, 
+		castCondition: function(){
 			
 			return !on_ground and !char.abilities.ultimate.active
 			
@@ -199,20 +210,29 @@ characters = [{
 			
 			if !char.abilities.ultimate.active{
 			
-				camera_ultimate_zoom(400, 4, easeInSixth, 0.4, easeInSixth, 0.4);
+				camera_ultimate_zoom(400, 2.5, easeInSixth, 0.4, easeInSixth, 0.4);
 				return;
 			
 			}
 			
-			var _d = point_direction(x, y, mousex, mousey)+random_range(-2,2);
+			var anon = function(){
 			
-			projectile_create_request(obj_projectile_gramin_ult_rocket, x, y-10, 80, _d, false, false, 10, 0, 0, 0);
+				var _d = point_direction(x, y, mousex, mousey)+random_range(-2,2);
+				movvec.x -= lengthdir_x(7, _d);
+				movvec.y -= lengthdir_y(7, _d);
+				projectile_create_request(obj_projectile_gramin_ult_rocket, x, y-10, 60, _d, false, false, 10, 0, 0, 0);
+			
+			}
+			
+			createEvent(0.1, anon);
+			
 			
 		}, function(){ //Visual Cast
 		
 			if !char.abilities.ultimate.active{
 			
-				play_animation(char.anims.abilities.ultimate, 0.25, animation_type_full, true);
+				play_animation(char.anims.abilities.ultimate, 0.35, animation_type_full, true);
+				addFilter(base_character_gramin_ult, -1, 1);
 				return;
 			
 			}
@@ -225,9 +245,11 @@ characters = [{
 		
 			var animation = animation_construct([animation_get_frame(char.anims.abilities.basic_attack, _pos, false)], [0])
 			
-			play_animation(animation, 5, animation_type_partial, false, [0, 1, 2, 7, 10, 11], true);
+			play_animation(animation, 2, animation_type_partial, false, [0, 1, 2, 7, 10, 11], true);
+			
+			screen_shake_position(40, 40, 0.1, x, y);
 		
-		}, function(){}, 4, ultimatekenn, #9A1D1C)
+		}, function(){}, 2.5, ultimatekenn, #9A1D1C)
 		
 	}
 

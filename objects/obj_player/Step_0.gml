@@ -118,10 +118,6 @@ if global.connected and current_time - last_update >= 15 {
 
 #region Movement
 
-if movvec.length()>0.01 dir = sign(movvec.x);
-if (dir==0) dir = 1;
-
-
 var gravityvec = new Vector2(0, grav*global.dt)
 
 gravityvec = gravityvec.multiply(wall_slide==1 ? 0.1: 1);
@@ -151,6 +147,10 @@ var k_dash = keyboard_check(vk_lshift) && !casting;
 var k_jump = keyboard_check_pressed(ord("Z")) && !casting;
 var k_slide = keyboard_check(ord("S")) && !casting;
 var k_grapple = keyboard_check(vk_space) && !casting;
+
+if (k_right || k_left || slide) and movvec.length()>0.01 dir = sign(movvec.x);
+if (dir==0) dir = 1;
+
 
 if k_right and slide==0 and !grappled and grounded == 0 {
 
