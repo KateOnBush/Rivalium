@@ -1,7 +1,11 @@
 /// @description Insert description here
 // You can write your code in this editor
 
+game_set_speed(60, gamespeed_fps);
+
 sprite = base_character_gramin
+
+pos = [];
 
 global.animation = [[array_create(sprite_get_number(sprite)+2,0),0]]
 
@@ -12,6 +16,8 @@ global.playing = false
 global.selected_bone = 0
 
 objs = [];
+
+moveTemp = 0;
 
 base = base_character(2)
 
@@ -27,6 +33,8 @@ selected = 1;
 play_quad = false
 
 animspd=1;
+
+dir = 1;
 
 animfr=0;
 

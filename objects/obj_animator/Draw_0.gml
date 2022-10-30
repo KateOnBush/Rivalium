@@ -8,6 +8,9 @@ function update_frame(){
 
 }
 
+var midx = sprite_get_width(sprite)/2;
+var midy = sprite_get_height(sprite)/2;
+
 draw_set_font(font0)
 var dep = 0;
 var d = 20;
@@ -41,7 +44,6 @@ var resetani = draw_button_simple(10,10+dep,140,20+dep,"Reset Animation")
 
 for(var l = 0; l < sprite_get_number(sprite); l++){
 
-	sprite_set_offset(sprite,base[l][0],base[l][1]);
 	var t = draw_button_simple(390, 10+l*26, 390+24, 34+l*26, "");
 	if global.selected_bone == l {
 		
@@ -50,7 +52,7 @@ for(var l = 0; l < sprite_get_number(sprite); l++){
 		draw_set_color(c_black)
 	
 	}
-	draw_sprite_ext(sprite, l, 390+12, 22+l*26, 0.75, 0.75, 0, c_white, 1);
+	draw_sprite_ext(sprite, l, 390+12-base[l][0]+midx, 22+l*26-base[l][1]+midy, 0.75, 0.75, 0, c_white, 1);
 	if t {
 	
 		global.selected_bone = l;
@@ -91,7 +93,12 @@ if resetbones and !global.playing{
 
 if sbones show_bones = !show_bones;
 
-if setspd animspd = get_integer("Speed (default at 1) :",animspd)
+if setspd {
+	animspd = get_integer("Speed (default at 1) :",animspd)
+	animspd ??= 1;
+}
+
+
 
 if setquad play_quad = !play_quad;
 
@@ -241,7 +248,7 @@ var stay = global.animation[0]
 global.animation[0] = [stay[0],0]
 
 
-draw_text(10,10,array_length(global.animation[global.selected_keyframe][0]))
+draw_text(10,10,fps);
 
 draw_sprite(animator_keyframes,0,20,300)
 for(var s = 5; s<100; s+=5){
@@ -333,12 +340,13 @@ if !global.playing and is_between(x-50,mouse_x,x+50,true) and is_between(y-50,mo
 for(var i = sprite_get_number(sprite)-1; i >= 0;i--){
 
 	var bone = base[i];
-	sprite_set_offset(sprite,bone[0],bone[1]);
 	
 	var rotation = currentframe[i];
 	var coords = [bone[0],bone[1]];
 	
-	_bone = base[i]
+	var _bone = base[i]
+	
+	var _parent = [], _parent_b = [];
 	
 	
 	for(var n = i; _bone[2] != -1; n = _bone[2]){
@@ -356,14 +364,33 @@ for(var i = sprite_get_number(sprite)-1; i >= 0;i--){
 	
 	}
 	
+	var _last = array_length(currentframe)-1;
+	
+	pos[i] = [(coords[0]-offset[0])*dir+currentframe[_last-1],coords[1]-offset[1]+currentframe[_last],rotation];
+
+
+}
+
+for(var i = sprite_get_number(sprite)-1; i >= 0;i--){
+	
+	var bone = base[i];
+	
+	var dist = point_distance(bone[0], bone[1], midx, midy)
+	var ray = point_direction(bone[0], bone[1], midx, midy);
+	var addx = lengthdir_x(dist, pos[i][2]+ray);
+	var addy = lengthdir_y(dist, pos[i][2]+ray);
+	
+	pos[i][0] += addx*dir;
+	pos[i][1] += addy;
+	
 	selected+=0.001;
 	
 	var _last = array_length(currentframe)-1;
 	
-	draw_sprite_ext(sprite,i,x+coords[0]-offset[0]+currentframe[_last-1],y+coords[1]-offset[1]+currentframe[_last],1,1,rotation,c_white,(show_bones and !(global.selected_bone == i)) ? 0.2 : 1 )
+	draw_sprite_ext(sprite,i,x+pos[i][0], y+pos[i][1],1,1,pos[i][2],c_white,(show_bones and !(global.selected_bone == i)) ? 0.2 : 1 )
 	
 	gpu_set_blendmode_ext(bm_one, bm_one);
-	if global.selected_bone == i draw_sprite_ext(sprite,i,x+coords[0]-offset[0]+currentframe[_last-1],y+coords[1]-offset[1]+currentframe[_last],1,1,rotation,c_white,1) 
+	if global.selected_bone == i draw_sprite_ext(sprite,i,x+pos[i][0], y+pos[i][1],1,1,pos[i][2],c_white,1) 
 	gpu_set_blendmode(bm_normal)
 	
 	if global.selected_bone == i and !global.playing and is_between(x-100,mouse_x,x+100,true) and is_between(y-100,mouse_y,y+100,true){
@@ -383,11 +410,11 @@ for(var i = sprite_get_number(sprite)-1; i >= 0;i--){
 	
 		var fr = global.animation[global.selected_keyframe][0];
 		draw_set_color(c_black)
-		draw_line(x+coords[0]-offset[0],y+coords[1]-offset[1],mouse_x,mouse_y)
-		draw_sprite_ext(animator_rotator,0,x+coords[0]-offset[0],y+coords[1]-offset[1],1,1,fr[global.selected_bone],c_white,0.2)
+		draw_line(x+pos[i][0], y+pos[i][1],mouse_x,mouse_y)
+		draw_sprite_ext(animator_rotator,0,x+pos[i][0], y+pos[i][1],1,1,fr[global.selected_bone],c_white,0.2)
 		
-		fr[global.selected_bone] = starting_angle + angle_difference(point_direction(x+coords[0]-offset[0],y+coords[1]-offset[1],mouse_x,mouse_y),
-		point_direction(x+coords[0]-offset[0],y+coords[1]-offset[1],clicked_coords[0],clicked_coords[1]))
+		fr[global.selected_bone] = starting_angle + angle_difference(point_direction(x+pos[i][0], y+pos[i][1],mouse_x,mouse_y),
+		point_direction(x+pos[i][0], y+pos[i][1],clicked_coords[0],clicked_coords[1]))
 		
 		global.animation[global.selected_keyframe][0] = fr;
 		update_frame();
