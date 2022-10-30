@@ -22,10 +22,12 @@
     {"id":{"name":"base_character_gramin_gun1bullet","path":"sprites/base_character_gramin_gun1bullet/base_character_gramin_gun1bullet.yy",},"order":1,},
     {"id":{"name":"part_clickable","path":"objects/part_clickable/part_clickable.yy",},"order":1,},
     {"id":{"name":"obj_projectile_kenn_dagger_transformed","path":"objects/obj_projectile_kenn_dagger_transformed/obj_projectile_kenn_dagger_transformed.yy",},"order":4,},
+    {"id":{"name":"base_character_gramin_ult_rocket","path":"sprites/base_character_gramin_ult_rocket/base_character_gramin_ult_rocket.yy",},"order":7,},
     {"id":{"name":"animator_rotator","path":"sprites/animator_rotator/animator_rotator.yy",},"order":4,},
     {"id":{"name":"obj_projectile_gramin_net","path":"objects/obj_projectile_gramin_net/obj_projectile_gramin_net.yy",},"order":4,},
     {"id":{"name":"obj_obstacle_wall","path":"objects/obj_obstacle_wall/obj_obstacle_wall.yy",},"order":0,},
     {"id":{"name":"mouse_icon","path":"sprites/mouse_icon/mouse_icon.yy",},"order":7,},
+    {"id":{"name":"obj_projectile_gramin_ult_rocket","path":"objects/obj_projectile_gramin_ult_rocket/obj_projectile_gramin_ult_rocket.yy",},"order":8,},
     {"id":{"name":"ability_glow","path":"sprites/ability_glow/ability_glow.yy",},"order":3,},
     {"id":{"name":"obj_particles","path":"objects/obj_particles/obj_particles.yy",},"order":5,},
     {"id":{"name":"library3d","path":"scripts/library3d/library3d.yy",},"order":10,},
@@ -99,8 +101,8 @@
     "children": [],
   },
   "RoomOrderNodes": [
-    {"roomId":{"name":"animator","path":"rooms/animator/animator.yy",},},
     {"roomId":{"name":"Room2","path":"rooms/Room2/Room2.yy",},},
+    {"roomId":{"name":"animator","path":"rooms/animator/animator.yy",},},
   ],
   "Folders": [
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Animator Tool","folderPath":"folders/Animator Tool.yy","order":4,},

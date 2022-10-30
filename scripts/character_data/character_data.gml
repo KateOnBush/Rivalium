@@ -155,7 +155,7 @@ characters = [{
 			
 			
 		
-		}, function cast_visual(n){
+		}, function(n){
 		
 			var _s = mousex - x;
 		
@@ -190,7 +190,44 @@ characters = [{
 			heal(50);
 		
 		}, function(){}, function(){}, 0, kennability2, 0),
-		ultimate: new Ability(30, ability_type.active, {active_time: 20, active_func: function(){}, end_func: function(){}}, function(){}, function(){}, function(){}, 0.2, ultimatekenn, #9A1D1C)
+		
+		ultimate: new Ability(0.2, ability_type.activecharges, {charges: 4, cooldown_charge: 2, charge_cast_time: 0, charge_time: 0, active_time: 20, active_func: function(){}, end_func: function(){}, castCondition: function(){
+			
+			return !on_ground and !char.abilities.ultimate.active
+			
+		}}, function(){ //Cast
+			
+			if !char.abilities.ultimate.active{
+			
+				camera_ultimate_zoom(400, 4, easeInSixth, 0.4, easeInSixth, 0.4);
+				return;
+			
+			}
+			
+			var _d = point_direction(x, y, mousex, mousey)+random_range(-2,2);
+			
+			projectile_create_request(obj_projectile_gramin_ult_rocket, x, y-10, 80, _d, false, false, 10, 0, 0, 0);
+			
+		}, function(){ //Visual Cast
+		
+			if !char.abilities.ultimate.active{
+			
+				play_animation(char.anims.abilities.ultimate, 0.25, animation_type_full, true);
+				return;
+			
+			}
+		
+			var _s = mousex - x;
+		
+			var _pos = (180-angle_difference(point_direction(x, y, mousex, mousey), dir > 0 ? 0 : 180))/360;
+			
+			if(dir == -1) _pos = 1 - _pos;
+		
+			var animation = animation_construct([animation_get_frame(char.anims.abilities.basic_attack, _pos, false)], [0])
+			
+			play_animation(animation, 5, animation_type_partial, false, [0, 1, 2, 7, 10, 11], true);
+		
+		}, function(){}, 4, ultimatekenn, #9A1D1C)
 		
 	}
 

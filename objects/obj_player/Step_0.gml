@@ -600,9 +600,9 @@ if jump_fast_prog*jump_blend>0.01 currentframe = animation_blend(currentframe,an
 
 if jump_prep_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_jump_prep,0,false),jump_prep_blend)
 
-animation_played_prog += global.dt*animation_played_speed/60; 
+animation_played_prog += global.dt*animation_played_speed/60;
 
-animation_playing_blend = dtlerp(animation_playing_blend, animation_playing, 0.4);
+animation_playing_blend = dtlerp(animation_playing_blend, animation_playing, 0.2);
 
 if animation_playing_blend > 0.01 and !animation_played_priority step_animation();
 

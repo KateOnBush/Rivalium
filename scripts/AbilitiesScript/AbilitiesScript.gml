@@ -47,6 +47,22 @@ function Ability(acooldown, atype, atype_data, acast_func, acast_visual_func, ac
 	s = -1;
 	availableblend = 0;
 	
+	cooldownHasCondition = false;
+	if variable_struct_exists(typedata, "cooldownCondition"){
+		if typeof(typedata.cooldownCondition) == "method"{
+			cooldownHasCondition = true;
+			cooldownCondition = method(other, typedata.cooldownCondition);
+		}
+	}
+	
+	castHasCondition = false;
+	if variable_struct_exists(typedata, "castCondition"){
+		if typeof(typedata.castCondition) == "method"{
+			castHasCondition = true;
+			castCondition = method(other, typedata.castCondition);
+		}
+	}
+	
 	if type == ability_type.charges or type == ability_type.activecharges{
 		init_charges = typedata.charges;
 		charges = init_charges;
@@ -60,12 +76,15 @@ function Ability(acooldown, atype, atype_data, acast_func, acast_visual_func, ac
 		init_end_func = method(other, typedata.end_func);
 	}
 	
+	if type == ability_type.activecharges charge_cast_time = typedata.charge_cast_time;
+	
 	static cast = function(n = 0){
 	
 		if other.object_index == obj_player {
 			if cooldown > 0 return false;
 			if active && type == ability_type.active return false;
 			if charges == 0 && (type == ability_type.charges or type == ability_type.activecharges) return;
+			if castHasCondition && castCondition() return;
 			
 			if global.connected {
 			
@@ -88,7 +107,7 @@ function Ability(acooldown, atype, atype_data, acast_func, acast_visual_func, ac
 		
 		if (ultimate && (other.ultimatecharge != other.ultimatechargemax) && !active && charges == init_charges) return;
 		
-		cast_time = init_cast_time;
+		cast_time = type == ability_type.activecharges && active ? charge_cast_time : init_cast_time;
 		
 		if other.object_index == obj_player cast_func(n);
 		
@@ -96,7 +115,7 @@ function Ability(acooldown, atype, atype_data, acast_func, acast_visual_func, ac
 		
 		if type == ability_type.onetime {
 		
-			cooldown = init_cooldown[n];
+			cooldown = (cooldownHasCondition ? cooldownCondition(n) : init_cooldown[n]);
 		
 		}
 		if type == ability_type.charges or type == ability_type.activecharges {
@@ -159,7 +178,7 @@ function Ability(acooldown, atype, atype_data, acast_func, acast_visual_func, ac
 			if type == ability_type.active or type == ability_type.activecharges init_end_func();
 			if active { 
 				active = false
-				cooldown = init_cooldown[0];
+				cooldown = (cooldownHasCondition ? cooldownCondition(0) : init_cooldown[0]);
 				charges = 0;
 			}
 		}
@@ -198,7 +217,7 @@ function Ability(acooldown, atype, atype_data, acast_func, acast_visual_func, ac
 		draw_set_color(c_white)
 		draw_set_font(font_game)
 		draw_sprite_ext(ability_glow, 0, x, y, 0.5*scale+0.03, 0.5*scale+0.03, 0, color, abs(dsin(c*2))*active_blend*alpha);
-		var available = (cooldown>0 or (ultimate && (other.ultimatecharge != other.ultimatechargemax) && !active && charges == init_charges));
+		var available = (cooldown>0 or (ultimate && (other.ultimatecharge != other.ultimatechargemax) && !active && charges == init_charges) or (castHasCondition && castCondition()));
 		availableblend = dtlerp(availableblend, available, 0.03);
 		draw_sprite_ext(sprite, 0, x, y, scale, scale, 1, c_white, alpha);
 		draw_sprite_ext(sprite, 1, x, y, scale, scale, 1, c_white, availableblend*alpha);
@@ -218,7 +237,7 @@ function Ability(acooldown, atype, atype_data, acast_func, acast_visual_func, ac
 				draw_set_color(c_white)
 				draw_arc(0, 0, 128, 128,
 				64+lengthdir_x(130, (25 + 360*n)/init_charges), 64+lengthdir_y(130, (25 + 360*n)/init_charges),
-				64+lengthdir_x(130, (-25 + 360*(n+1))/init_charges), 64+lengthdir_y(130, (-25 + 360*(n+1))/init_charges), 1)
+				64+lengthdir_x(130, (-25 + 360*(n+1))/init_charges), 64+lengthdir_y(130, (-25 + 360*(n+1))/init_charges), 16)
 		
 			}
 			n--;
@@ -226,7 +245,7 @@ function Ability(acooldown, atype, atype_data, acast_func, acast_visual_func, ac
 				var k = 1 - charge_time/init_charge_time;
 				if k != 1 draw_arc(0, 0, 128, 128,
 				64+lengthdir_x(130, (25 + 360*(n+1))/init_charges), 64+lengthdir_y(130, (25 + 360*(n+1))/init_charges),
-				64+lengthdir_x(130, max(-25 + 360*(n+1+k),25 + 360*(n+1))/init_charges), 64+lengthdir_y(130, max(-25 + 360*(n+1+k),25 + 360*(n+1))/init_charges), 1)
+				64+lengthdir_x(130, max(-25 + 360*(n+1+k),25 + 360*(n+1))/init_charges), 64+lengthdir_y(130, max(-25 + 360*(n+1+k),25 + 360*(n+1))/init_charges), 16)
 			}
 		
 			draw_set_color(c_white);

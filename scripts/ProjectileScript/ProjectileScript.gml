@@ -4,7 +4,8 @@
 global.projectiles_array = [obj_projectile_kenn_dagger,
 obj_projectile_kenn_dagger_transformed,
 obj_projectile_gramin_gun1bullet,
-obj_projectile_gramin_net];
+obj_projectile_gramin_net,
+obj_projectile_gramin_ult_rocket];
 
 global.explosions_array = [obj_explosion_gramin];
 

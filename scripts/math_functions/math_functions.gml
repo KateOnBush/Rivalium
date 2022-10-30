@@ -17,6 +17,17 @@ return x < 0.5
   : (power(2 * x - 2, 2) * ((c2 + 1) * (x * 2 - 2) + c2) + 2) / 2;
 }
 
+function easeInCirc(x) {
+	
+	return 1 - sqrt(1 - power(x, 2));
+}
+
+function easeInSixth(x){
+
+	return x*x*x*x*x*x;
+
+}
+
 
 function is_between(argument0, argument1, argument2, argument3) {
 

@@ -15,11 +15,11 @@ draw_circle(mousex, mousey, 5, false)
 draw_set_color(c_black)
 if grappling draw_line(x,y,grappling_coords[0],grappling_coords[1])
 
-matrix_set(matrix_world, matrix_build(x,y,0,0,mousex/10,0,100,100,100))
+/*matrix_set(matrix_world, matrix_build(x,y,0,0,mousex/10,0,100,100,100))
 
 vertex_submit(global.modelzwin, pr_trianglestrip, sprite_get_texture(tMbow, -1));
 
-matrix_set(matrix_world, matrix_build(0,0,0,0,0,0,1,1,1))
+matrix_set(matrix_world, matrix_build(0,0,0,0,0,0,1,1,1))*/
 
 for(var i = sprite_get_number(sprite)-1; i >= 0;i--){
 

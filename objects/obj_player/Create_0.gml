@@ -130,10 +130,10 @@ function step_animation(){
 	
 	}
 
-	if animation_played_prog >= 1 {
+	if animation_played_prog >= 0.99 {
 	
 		animation_playing = 0;
-		animation_played_prog = 1;
+		animation_played_prog = 0.99;
 	
 	}
 
