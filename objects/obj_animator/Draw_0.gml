@@ -272,9 +272,10 @@ for(var k=0; k<array_length(global.animation); k++){
 	
 	draw_sprite(animator_keyframes,ind+1,20+360*keyframe[1],300)
 	
-	if mouse_check_button_pressed(mb_left) and is_between(20+360*keyframe[1],mouse_x,20+360*keyframe[1]+6,true) and is_between(300,mouse_y,348,true){
+	if mouse_check_button_pressed(mb_left) and is_between(20+360*keyframe[1],mouse_x,20+360*keyframe[1]+8,true) and is_between(300,mouse_y,348,true){
 	
 		global.selected_keyframe = k;
+		moveTemp = 10;
 		clicked_keyframe = k;
 		update_frame();
 	
@@ -282,7 +283,7 @@ for(var k=0; k<array_length(global.animation); k++){
 	
 		clicked_keyframe = -1;
 		
-	} else if clicked_keyframe != -1{
+	} else if clicked_keyframe != -1 and moveTemp == 0{
 	
 		var key = global.animation[global.selected_keyframe]
 		
@@ -313,6 +314,8 @@ for(var k=0; k<array_length(global.animation); k++){
 	
 
 }
+
+moveTemp = max(moveTemp - 1, 0);
 
 
 if !global.playing and is_between(x-50,mouse_x,x+50,true) and is_between(y-50,mouse_y,y+50,true){
