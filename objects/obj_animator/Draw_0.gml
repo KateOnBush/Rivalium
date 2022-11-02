@@ -37,10 +37,64 @@ dep+=d;
 var resetpos = draw_button_simple(10,10+dep,140,20+dep,"Reset position")
 dep+=d;
 var resetbones = draw_button_simple(10,10+dep,140,20+dep,"Reset keyframe")
+var resetx = draw_button_simple(150,10+dep,150+100,20+dep,"Reset X position")
+var resety = draw_button_simple(260,10+dep,260+100,20+dep,"Reset Y position")
 dep+=d;
 var resetbon = draw_button_simple(10,10+dep,140,20+dep,"Reset bone")
+var importtext = draw_button_simple(150,10+dep,150+150,20+dep,"Import from text");
 dep+=d*1.5;
 var resetani = draw_button_simple(10,10+dep,140,20+dep,"Reset Animation")
+var changechar = draw_button_simple(150,10+dep,150+150,20+dep,"Change Character")
+
+if changechar and !global.playing {
+
+	var yes = get_integer("Character number: (THIS WILL RESET THE ANIMATION AND DELETE UNSAVED DATA)", 0);
+	
+	if yes != undefined {
+	
+		try{
+	
+			var sex = setupCharacterData()[yes];
+			sprite = sex.sprite
+			base = sex.base;
+			currentframe = array_create(sprite_get_number(sprite)+2,0);
+			pos = [];
+			
+			global.animation = [[array_create(sprite_get_number(sprite)+2,0),0]];
+			global.selected_keyframe = 0;
+			global.selected_bone = 0;
+			update_frame();
+			
+		}catch(err){ show_message_async("Invalid character")};
+	
+	}
+
+}
+
+if importtext and !global.playing {
+
+	var yes = get_string("Paste JSON data:","");
+	
+	try{
+		
+		var anim = json_parse(yes);
+		//Testing the array
+		var keyframe = anim[0];
+		var temp = keyframe[1]+1;
+		var value1 = keyframe[0][0]+1;
+		
+		global.animation = anim;
+		global.selected_keyframe = 0;
+		global.selected_bone = 0;
+		update_frame();
+		
+	}catch(err){
+	
+		show_message_async("Invalid value!")
+	
+	}
+
+}
 
 for(var l = 0; l < sprite_get_number(sprite); l++){
 
@@ -80,6 +134,20 @@ if resetpos and !global.playing{
 
 	global.animation[global.selected_keyframe][0][array_length(global.animation[global.selected_keyframe][0])-1] = 0
 	global.animation[global.selected_keyframe][0][array_length(global.animation[global.selected_keyframe][0])-2] = 0
+	update_frame();
+
+}
+
+if resetx and !global.playing{
+
+	global.animation[global.selected_keyframe][0][array_length(global.animation[global.selected_keyframe][0])-2] = 0
+	update_frame();
+
+}
+
+if resety and !global.playing{
+
+	global.animation[global.selected_keyframe][0][array_length(global.animation[global.selected_keyframe][0])-1] = 0
 	update_frame();
 
 }
@@ -399,6 +467,9 @@ for(var i = sprite_get_number(sprite)-1; i >= 0;i--){
 	if global.selected_bone == i and !global.playing and is_between(x-100,mouse_x,x+100,true) and is_between(y-100,mouse_y,y+100,true){
 	
 	var fr = global.animation[global.selected_keyframe][0];
+	
+	pos[i][0] -= addx*dir;
+	pos[i][1] -= addy;
 	
 	if mouse_check_button_pressed(mb_left) {
 		

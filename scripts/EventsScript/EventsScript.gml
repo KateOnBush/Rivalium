@@ -16,8 +16,12 @@ function Event(time, eventfunc) constructor{
 	
 		self.time -= dtime/60;
 		if self.time <=0 {
-			eventfunc();
+			
+			var t = method_get_self(eventfunc);
 			array_delete(global.events,array_find_by_value(global.events, self),1);
+			if (t and !instance_exists(t)) return;
+			eventfunc();
+		
 		}
 	
 	}

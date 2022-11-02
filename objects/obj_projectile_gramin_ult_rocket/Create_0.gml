@@ -10,6 +10,14 @@ part_type_alpha3(trail, 0.6, 0.4, 0)
 
 on_collision = function(){
 
-	screen_shake_position(5, 100, 0.05, x, y);
+	screen_shake_position(50, 100, 0.1, x, y);
+	if ownerID == global.playerid {
+		explosion_create_request(obj_explosion_gramin_ult, x, y, 150, 100);
+		var d = 45;
+		repeat(4){
+			projectile_create_request(obj_projectile_gramin_ult_smalldebris, x, y, 15, d, true, false, 10, 20, 0, 0, true);
+			d += 90;
+		}
+	}
 
 }

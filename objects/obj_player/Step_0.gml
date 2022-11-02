@@ -45,7 +45,7 @@ if surf_refresh_rate <= 0 && linespeedblend > 0.01 {
 	surf_refresh_rate = 2.5;
 	repeat(5){
 		var _e = random(40)-20;
-		part_particles_create(global.partSystemBehind, x+lengthdir_x(_e, movvec.dir()+90), y+lengthdir_y(_e, movvec.dir()+90), linespeed, 1)
+		part_particles_create(global.partSystemBehind, x+lengthdir_x(_e, movvec.dir()+90), y+lengthdir_y(_e, movvec.dir()+90), linespeed, 1);
 	}
 }
 
@@ -590,6 +590,8 @@ grounded_blend = dtlerp(grounded_blend,grounded == 0 ? 0 : 1, 0.2)
 
 grounded = max(grounded - 1*global.dt,0);
 
+pushed_blend = dtlerp(pushed_blend, movvec.x*dir<-1.5, 0.3);
+
 var _gdir = point_direction(x,y,grappling_coords[0],grappling_coords[1])
 
 grapple_throw_blend = dtlerp(grapple_throw_blend, grappling ? 1 : 0, 0.4)
@@ -605,6 +607,8 @@ animation_played_prog += global.dt*animation_played_speed/60;
 animation_playing_blend = dtlerp(animation_playing_blend, animation_playing, 0.2);
 
 if animation_playing_blend > 0.01 and !animation_played_priority step_animation();
+
+if pushed_blend>0.01 currentframe = animation_blend(currentframe, animation_get_frame(char.anims.animation_pushed, ani*0.5 mod 1, true), pushed_blend);
 
 if flip_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_flip,flipping_forward ? fxflip : (1 - fxflip),false),flip_blend)
 

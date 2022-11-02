@@ -19,8 +19,17 @@ part_type_life(trail, 60/dtime, 60/dtime)
 if ID != 0 and !timer{
 
 	timer++;
+
+	var anon = function(){
 	
-	createEvent(1.5, anon);
+		screen_shake_position(50, 100, 0.25, x, y);
+		if ownerID == global.playerid explosion_create_request(obj_explosion_gramin, x, y, 150, 20);
+	
+		self.destroy();
+	
+	}
+	
+	createEvent(1, anon);
 	
 }
 

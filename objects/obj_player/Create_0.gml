@@ -1,7 +1,7 @@
 // @description Insert description here
 // You can write your code in this editor
 
-setupCharacterData();
+characters = setupCharacterData();
 
 character_id = 1;
 
@@ -10,6 +10,8 @@ last_update = current_time;
 zoom = 3;
 
 speedboost = 0;
+
+pushed_blend = 0;
 
 hitind = 0;
 

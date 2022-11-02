@@ -3,3 +3,5 @@
 
 part_system_destroy(ultimatePart)
 part_system_destroy(lines)
+
+buffer_delete(updateDataBuffer);

@@ -78,7 +78,7 @@ function inflict_damage(damage, burn, ID){
 
 }
 
-function heal(amount, ID = 0){
+function heal_player(amount, ID = 0){
 
 	if (ID == 0 or ID == global.playerid) obj_player.playerhealth += amount;
 	else if (global.players[? ID]) global.players[? ID].playerhealth += amount;

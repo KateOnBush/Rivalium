@@ -16,7 +16,8 @@ enum stype {
 	projectiledestroy,
 	playercast,
 	addeffect,
-	explosioncreate
+	explosioncreate, //11
+	projectilepositioncorrection //12
 
 }
 
@@ -282,16 +283,22 @@ if async_load[? "type"] == network_type_data {
 			var heal = buffer_read(buff, buffer_u16);
 			var ID = string(buffer_read(buff, buffer_u16));
 			var lagcomper = buffer_read(buff, buffer_u32);
+			var bounce = buffer_read(buff, buffer_u8);
 			
-			if string(ownerid) == global.playerid {
+			if string(ownerid) == global.playerid and instance_exists(lagcomper) {
 			
-				if instance_exists(lagcomper) instance_destroy(lagcomper);
+				instance_destroy(lagcomper);
+				projectile_create(ob, ownerid, _x, _y, sp, dr, col, dieoncol, lifespan, damage, bleed, heal, ID, bounce);
+			
+			} else if string(ownerid) != global.playerid {
+			
+				projectile_create(ob, ownerid, _x, _y, sp, dr, col, dieoncol, lifespan, damage, bleed, heal, ID, bounce);
 			
 			}
 			
-			projectile_create(ob, ownerid, _x, _y, sp, dr, col, dieoncol, lifespan, damage, bleed, heal, ID);
 		
 		} else if (type == stype.playerhit){
+
 		
 			var hit = string(buffer_read(buff, buffer_u16));
 			if (hit == global.playerid){
@@ -369,6 +376,34 @@ if async_load[? "type"] == network_type_data {
 			var life = buffer_read(buff, buffer_u16);
 			
 			explosion_create(expl, ID, _x, _y, rad, dmg, life);
+			
+		
+		} else if (type == stype.projectilepositioncorrection){
+		
+			var _ID = string(buffer_read(buff, buffer_u16));
+			var _x = buffer_read(buff, buffer_s32)/100;
+			var _y = buffer_read(buff, buffer_s32)/100;
+			var _mx = buffer_read(buff, buffer_s32)/100;
+			var _my = buffer_read(buff, buffer_s32)/100;
+			
+			for(var i = 0; i < instance_number(obj_projectile); i++){
+			
+				var inst = instance_find(obj_projectile, i);
+				if (inst.ID == _ID){
+				
+					var _d = point_distance(inst.x, inst.y, _x, _y);
+					
+					if _d>65{
+						
+						inst.x = _x;
+						inst.y = _y;
+						inst.spd = point_distance(0,0,_mx,_my);
+						inst.dir = point_direction(0,0,_mx,_my);
+					}
+				
+				}
+			
+			}
 			
 		
 		}

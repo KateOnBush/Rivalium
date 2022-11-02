@@ -217,7 +217,8 @@ function Ability(acooldown, atype, atype_data, acast_func, acast_visual_func, ac
 		draw_set_color(c_white)
 		draw_set_font(font_game)
 		draw_sprite_ext(ability_glow, 0, x, y, 0.5*scale+0.03, 0.5*scale+0.03, 0, color, abs(dsin(c*2))*active_blend*alpha);
-		var available = (cooldown>0 or (ultimate && (other.ultimatecharge != other.ultimatechargemax) && !active && charges == init_charges) or (castHasCondition && castCondition()));
+		var castcond = (castHasCondition && castCondition()) || !castHasCondition;
+		var available = (cooldown>0 or (ultimate && (other.ultimatecharge < other.ultimatechargemax) && !active));
 		availableblend = dtlerp(availableblend, available, 0.03);
 		draw_sprite_ext(sprite, 0, x, y, scale, scale, 1, c_white, alpha);
 		draw_sprite_ext(sprite, 1, x, y, scale, scale, 1, c_white, availableblend*alpha);

@@ -3,7 +3,7 @@
 
 game_set_speed(60, gamespeed_fps);
 
-sprite = base_character_gramin
+sprite = base_character_kenn;
 
 pos = [];
 
@@ -19,7 +19,7 @@ objs = [];
 
 moveTemp = 0;
 
-base = base_character(2)
+base = base_character(1)
 
 show_bones = false;
 

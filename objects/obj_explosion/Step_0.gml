@@ -1,6 +1,22 @@
 /// @description Insert description here
 // You can write your code in this editor
 
+if !hits {
+
+	var _dist = distance_to_object(obj_player);
+	
+	var _dir = point_direction(x, y, obj_player.x, obj_player.y);
+	
+	if(_dist < radius*2) {
+	
+		var _e = power(1 - max(_dist - 40,0)/(radius*2), 1/2);
+		
+		obj_player.movvec.x += lengthdir_x(17, _dir)*_e;
+		obj_player.movvec.y += lengthdir_y(17, _dir)*_e;
+	
+	}
+
+}
 
 if !hits and !visual {
 
@@ -12,7 +28,7 @@ if !hits and !visual {
 	
 		if(_dist > radius) continue;
 	
-		var _damage = damage * power(1 - max(_dist - 40,0)/radius, 2);
+		var _damage = damage * power(1 - max(_dist - 25,0)/radius, 1/2);
 		
 		show_debug_message(_damage);
 		
