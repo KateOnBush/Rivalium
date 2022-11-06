@@ -3,7 +3,7 @@
 
 randomize();
 
-game_set_speed(99999,gamespeed_fps)
+game_set_speed(9999,gamespeed_fps)
 
 global.gamespeed = 1;
 

@@ -8,7 +8,7 @@ function character_Kenn(){
 		speed: 28,
 		id: 1,
 		base: base_character(1),
-		sprite: base_character_kenn,
+		sprite: base_character_kenn_attempt,
 		anims: animations(1),
 		particles: {
 			boost: part_type_create()
@@ -47,14 +47,15 @@ function character_Kenn(){
 					screen_shake(5, 20, 0.05); 
 				}, 
 				function (n){
-					if sign(mousex - x) != dir and movvec.length()>4{
-						play_animation(char.anims.abilities.basic_attack, 8, animation_type_full, false)	
-					} else play_animation(char.anims.abilities.basic_attack, 8, animation_type_partial, false, [0, 1]);
+					if sign(mousex - x) != sign(movvec.x) and movvec.length() > 4 {
+						dir = sign(mousex - x);
+						play_animation(char.anims.kenn_basic_attack, 4.5, animation_type_full);
+					} else play_animation(char.anims.kenn_basic_attack, 3, animation_type_partial, [0, 1]);
 				}, 
 				function (n){
 					dir = sign(mousex - x);
 				}, 
-				0, basicattackkenn, 0),
+				1/4.5, basicattackkenn, 0, false, false),
 		
 			ability1: new Ability(18, ability_type.active, {active_time: 12, active_func: function(){}, end_func: function(){}}, function(){
 		
@@ -86,7 +87,7 @@ function character_Kenn(){
 		
 				}, function(){
 			
-					play_animation(char.anims.abilities.ultimate, 0.4, animation_type_full, true);
+					play_animation(char.anims.kenn_ultimate, 0.4, animation_type_full, true);
 					dir = 1;
 					ultpart = part_type_create();
 					part_type_shape(ultpart, pt_shape_sphere)
@@ -96,7 +97,7 @@ function character_Kenn(){
 			
 				}, function(){
 		
-					if char.abilities.ultimate.cast_time < 1.1 addFilter(base_character_kenn_transformed, -10, 1);
+					if char.abilities.ultimate.cast_time < 0.1 addFilter(base_character_kenn_transformed, -10, 1);
 					movvec.x *= power(0.01, dtime);
 					movvec.y *= power(0.01, dtime);
 					part_type_speed(ultpart, 1*dtime, 3*dtime, -0.01*dtime, 0);

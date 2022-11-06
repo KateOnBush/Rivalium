@@ -3,6 +3,9 @@
 
 ID = 0;
 
+px = 0;
+py = 0;
+
 spd = 0;
 
 dir = 0;
@@ -38,6 +41,19 @@ checkPlayer = function(){
 	if ownerID != global.playerid return false;
 	return collision_line(x, y, x+lengthdir_x(spd, dir)*global.dt, y+lengthdir_y(spd, dir)*global.dt, obj_player_other, false, true);
 		
+}
+
+checkPlayerSelf = function(){
+
+	if ownerID == global.playerid return false;
+	return collision_line(x, y, x+lengthdir_x(spd, dir)*global.dt, y+lengthdir_y(spd, dir)*global.dt, obj_player, false, true);
+
+}
+
+visibleTimeout = function(){
+
+	visible = true;
+
 }
 
 destroy = function(){

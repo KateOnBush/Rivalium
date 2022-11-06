@@ -49,13 +49,13 @@ if grappled {
 
 }
 
-if current_time - updated >= 40 {
+if current_time - updated >= 18 {
 
 	var gravityvec = new Vector2(0, grav*global.dt)
 
 	gravityvec.multiply(wall_slide==1 ? 0.1 : 1)
 
-	if !grappled movvec.add(gravityvec);
+	if !grappled movvec = movvec.add(gravityvec);
 
 	var slope_moving = false;
 	var slope_angle = 0;
@@ -129,6 +129,11 @@ if current_time - updated >= 40 {
 	x += movvec.x*global.dt;
 	y += movvec.y*global.dt;
 
+} else {
+
+	x = dtlerp(x, ux, 0.82);
+	y = dtlerp(y, uy, 0.82);
+
 }
 
 if place_meeting(x,y+1,obj_solid){
@@ -197,15 +202,13 @@ if (flip == 1) flipping = false;
 
 if on_ground flipping = false;
 
-run = dtlerp(run,clamp(movvec.length()/6,0,1),0.2)
-
 run = clamp(run,0,1)
 
 ani = ani + spdboost*global.dt/60;
 
-currentframe = animation_get_frame(char.anims.animation_idle, ani*0.6 mod 1, true);
+currentframe = animation_get_frame(char.anims.animation_idle, ani*0.6 mod 1);
 
-currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_run,ani*(1.8*spd/27) mod 1,false), run);
+currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_run,ani*(1.6*spd/27) mod 1), run);
 
 if !on_ground {
 	
@@ -233,11 +236,11 @@ var _gdir = point_direction(x,y,grappling_coords[0],grappling_coords[1])
 
 grapple_throw_blend = dtlerp(grapple_throw_blend, grappling ? 1 : 0, 0.4)
 
-if jump_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_jump,jump_prog,true),jump_blend)
+if jump_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_jump,jump_prog),jump_blend)
 
-if jump_fast_prog*jump_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_jump_fast,jump_prog,true),jump_fast_prog*jump_blend)
+if jump_fast_prog*jump_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_jump_fast,jump_prog),jump_fast_prog*jump_blend)
 
-if jump_prep_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_jump_prep,0,false),jump_prep_blend)
+if jump_prep_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_jump_prep,0),jump_prep_blend)
 
 animation_played_prog += global.dt*animation_played_speed/60; 
 
@@ -247,11 +250,11 @@ if animation_playing_blend > 0.01{
 
 	if animation_played_type = animation_type_full {
 	
-		currentframe = animation_blend(currentframe, animation_get_frame(animation_played, animation_played_prog, animation_played_quadratic), animation_playing_blend);
+		currentframe = animation_blend(currentframe, animation_get_frame(animation_played, animation_played_prog), animation_playing_blend);
 		
 	} else if animation_played_type = animation_type_partial{
 	
-		currentframe = animation_blend_partial(currentframe, animation_get_frame(animation_played, animation_played_prog, animation_played_quadratic), animation_playing_blend, animation_played_bones);
+		currentframe = animation_blend_partial(currentframe, animation_get_frame(animation_played, animation_played_prog), animation_playing_blend, animation_played_bones);
 	
 	}
 
@@ -264,16 +267,16 @@ if animation_playing_blend > 0.01{
 
 }
 
-if flip_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_flip,flipping_forward ? fxflip : (1 - fxflip),false),flip_blend)
+if flip_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_flip,flipping_forward ? fxflip : (1 - fxflip)),flip_blend)
 
-if dash_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_dash,0,false),dash_blend)
+if dash_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_dash,0),dash_blend)
 
-if wall_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_wall,0,false),wall_blend)
+if wall_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_wall,0),wall_blend)
 
-if slide_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_slide,slope_blend,false),slide_blend)
+if slide_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_slide,slope_blend),slide_blend)
 
-if grapple_throw_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_grapple_throw,abs(angle_difference(-90,_gdir))/180,false),grapple_throw_blend);
+if grapple_throw_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_grapple_throw,abs(angle_difference(-90,_gdir))/180),grapple_throw_blend);
 
-if grapple_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_grapple,dir == 1 ? (_gdir mod 360)/360 : (540 - _gdir mod 360)/360,false),grapple_blend)
+if grapple_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_grapple,dir == 1 ? (_gdir mod 360)/360 : (540 - _gdir mod 360)/360),grapple_blend)
 
-if grounded_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_grounded,0,false),grounded_blend)
+if grounded_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_grounded,0),grounded_blend)

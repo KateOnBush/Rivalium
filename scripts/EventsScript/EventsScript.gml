@@ -2,6 +2,7 @@
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 global.events = [];
 
+global.lastid = 0;
 
 /**
  * @param {real} time 
@@ -19,7 +20,7 @@ function Event(time, eventfunc) constructor{
 			
 			var t = method_get_self(eventfunc);
 			array_delete(global.events,array_find_by_value(global.events, self),1);
-			if (t and !instance_exists(t)) return;
+			if (t and !instance_exists(t) and !is_struct(t)) return;
 			eventfunc();
 		
 		}
@@ -28,12 +29,12 @@ function Event(time, eventfunc) constructor{
 
 }
 
-function createEvent(time, execfunction){
+function createEvent(time, execfunction, forcedSelf = undefined){
 
-	var t = new Event(time, execfunction);
+	var t = new Event(time, method(forcedSelf, execfunction));
 	
 	array_push(global.events, t);
-
+	
 }
 
 function processEvents(){

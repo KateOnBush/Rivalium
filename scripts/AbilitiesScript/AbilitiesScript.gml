@@ -16,7 +16,7 @@ function secstr(s){
 	
 }
 
-function Ability(acooldown, atype, atype_data, acast_func, acast_visual_func, acasting_func, acast_time, asprite, acolor, aultimate = false) constructor{
+function Ability(acooldown, atype, atype_data, acast_func, acast_visual_func, acasting_func, acast_time, asprite, acolor, aultimate = false, castblock = false) constructor{
 
 	init_cooldown = acooldown;
 	ultimate = aultimate;
@@ -39,6 +39,7 @@ function Ability(acooldown, atype, atype_data, acast_func, acast_visual_func, ac
 	charge_time = 0;
 	init_charge_time = 0;
 	sprite = asprite;
+	cast_block = castblock;
 	cooldown_blend = 0;
 	active_blend = 0;
 	color = acolor;
@@ -84,7 +85,7 @@ function Ability(acooldown, atype, atype_data, acast_func, acast_visual_func, ac
 			if cooldown > 0 return false;
 			if active && type == ability_type.active return false;
 			if charges == 0 && (type == ability_type.charges or type == ability_type.activecharges) return;
-			if castHasCondition && castCondition() return;
+			if castHasCondition && !castCondition() return;
 			
 			if global.connected {
 			
@@ -111,7 +112,7 @@ function Ability(acooldown, atype, atype_data, acast_func, acast_visual_func, ac
 		
 		if other.object_index == obj_player cast_func(n);
 		
-		cast_visual();
+		cast_visual(n);
 		
 		if type == ability_type.onetime {
 		
@@ -153,9 +154,9 @@ function Ability(acooldown, atype, atype_data, acast_func, acast_visual_func, ac
 	
 	}
 	
-	static cast_visual = function() {
+	static cast_visual = function(n) {
 	
-		cast_visual_func();
+		cast_visual_func(n);
 	
 	}
 	
@@ -196,9 +197,7 @@ function Ability(acooldown, atype, atype_data, acast_func, acast_visual_func, ac
 		cast_time = max(cast_time - global.dt/60, 0);
 		if cast_time > 0 iscasting = true else iscasting = false;
 		
-		
-		
-		if iscasting casting();
+		if iscasting casting_func();
 		
 		c += global.dt;
 		active_blend = dtlerp(active_blend, active, 0.2);
@@ -217,8 +216,8 @@ function Ability(acooldown, atype, atype_data, acast_func, acast_visual_func, ac
 		draw_set_color(c_white)
 		draw_set_font(font_game)
 		draw_sprite_ext(ability_glow, 0, x, y, 0.5*scale+0.03, 0.5*scale+0.03, 0, color, abs(dsin(c*2))*active_blend*alpha);
-		var castcond = (castHasCondition && castCondition()) || !castHasCondition;
-		var available = (cooldown>0 or (ultimate && (other.ultimatecharge < other.ultimatechargemax) && !active));
+		var castcond = !castHasCondition or castCondition();
+		var available = (cooldown>0 or (ultimate && (other.ultimatecharge < other.ultimatechargemax) && !active && charges == init_charges) or !castcond);
 		availableblend = dtlerp(availableblend, available, 0.03);
 		draw_sprite_ext(sprite, 0, x, y, scale, scale, 1, c_white, alpha);
 		draw_sprite_ext(sprite, 1, x, y, scale, scale, 1, c_white, availableblend*alpha);

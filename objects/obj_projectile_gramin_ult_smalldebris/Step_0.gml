@@ -29,7 +29,7 @@ if ID != 0 and !timer{
 	
 	}
 	
-	createEvent(1, anon);
+	createEvent(1, anon, self);
 	
 }
 

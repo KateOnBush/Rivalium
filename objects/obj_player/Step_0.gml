@@ -39,7 +39,8 @@ part_type_speed(linepart, 16*global.dt, 20*global.dt, 0, 0);
 linespeedblend = dtlerp(linespeedblend, dash>0 or (spdboost>1 && movvec.length()>10), 0.4);
 
 part_type_life(linespeed, fpstime*0.2, fpstime*0.25)
-part_type_orientation(linespeed, movvec.dir(), movvec.dir(), 0, 0, 0);
+var dd = movvec.dir();
+part_type_orientation(linespeed, dd, dd, 0, 0, 0);
 
 if surf_refresh_rate <= 0 && linespeedblend > 0.01 {
 	surf_refresh_rate = 2.5;
@@ -83,6 +84,7 @@ surf_refresh_rate -= global.dt;
 
 ultimatecharge = min(ultimatecharge, ultimatechargemax)
 
+
 #region Networking
 
 if global.connected and current_time - last_update >= 15 {
@@ -96,6 +98,7 @@ if global.connected and current_time - last_update >= 15 {
 	buffer_write(updateDataBuffer, buffer_s32, round(movvec.x*100))
 	buffer_write(updateDataBuffer, buffer_s32, round(movvec.y*100))
 	buffer_write(updateDataBuffer, buffer_u8, on_ground)
+	buffer_write(updateDataBuffer, buffer_u8, round(run*100));
 	buffer_write(updateDataBuffer, buffer_u8, round(jump_prep*100))
 	buffer_write(updateDataBuffer, buffer_u8, wall_slide)
 	buffer_write(updateDataBuffer, buffer_u8, grappling)
@@ -245,8 +248,8 @@ if k_grapple && grappled && !on_ground and grounded == 0{
 	
 	if point_distance(x+movvec.x*global.dt,y+movvec.y*global.dt,grappling_coords[0],grappling_coords[1])>grappling_len{
 		var dis = sign(vel)*movvec.length();
-		var ray = grappling_len;
-		var d = point_direction(grappling_coords[0],grappling_coords[1],x,y)
+		ray = grappling_len;
+		d = point_direction(grappling_coords[0],grappling_coords[1],x,y)
 		
 		var _ang = 2.65 * darcsin(dis/(2*ray));
 		
@@ -542,7 +545,7 @@ var fxflip=0;
 if flipping {
 
 	flip = clamp(flip+0.025*global.dt,0,1);
-	fxflip = flip < 0.5 ? 2 * flip * flip : 1 - power(-2 * flip + 2, 2) / 2;
+	fxflip = easeInOutSine(flip);
 
 }
 
@@ -560,9 +563,9 @@ run = clamp(run,0,1)
 
 ani = ani + spdboost*global.dt/60;
 
-currentframe = animation_get_frame(char.anims.animation_idle, ani*0.4 mod 1, true);
+currentframe = animation_get_frame(char.anims.animation_idle, ani*0.4 mod 1);
 
-currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_run,ani*(1.8*spd/27) mod 1,false), run);
+currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_run,ani*(1.6*spd/27) mod 1), run);
 
 if !on_ground {
 	
@@ -582,7 +585,7 @@ slide_blend = dtlerp(slide_blend,slide,0.25);
 
 slope_blend = dtlerp(slope_blend,slope_angle/90,0.3)
 
-jump_fast_prog = dtlerp(jump_fast_prog,clamp(abs(movvec.x/10),0,1),0.2)
+jump_fast_prog = dtlerp(jump_fast_prog,clamp(abs(movvec.x/15),0,1),0.08)
 
 grapple_blend = dtlerp(grapple_blend,grappled,0.2);
 
@@ -596,11 +599,11 @@ var _gdir = point_direction(x,y,grappling_coords[0],grappling_coords[1])
 
 grapple_throw_blend = dtlerp(grapple_throw_blend, grappling ? 1 : 0, 0.4)
 
-if jump_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_jump,jump_prog,true),jump_blend)
+if jump_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_jump,jump_prog),jump_blend)
 
-if jump_fast_prog*jump_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_jump_fast,jump_prog,true),jump_fast_prog*jump_blend)
+if jump_fast_prog*jump_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_jump_fast,jump_prog),jump_fast_prog*jump_blend)
 
-if jump_prep_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_jump_prep,0,false),jump_prep_blend)
+if jump_prep_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_jump_prep,0),jump_prep_blend)
 
 animation_played_prog += global.dt*animation_played_speed/60;
 
@@ -608,21 +611,21 @@ animation_playing_blend = dtlerp(animation_playing_blend, animation_playing, 0.2
 
 if animation_playing_blend > 0.01 and !animation_played_priority step_animation();
 
-if pushed_blend>0.01 currentframe = animation_blend(currentframe, animation_get_frame(char.anims.animation_pushed, ani*0.5 mod 1, true), pushed_blend);
+if pushed_blend>0.01 currentframe = animation_blend(currentframe, animation_get_frame(char.anims.animation_pushed, ani*0.5 mod 1), pushed_blend);
 
-if flip_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_flip,flipping_forward ? fxflip : (1 - fxflip),false),flip_blend)
+if flip_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_flip,flipping_forward ? fxflip : (1 - fxflip)),flip_blend)
 
-if dash_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_dash,0,false),dash_blend)
+if dash_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_dash,0),dash_blend)
 
-if wall_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_wall,0,false),wall_blend)
+if wall_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_wall,0),wall_blend)
 
-if slide_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_slide,slope_blend,false),slide_blend)
+if slide_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_slide,slope_blend),slide_blend)
 
-if grapple_throw_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_grapple_throw,abs(angle_difference(-90,_gdir))/180,false),grapple_throw_blend);
+if grapple_throw_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_grapple_throw,abs(angle_difference(-90,_gdir))/180),grapple_throw_blend);
 
-if grapple_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_grapple,dir == 1 ? (_gdir mod 360)/360 : (540 - _gdir mod 360)/360,false),grapple_blend)
+if grapple_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_grapple,dir == 1 ? (_gdir mod 360)/360 : (540 - _gdir mod 360)/360),grapple_blend)
 
-if grounded_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_grounded,0,false),grounded_blend)
+if grounded_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_grounded,0),grounded_blend)
 
 if animation_playing_blend > 0.01 and animation_played_priority step_animation();
 
@@ -635,7 +638,10 @@ char = characters[character_id-1];
 spd = char.speed;
 sprite = char.sprite
 offset = [sprite_get_xoffset(sprite),sprite_get_yoffset(sprite)]
-base = char.base;
+if (array_length(base) != array_length(char.base)) {
+	currentframe = animation_get_frame(char.anims.animation_idle, 0);
+	base = char.base;
+}
 
 char.abilities.basic_attack.step();
 char.abilities.ability1.step();
@@ -643,12 +649,12 @@ char.abilities.ability2.step();
 char.abilities.ultimate.step();
 
 casting = 
-char.abilities.basic_attack.iscasting || 
-char.abilities.ability1.iscasting || 
-char.abilities.ability2.iscasting || 
-char.abilities.ultimate.iscasting;
+(char.abilities.basic_attack.iscasting && char.abilities.basic_attack.cast_block) || 
+(char.abilities.ability1.iscasting && char.abilities.ability1.cast_block) || 
+(char.abilities.ability2.iscasting && char.abilities.ability2.cast_block) || 
+(char.abilities.ultimate.iscasting && char.abilities.ultimate.cast_block);
 
-if !casting {
+if !casting and !grappling and !dash{
 
 	if mouse_check_button_released(mb_left){
 
@@ -759,7 +765,7 @@ if t > 0 {
 	
 	if t <= eout{
 		
-		var k = 1 - ultimate_zoom.easeoutf(_out/eout);
+		k = 1 - ultimate_zoom.easeoutf(_out/eout);
 		ultimate_zoom._out = min(ultimate_zoom._out + dtime/60, eout);
 	
 	}

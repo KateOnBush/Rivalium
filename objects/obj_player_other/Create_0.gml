@@ -1,6 +1,15 @@
 // @description Insert description here
 // You can write your code in this editor
 
+ux = 0;
+uy = 0;
+
+function bone_depth_sorting(bone1, bone2){
+
+	return currentframe[bone2][4] - currentframe[bone1][4];
+
+}
+
 characters = setupCharacterData();
 
 character_id = 1;
@@ -69,7 +78,7 @@ run = 0
 
 ani = 0;
 
-currentframe = animation_get_frame(char.anims.animation_idle, 0, false);
+currentframe = animation_get_frame(char.anims.animation_idle, 0);
 
 base = char.base;
 

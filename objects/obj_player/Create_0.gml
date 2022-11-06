@@ -5,6 +5,12 @@ characters = setupCharacterData();
 
 character_id = 1;
 
+function bone_depth_sorting(bone1, bone2){
+
+	return currentframe[bone2][4] - currentframe[bone1][4];
+
+}
+
 last_update = current_time;
 
 zoom = 3;
@@ -108,7 +114,9 @@ function perform_flip(_forward, _start){
 
 }
 
-function play_animation(animation, speed, type, quadratic, bones = [], priority = false){
+shoot_dir = 0;
+
+function play_animation(animation, speed, type, bones = [], priority = false){
 
 	animation_playing = 1;
 	animation_played_speed = speed;
@@ -124,11 +132,11 @@ function step_animation(){
 
 	if animation_played_type = animation_type_full {
 	
-		currentframe = animation_blend(currentframe, animation_get_frame(animation_played, animation_played_prog, animation_played_quadratic), animation_playing_blend);
+		currentframe = animation_blend(currentframe, animation_get_frame(animation_played, animation_played_prog), animation_playing_blend);
 		
 	} else if animation_played_type = animation_type_partial{
 	
-		currentframe = animation_blend_partial(currentframe, animation_get_frame(animation_played, animation_played_prog, animation_played_quadratic), animation_playing_blend, animation_played_bones);
+		currentframe = animation_blend_partial(currentframe, animation_get_frame(animation_played, animation_played_prog), animation_playing_blend, animation_played_bones);
 	
 	}
 
@@ -260,7 +268,7 @@ pos = [];
 
 ani = 0;
 
-currentframe = animation_get_frame(char.anims.animation_idle, 0, false);
+currentframe = animation_get_frame(char.anims.animation_idle, 0);
 
 base = char.base;
 

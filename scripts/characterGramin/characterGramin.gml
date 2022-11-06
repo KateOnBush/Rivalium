@@ -1,5 +1,44 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
+
+function __gramin_basicAttackShoot(){
+		
+	var _d = point_direction(x, y, mousex, mousey);
+	var _ult = char.abilities.ultimate.active;
+	var bull = _ult ? obj_projectile_gramin_ult_bullet : obj_projectile_gramin_gun1bullet;
+	var _x = lengthdir_x(6, _d);
+	var _y = lengthdir_y(6, _d);
+				
+	projectile_create_request(bull, x+_x, y-10+_y, 80, _d+random_range(-5,5), true, true, 50, 20, 0, 0);
+				
+}
+
+function __gramin_basicAttackShootVisual(){
+
+	var _s = sign(mousex - x);
+	var _pos = 1 - abs(angle_difference(point_direction(x, y, mousex, mousey), -270))/180;
+		
+	var frame1 = animation_get_frame(char.anims.gramin_shoot_dir, _pos);
+	var frame2 = animation_get_frame(char.anims.gramin_shoot_dir_recoil, _pos);
+	char.abilities.basic_attack.cast_time = 0.08;
+	var last = array_length(frame1)-1;
+					
+	frame1[last] = 0;
+	frame2[last-1] = 2;
+	frame2[last] = 0.5;
+		
+	var animation = animation_construct(frame1, frame2);
+	
+	show_debug_message("gay");
+	
+	if _s != sign(movvec.x) and movvec.length() > 5 {
+		play_animation(animation, 4, animation_type_full);
+	} else {
+		play_animation(animation, 4, animation_type_partial, [0, 1, 2, 10, 11], true);
+	}
+
+}
+
 function character_Gramin(){
 
 	return {
@@ -16,61 +55,40 @@ function character_Gramin(){
 			basic_attack: new Ability([0.2, 1.8], ability_type.onetime, {}, 
 			
 				function(n){
-		
-					var _d = point_direction(x, y, mousex, mousey);
-					var _x = lengthdir_x(6, _d);
-					var _y = lengthdir_y(6, _d);
-			
-					var _ult = char.abilities.ultimate.active;
-					var bull = _ult ? obj_projectile_gramin_ult_bullet : obj_projectile_gramin_gun1bullet;
-			
-					if n = 0 {
-				
-						projectile_create_request(bull, x + _x, y-10+_y, 80, _d+random_range(-5,5), true, true, 50, 20, 0, 0);
-				
-					}
+					
+					__gramin_basicAttackShoot();
+					
 					if n = 1 {
 				
-						var anon = function(){
-				
-							var _d = point_direction(x, y, mousex, mousey);
-							var _ult = char.abilities.ultimate.active;
-							var bull = _ult ? obj_projectile_gramin_ult_bullet : obj_projectile_gramin_gun1bullet;
-							var _x = lengthdir_x(6, _d);
-							var _y = lengthdir_y(6, _d);
-				
-							projectile_create_request(bull, x+_x, y-10+_y, 80, _d+random_range(-5,5), true, true, 50, 20, 0, 0);
-				
-						}
-				
-						anon = method(self, anon);
-				
-						anon();
-						createEvent(0.1, anon);
-						createEvent(0.2, anon);
-						createEvent(0.25, anon);
-						createEvent(0.3, anon);
-						createEvent(0.35, anon);
-						createEvent(0.4, anon);
+						createEvent(0.1, __gramin_basicAttackShoot, self);
+						createEvent(0.2, __gramin_basicAttackShoot, self);
+						createEvent(0.25, __gramin_basicAttackShoot, self);
+						createEvent(0.3, __gramin_basicAttackShoot, self);
+						createEvent(0.35, __gramin_basicAttackShoot, self);
+						createEvent(0.4, __gramin_basicAttackShoot, self);
 
 			
 					}
 			
+				}, function(n){
+					
+					__gramin_basicAttackShootVisual();
+					
+					if n = 1 {
+				
+						createEvent(0.1, __gramin_basicAttackShootVisual, self);
+						createEvent(0.2, __gramin_basicAttackShootVisual, self);
+						createEvent(0.25, __gramin_basicAttackShootVisual, self);
+						createEvent(0.3, __gramin_basicAttackShootVisual, self);
+						createEvent(0.35, __gramin_basicAttackShootVisual, self);
+						createEvent(0.4, __gramin_basicAttackShootVisual, self);
+
 			
+					}
 		
 				}, function(n){
-		
-					var _s = mousex - x;
-		
-					var _pos = (180-angle_difference(point_direction(x, y, mousex, mousey), dir > 0 ? 0 : 180))/360;
-			
-					if(dir == -1) _pos = 1 - _pos;
-		
-					var animation = animation_construct([animation_get_frame(char.anims.abilities.basic_attack, _pos, false)], [0])
-			
-					play_animation(animation, n == 0 ? 5 : 2.5, animation_type_partial, false, [0, 1, 2, 7, 10, 11], true);
-		
-				}, function(){}, 0, kennability1, 0),
+					dir = sign(mousex - x);
+				}, 0, kennability1, 0, false, false),
 		
 			ability1: new Ability(1.5, ability_type.onetime, {}, 
 			
@@ -86,9 +104,21 @@ function character_Gramin(){
 
 				}, function(){
 		
-					play_animation(char.anims.abilities.ability1, 4, animation_type_partial, false, [10, 11], true);
+						var _s = sign(mousex - x);
+						var _pos = 1 - abs(angle_difference(point_direction(x, y, mousex, mousey), -270))/180;
+	
+						if _s != sign(movvec.x) and movvec.length() > 5 {
+							play_animation(char.anims.gramin_ability1, 3, animation_type_partial, [3, 4, 5, 6, 7, 8, 9, 10, 11], true);
+						} else {
+							play_animation(char.anims.gramin_ability1, 3, animation_type_partial, [10, 11], true);
+						}
+
 		
-				}, function(){}, 0, kennability1, 0),
+				}, function(){
+				
+						dir = sign(mousex - x);
+					
+				}, 0.33, kennability1, 0),
 		
 			ability2: new Ability(5, ability_type.onetime, {}, function(){
 		
@@ -105,13 +135,13 @@ function character_Gramin(){
 				}, 
 				castCondition: function(){
 			
-					return !on_ground and !char.abilities.ultimate.active
+					return on_ground or char.abilities.ultimate.active;
 			
 				}}, function(){ //Cast
 			
 					if !char.abilities.ultimate.active{
 			
-						camera_ultimate_zoom(400, 2.5, easeInSixth, 0.4, easeInSixth, 0.4);
+						camera_ultimate_zoom(400, 1/0.3, easeInSixth, 0.4, easeInSixth, 0.4);
 						return;
 			
 					}
@@ -127,32 +157,22 @@ function character_Gramin(){
 			
 					}
 			
-					createEvent(0.1, anon);
+					createEvent(0.1, anon, self);
 			
 			
 				}, function(){ //Visual Cast
 		
 					if !char.abilities.ultimate.active{
 			
-						play_animation(char.anims.abilities.ultimate, 0.35, animation_type_full, true);
+						play_animation(char.anims.gramin_ultimate, 0.35, animation_type_full, [], true);
 						addFilter(base_character_gramin_ult, -1, 1);
 						return;
 			
 					}
 		
-					var _s = mousex - x;
+					__gramin_basicAttackShootVisual();
 		
-					var _pos = (180-angle_difference(point_direction(x, y, mousex, mousey), dir > 0 ? 0 : 180))/360;
-			
-					if(dir == -1) _pos = 1 - _pos;
-		
-					var animation = animation_construct([animation_get_frame(char.anims.abilities.basic_attack, _pos, false)], [0])
-			
-					play_animation(animation, 2, animation_type_partial, false, [0, 1, 2, 7, 10, 11], true);
-			
-					screen_shake_position(40, 40, 0.1, x, y);
-		
-				}, function(){}, 2.5, ultimatekenn, #9A1D1C)
+				}, function(){}, 1/0.3, ultimatekenn, #9A1D1C, true)
 		
 			}
 

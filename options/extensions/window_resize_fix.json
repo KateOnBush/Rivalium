@@ -1,0 +1,9 @@
+{
+  "extensionId": {
+    "name": "window_resize_fix",
+    "path": "extensions/window_resize_fix/window_resize_fix.yy"
+  },
+  "resourceVersion": "1.0",
+  "resourceType": "GMExtensionConfigSet",
+  "configurables": null
+}

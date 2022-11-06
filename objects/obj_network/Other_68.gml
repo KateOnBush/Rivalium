@@ -130,13 +130,10 @@ if async_load[? "type"] == network_type_data {
 		
 			var p = global.players[? ID];
 			
-			p._x = _x;
-			p._y = _y;
-			
 			with(p){
 			
-				var ux = dtlerp(x, _x, 0.95);
-				var uy = dtlerp(y, _y, 0.95);
+				ux = dtlerp(x, _x, 0.95);
+				uy = dtlerp(y, _y, 0.95);
 
 				if place_meeting(ux, y, obj_solid){
 
@@ -163,9 +160,6 @@ if async_load[? "type"] == network_type_data {
 					}
 
 				}
-
-				x = ux;
-				y = uy;
 				
 			
 			}
@@ -176,6 +170,7 @@ if async_load[? "type"] == network_type_data {
 			p.updated = current_time;
 			
 			p.on_ground = buffer_read(buff, buffer_u8);
+			p.run = buffer_read(buff, buffer_u8)/100;
 			p.jump_prep = buffer_read(buff, buffer_u8)/100;
 			p.wall_slide = buffer_read(buff, buffer_u8);
 			p.grappling = buffer_read(buff, buffer_u8);
@@ -243,6 +238,7 @@ if async_load[? "type"] == network_type_data {
 		
 			with(p){
 		
+				// Feather disable once GM1019
 				perform_flip(_forward, _start);
 		
 			}
@@ -284,15 +280,18 @@ if async_load[? "type"] == network_type_data {
 			var ID = string(buffer_read(buff, buffer_u16));
 			var lagcomper = buffer_read(buff, buffer_u32);
 			var bounce = buffer_read(buff, buffer_u8);
+			var __px = buffer_read(buff, buffer_s32)/100;
+			var __py = buffer_read(buff, buffer_s32)/100;
 			
 			if string(ownerid) == global.playerid and instance_exists(lagcomper) {
 			
 				instance_destroy(lagcomper);
-				projectile_create(ob, ownerid, _x, _y, sp, dr, col, dieoncol, lifespan, damage, bleed, heal, ID, bounce);
+				var dx = lerp(lagcomper.x, _x, 0.5), dy = lerp(lagcomper.y ,_y , 0.5);
+				projectile_create(ob, ownerid, dx, dy, sp, dr, col, dieoncol, lifespan, damage, bleed, heal, ID, bounce, dx, dy);
 			
 			} else if string(ownerid) != global.playerid {
 			
-				projectile_create(ob, ownerid, _x, _y, sp, dr, col, dieoncol, lifespan, damage, bleed, heal, ID, bounce);
+				projectile_create(ob, ownerid, _x, _y, sp, dr, col, dieoncol, lifespan, damage, bleed, heal, ID, bounce, __px, __py);
 			
 			}
 			

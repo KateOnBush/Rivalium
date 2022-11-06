@@ -1,7 +1,7 @@
 /// @description Insert description here
 // You can write your code in this editor
 
-server_ip = "127.0.0.1"
+server_ip = "127.0.0.1";
 
 port = 8080
 

@@ -10,7 +10,7 @@ var hitcol = merge_color(c_white, c_red, hitind);
 
 if dir==0 dir=1;
 
-draw_circle(mousex, mousey, 5, false)
+draw_circle(rec_x, rec_y, 5, false)
 
 draw_set_color(c_black)
 if grappling draw_line(x,y,grappling_coords[0],grappling_coords[1])
@@ -21,74 +21,38 @@ vertex_submit(global.modelzwin, pr_trianglestrip, sprite_get_texture(tMbow, -1))
 
 matrix_set(matrix_world, matrix_build(0,0,0,0,0,0,1,1,1))*/
 
-for(var i = sprite_get_number(sprite)-1; i >= 0;i--){
+var _sortedframe = [];
+var sort = false;
+for(var i = 0; i < sprite_get_number(sprite); i++){
+	_sortedframe[i] = i;
+	if currentframe[i][4] > 0 sort = true;
+}
+
+if sort array_sort(_sortedframe, bone_depth_sorting);
+
+for(var e = array_length(_sortedframe)-1; e >= 0;e--){
+
+	var i = _sortedframe[e];
 
 	var bone = base[i];
 	
-	var rotation = currentframe[i];
+	var rotation = currentframe[i][0];
 	var coords = [bone[0],bone[1]];
 	
 	var _bone = base[i]
 	
-	var _parent = [], _parent_b = [];
+	var _parent = [], _parent_b = 0;
 	
-	
-	for(var n = i; _bone[2] != -1; n = _bone[2]){
-	
-		_parent = base[_bone[2]];
-		_parent_b = _bone[2];
-		
-		var distance = point_distance(_parent[0],_parent[1],coords[0],coords[1]);
-		var init_angle = point_direction(_parent[0],_parent[1],coords[0],coords[1]);
-		
-		coords = [_parent[0]+lengthdir_x(distance,init_angle+currentframe[_parent_b]),_parent[1]+lengthdir_y(distance,init_angle+currentframe[_parent_b])]
-		rotation += currentframe[_parent_b];
-	
-		_bone = _parent;
-	
-	}
+	coords = calculate_bone_position(base, currentframe, i);
 	
 	var _last = array_length(currentframe)-1;
 	
-	pos[i] = [(coords[0]-offset[0])*dir+currentframe[_last-1],coords[1]-offset[1]+currentframe[_last],rotation];
-
-
-}
-
-for(var o = 0; o < array_length(char.attach); o++){
-
-	var l = movvec.length();
-	var d = movvec.dir();
-	var att = char.attach[o];
-	var w = char.attach[o][3];
+	pos[i] = [coords[0]*dir+currentframe[_last-3],coords[1]+currentframe[_last-2],rotation + coords[2]];
 	
-	var _x = pos[att[4]][0] - base[att[4]][0];
-	var _y = pos[att[4]][1] - base[att[4]][1];
+	var scale = currentframe[i][1];
 	
-	draw_sprite_ext(att[0],0,x+att[1]+_x,y+att[2]+_y,dir,1,w*clamp(l/18,0,1)*angle_difference(d+180+sin(ani*4)*8,-90),c_white,1)
+	draw_sprite_ext(sprite,i,x+pos[i][0], y+pos[i][1], dir, scale, pos[i][2]*dir,c_white,1)
 	
-	
-}
-
-var size = 1;
-
-var midx = sprite_get_width(sprite)/2;
-var midy = sprite_get_height(sprite)/2;
-
-for(var i = sprite_get_number(sprite)-1; i >= 0;i--){
-	
-	var bone = base[i];
-	
-	var dist = point_distance(bone[0], bone[1], midx, midy)
-	var ray = point_direction(bone[0], bone[1], midx, midy);
-	var addx = lengthdir_x(dist, pos[i][2]+ray);
-	var addy = lengthdir_y(dist, pos[i][2]+ray);
-	
-	pos[i][0] += addx*dir;
-	pos[i][1] += addy;
-
-	draw_sprite_ext(sprite,i,x+pos[i][0]*size,y+pos[i][1]*size-30*(size-1),dir*size,size,pos[i][2]*dir,hitcol,1)
-
 }
 
 for(var n = 0; n < array_length(filters); n++){
@@ -98,7 +62,8 @@ for(var n = 0; n < array_length(filters); n++){
 	
 	for(var i = sprite_get_number(sprite)-1; i >= 0;i--){
 	
-		draw_sprite_ext(spr,i,x+pos[i][0]*size,y+pos[i][1]*size-30*(size-1),dir*size,size,pos[i][2]*dir,hitcol,a)
+		var scale = currentframe[i][1];
+		draw_sprite_ext(spr,i,x+pos[i][0],y+pos[i][1],dir,scale,pos[i][2]*dir,hitcol,a)
 	
 	}
 

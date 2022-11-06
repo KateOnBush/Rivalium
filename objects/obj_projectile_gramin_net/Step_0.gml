@@ -20,7 +20,7 @@ if ID != 0 and !timer{
 
 	timer++;
 	
-	createEvent(1.5, anon);
+	createEvent(1.5, anon, self);
 	
 }
 

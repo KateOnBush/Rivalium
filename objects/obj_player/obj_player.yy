@@ -3,8 +3,8 @@
   "resourceVersion": "1.0",
   "name": "obj_player",
   "spriteId": {
-    "name": "base_character_kenn",
-    "path": "sprites/base_character_kenn/base_character_kenn.yy",
+    "name": "player_collision_mask",
+    "path": "sprites/player_collision_mask/player_collision_mask.yy",
   },
   "solid": false,
   "visible": true,

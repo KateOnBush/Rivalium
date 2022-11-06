@@ -11,7 +11,7 @@ obj_projectile_gramin_ult_smalldebris];
 
 global.explosions_array = [obj_explosion_gramin, obj_explosion_gramin_ult];
 
-function projectile_create(proj, ownerid, x, y, speed, direction, collision, dieoncol, life, damage = 0, bleed = 0, heal = 0, ID = 0, bounce = false){
+function projectile_create(proj, ownerid, x, y, speed, direction, collision, dieoncol, life, damage = 0, bleed = 0, heal = 0, ID = 0, bounce = false, px = 0, py = 0){
 
 	var _o = instance_create_depth(x, y, 0, global.projectiles_array[proj]);
 	_o.ownerID = ownerid;
@@ -27,6 +27,8 @@ function projectile_create(proj, ownerid, x, y, speed, direction, collision, die
 	_o.heal = heal;
 	_o.ID = ID;
 	_o.bounce = bounce;
+	_o.px = px;
+	_o.py = py;
 	return _o;
 
 }
@@ -49,7 +51,7 @@ function projectile_create_request(proj, x, y, speed, direction, collision, dieo
 	buffer_write(_buff, buffer_u16, damage)
 	buffer_write(_buff, buffer_u16, bleed)
 	buffer_write(_buff, buffer_u16, heal)
-	var lagcompen = projectile_create(o, global.playerid, x, y, speed, direction, collision, dieoncol, 1, damage, bleed, heal, 0, bounce);
+	var lagcompen = projectile_create(o, global.playerid, x, y, speed, direction, collision, dieoncol, 1, damage, bleed, heal, 0, bounce, x, y);
 	buffer_write(_buff, buffer_u32, lagcompen);
 	buffer_write(_buff, buffer_u8, bounce);
 	
