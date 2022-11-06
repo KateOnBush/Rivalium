@@ -130,7 +130,7 @@ function character_Gramin(){
 			
 				end_func: function(){
 		
-					removeFilter(base_character_gramin_ult);
+					sprite = base_character_gramin;
 		
 				}, 
 				castCondition: function(){
@@ -165,7 +165,7 @@ function character_Gramin(){
 					if !char.abilities.ultimate.active{
 			
 						play_animation(char.anims.gramin_ultimate, 0.35, animation_type_full, [], true);
-						addFilter(base_character_gramin_ult, -1, 1);
+						sprite = base_character_gramin_ult;
 						return;
 			
 					}

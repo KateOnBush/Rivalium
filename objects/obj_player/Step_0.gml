@@ -635,10 +635,10 @@ if animation_playing_blend > 0.01 and animation_played_priority step_animation()
 #region Character data
 
 char = characters[character_id-1];
-spd = char.speed;
-sprite = char.sprite
-offset = [sprite_get_xoffset(sprite),sprite_get_yoffset(sprite)]
 if (array_length(base) != array_length(char.base)) {
+	spd = char.speed;
+	sprite = char.sprite
+	offset = [sprite_get_xoffset(sprite),sprite_get_yoffset(sprite)]
 	currentframe = animation_get_frame(char.anims.animation_idle, 0);
 	base = char.base;
 }

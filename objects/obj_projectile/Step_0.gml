@@ -10,7 +10,7 @@ if col and spd > 0{
 	var pl = checkPlayer();
 	var plSelf = checkPlayerSelf();
 	
-	if plself {
+	if plSelf {
 	
 		visible = false;
 		createEvent(0.5, visibleTimeout, self);
