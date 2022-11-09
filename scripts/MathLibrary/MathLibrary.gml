@@ -83,6 +83,20 @@ function array_contains_compare(array, element, compare_func){
 
 }
 
+function array_join(array, join){
+
+	var res = "";
+	
+	for(var i = 0; i < array_length(array); i++){
+	
+		res += string(array[i]) + (i != array_length(array)-1 ? join : "");
+	
+	}
+
+	return res;
+
+}
+
 function array_find_by_value(array, val){
 
 	for(var n = 0; n < array_length(array); n++){

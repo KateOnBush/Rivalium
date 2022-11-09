@@ -131,8 +131,9 @@ animation_played_speed = 1;
 animation_played_type = 0;
 animation_played_quadratic = false;
 animation_played_bones = [];
+animation_blend_speed = 0.2;
 
-function play_animation(animation, speed, type, quadratic, bones = []){
+function play_animation(animation, speed, type, bones = [], priority = false, blendspeed = 0.2){
 
 	animation_playing = 1;
 	animation_played_speed = speed;
@@ -140,6 +141,42 @@ function play_animation(animation, speed, type, quadratic, bones = []){
 	animation_played_type = type;
 	animation_played = animation;
 	animation_played_bones = bones;
+	animation_played_priority = priority;
+	animation_blend_speed = blendspeed;
+
+}
+
+animation_played_priority = 0;
+
+function setup_character(n){
+	
+	char = characters[character_id-1];
+	spd = char.speed;
+	sprite = char.sprite
+	offset = [sprite_get_xoffset(sprite),sprite_get_yoffset(sprite)]
+	currentframe = animation_get_frame(char.anims.animation_idle, 0);
+	base = char.base;
+	
+}
+
+function step_animation(){
+
+	if animation_played_type = animation_type_full {
+	
+		currentframe = animation_blend(currentframe, animation_get_frame(animation_played, animation_played_prog), animation_playing_blend);
+		
+	} else if animation_played_type = animation_type_partial{
+	
+		currentframe = animation_blend_partial(currentframe, animation_get_frame(animation_played, animation_played_prog), animation_playing_blend, animation_played_bones);
+	
+	}
+
+	if animation_played_prog >= 0.99 {
+	
+		animation_playing = 0;
+		animation_played_prog = 0.99;
+	
+	}
 
 }
 

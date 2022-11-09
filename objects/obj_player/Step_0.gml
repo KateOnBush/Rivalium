@@ -229,7 +229,7 @@ if k_grapple && !grappling && !grappled && grapple_cooldown == 0 && !on_ground a
 
 }
 
-if k_grapple && grappled && !on_ground and grounded == 0{
+if k_grapple && grappled && !on_ground and grounded == 0 {
 	
 	var ray = point_distance(x,y,grappling_coords[0],grappling_coords[1])
 	var d = point_direction(grappling_coords[0],grappling_coords[1],x,y)
@@ -276,7 +276,9 @@ if k_grapple && grappled && !on_ground and grounded == 0{
 
 grapple_cooldown = max(grapple_cooldown-1,0);
 
-if grappling && !grappled{
+if grappling and on_ground grappling = false;
+
+if grappling && !grappled {
 
 	grappling_len += 25*global.dt;
 	var d = point_direction(x,y-16,grappling_coords_init[0],grappling_coords_init[1]);
@@ -565,7 +567,7 @@ ani = ani + spdboost*global.dt/60;
 
 currentframe = animation_get_frame(char.anims.animation_idle, ani*0.4 mod 1);
 
-currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_run,ani*(1.6*spd/27) mod 1), run);
+if run > 0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_run,ani*(1.6*spd/27) mod 1), run);
 
 if !on_ground {
 	
@@ -607,7 +609,7 @@ if jump_prep_blend>0.01 currentframe = animation_blend(currentframe,animation_ge
 
 animation_played_prog += global.dt*animation_played_speed/60;
 
-animation_playing_blend = dtlerp(animation_playing_blend, animation_playing, 0.2);
+animation_playing_blend = dtlerp(animation_playing_blend, animation_playing, animation_blend_speed);
 
 if animation_playing_blend > 0.01 and !animation_played_priority step_animation();
 

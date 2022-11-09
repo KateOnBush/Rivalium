@@ -56,7 +56,7 @@ if async_load[? "type"] == network_type_data {
 					instance_create_depth(_x,_y,0,obj_player)
 					global.playerid = ID;
 					
-					obj_player.character_id = charid;
+					obj_player.setup_character(charid)
 
 
 					obj_player.playerhealthmax = real(maxhp);
@@ -92,17 +92,13 @@ if async_load[? "type"] == network_type_data {
 			if global.playerid == -1 continue;
 			
 			var ID = string(buffer_read(buff, buffer_u16));
-			
-			//if size == 128 show_debug_message(string(e) + " out of " + string(n)+ " - Size is: " + string(size) + ", rID: " + string(ID) + ", pID: " + string(global.playerid));
-			
-			//show_debug_message(ID)
 		
 			var _x = buffer_read(buff, buffer_s32)/100;
 			var _y = buffer_read(buff, buffer_s32)/100;
 		
 			if (ID == global.playerid) {
 			
-				buffer_seek(buff, buffer_seek_start,dataSize*currentPacket + 29);
+				buffer_seek(buff, buffer_seek_start,dataSize*currentPacket + 30);
 				var hp = buffer_read(buff, buffer_u16);
 				var ch = buffer_read(buff, buffer_u16);
 				var dead = buffer_read(buff, buffer_u8);
@@ -185,7 +181,7 @@ if async_load[? "type"] == network_type_data {
 			p.playerhealthmax = real(buffer_read(buff, buffer_u16));
 			p.ultimatechargemax = real(buffer_read(buff, buffer_u16));
 			var char_id = buffer_read(buff, buffer_u8);
-			p.character_id = char_id;
+			p.setup_character(char_id);
 			p.dead = buffer_read(buff, buffer_u8);
 			p.mousex = buffer_read(buff, buffer_s32)/100;
 			p.mousey = buffer_read(buff, buffer_s32)/100;

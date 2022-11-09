@@ -3,6 +3,15 @@
 #macro animation_type_full 0
 #macro animation_type_partial 1
 
+enum framestyle{
+
+	linear,
+	quadratic,
+	backease,
+	exponential
+
+}
+
 function empty_bone_base(i){
 
 	return array_create(i, [0, 0, -1]);
@@ -177,16 +186,21 @@ function animation_blend_partial(frame1, frame2, pc, bones){
 
 }
 
-function animation_construct(){
+function animation_construct(frames, keytimes, styles){
 
-	var result = [];
+	var animation = [];
 	
-	for(var s = 0; s < argument_count; s++){
+	var l = array_length(frames[0]);
 	
-		result[s] = argument[s];
+	for(var i = 0; i < array_length(frames); i++){
+	
+		frames[i][l-1] = keytimes[i];
+		frames[i][l-2] = styles[i];
+		array_push(animation, frames[i]);
 	
 	}
 	
-	return result;
+	return animation;
 
 }
+

@@ -24,21 +24,21 @@ function character_Kenn(){
 			
 					if(char.abilities.ultimate.active){
 			
-						projectile_create_request(obj_projectile_kenn_dagger_transformed, x, y, 55, point_direction(x, y, mousex, mousey), true, false, 5, 35, 10, _heal*2);
+						projectile_create_request(obj_projectile_kenn_dagger_transformed, x, y, 70, point_direction(x, y, mousex, mousey), true, false, 5, 35, 10, _heal*2);
 			
 						if n == 1 repeat(3){
 			
-							projectile_create_request(obj_projectile_kenn_dagger_transformed, x, y, 55, point_direction(x, y, mousex, mousey) + irandom_range(-20,20), true, false, 5, 35, 10, _heal*2);
+							projectile_create_request(obj_projectile_kenn_dagger_transformed, x, y, 70, point_direction(x, y, mousex, mousey) + irandom_range(-20,20), true, false, 5, 35, 10, _heal*2);
 			
 						}
 			
 					} else {
 			
-						projectile_create_request(obj_projectile_kenn_dagger, x, y, 55, point_direction(x, y, mousex, mousey), true, false, 5, 25, 0, _heal)
+						projectile_create_request(obj_projectile_kenn_dagger, x, y, 70, point_direction(x, y, mousex, mousey), true, false, 5, 25, 0, _heal)
 			
 						if n == 1 repeat(3){
 			
-							projectile_create_request(obj_projectile_kenn_dagger, x, y, 55, point_direction(x, y, mousex, mousey) + irandom_range(-20,20), true, false, 5, 25, 0 , _heal)
+							projectile_create_request(obj_projectile_kenn_dagger, x, y, 70, point_direction(x, y, mousex, mousey) + irandom_range(-20,20), true, false, 5, 25, 0 , _heal)
 			
 						}
 			

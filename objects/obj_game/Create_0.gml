@@ -11,6 +11,7 @@ global.dt = 1;
 
 global.__fps = 10;
 
+global.debugmode = true;
 
 model = buffer_load("3zi zwin.vbx");
 

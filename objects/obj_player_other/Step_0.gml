@@ -1,20 +1,18 @@
 /// @description Insert description here
 // You can write your code in this editor
 
-char = characters[character_id-1];
-spd = char.speed;
-sprite = char.sprite
-offset = [sprite_get_xoffset(sprite),sprite_get_yoffset(sprite)]
-base = char.base;
-
 health_blend = dtlerp(health_blend, playerhealth/playerhealthmax, 0.5);
 health_blend_red = dtlerp(health_blend_red, health_blend, 0.04);
 ultimatecharge_blend = dtlerp(ultimatecharge_blend, ultimatecharge/ultimatechargemax, 0.08);
 
 char = characters[character_id-1];
-spd = char.speed;
-sprite = char.sprite
-offset = [sprite_get_xoffset(sprite),sprite_get_yoffset(sprite)]
+if (array_length(base) != array_length(char.base)) {
+	spd = char.speed;
+	sprite = char.sprite
+	offset = [sprite_get_xoffset(sprite),sprite_get_yoffset(sprite)]
+	currentframe = animation_get_frame(char.anims.animation_idle, 0);
+	base = char.base;
+}
 
 hitind = dtlerp(hitind, 0, 0.05);
 
@@ -242,30 +240,11 @@ if jump_fast_prog*jump_blend>0.01 currentframe = animation_blend(currentframe,an
 
 if jump_prep_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_jump_prep,0),jump_prep_blend)
 
-animation_played_prog += global.dt*animation_played_speed/60; 
+animation_played_prog += global.dt*animation_played_speed/60;
 
-animation_playing_blend = dtlerp(animation_playing_blend, animation_playing, 0.4);
+animation_playing_blend = dtlerp(animation_playing_blend, animation_playing, animation_blend_speed);
 
-if animation_playing_blend > 0.01{
-
-	if animation_played_type = animation_type_full {
-	
-		currentframe = animation_blend(currentframe, animation_get_frame(animation_played, animation_played_prog), animation_playing_blend);
-		
-	} else if animation_played_type = animation_type_partial{
-	
-		currentframe = animation_blend_partial(currentframe, animation_get_frame(animation_played, animation_played_prog), animation_playing_blend, animation_played_bones);
-	
-	}
-
-	if animation_played_prog >= 1 {
-	
-		animation_playing = 0;
-		animation_played_prog = 1;
-	
-	}
-
-}
+if animation_playing_blend > 0.01 and !animation_played_priority step_animation();
 
 if flip_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_flip,flipping_forward ? fxflip : (1 - fxflip)),flip_blend)
 
@@ -280,3 +259,5 @@ if grapple_throw_blend>0.01 currentframe = animation_blend(currentframe,animatio
 if grapple_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_grapple,dir == 1 ? (_gdir mod 360)/360 : (540 - _gdir mod 360)/360),grapple_blend)
 
 if grounded_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_grounded,0),grounded_blend)
+
+if animation_playing_blend > 0.01 and animation_played_priority step_animation();

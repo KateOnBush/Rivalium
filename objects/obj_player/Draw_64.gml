@@ -4,18 +4,47 @@
 display_set_gui_size(1280,720)
 
 draw_set_halign(fa_left);
+draw_set_valign(fa_top);
 
-draw_text(32,128,dir)
+if global.debugmode {
 
-for(var n = 0; n<ds_map_size(global.players); n++){
-
-	draw_text(32,32+n*32,ds_map_keys_to_array(global.players)[n]);
+	draw_set_font(font_debug)
+	draw_set_alpha(0.4)
+	draw_set_color(c_black)
+	draw_rectangle(10,20,10+200, 10+310, false);
+	
+	draw_set_alpha(1)
+	
+	var dp = 0;
+	var dis = 20;
+	
+	draw_set_color(c_lime)
+	draw_text(20, 30+dp, "x: " + string(x) + ", y: " + string(y));
+	dp+=dis;
+	
+	draw_set_color(c_aqua)
+	draw_text(20, 30+dp, "mx: " + string(movvec.x) + ", my: " + string(movvec.y));
+	dp+=dis;
+	
+	draw_set_color(c_orange)
+	draw_text(20, 30+dp, "fps: " + string(fps) + ", ping: " + string(global.ping) + "ms");
+	dp+=dis;
+	
+	draw_set_color(c_white)
+	draw_text(20, 30+dp, "player ids: " + array_join(ds_map_keys_to_array(global.players), ", "));
+	dp+=dis;
+	
+	draw_set_color(c_white);
+	draw_text(20, 30+dp, "dir: " + string(dir) + ", on_ground: " + string(on_ground));
+	dp+=dis;
+	
+	draw_set_color(c_white)
+	draw_text(20, 30+dp, "speed: " + string(spd) + ", boost: " + string(spdboost));
+	dp+=dis;
+	
+	
 
 }
-
-draw_text(160,32,"ping "+ string(global.ping) + "ms");
-draw_text(160,64,string(fps) + " fps");
-draw_text(160,96,zoom);
 
 
 

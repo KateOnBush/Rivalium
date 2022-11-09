@@ -12,6 +12,14 @@ if dir==0 dir=1;
 
 //draw_circle(rec_x, rec_y, 5, false)
 
+if global.debugmode { 
+	
+	draw_set_color(c_aqua)
+	draw_arrow(x, y, x+movvec.x*10, y+movvec.y*10, 5);
+
+}
+
+
 draw_set_color(c_black)
 if grappling draw_line(x,y,grappling_coords[0],grappling_coords[1])
 
@@ -20,6 +28,7 @@ if grappling draw_line(x,y,grappling_coords[0],grappling_coords[1])
 vertex_submit(global.modelzwin, pr_trianglestrip, sprite_get_texture(tMbow, -1));
 
 matrix_set(matrix_world, matrix_build(0,0,0,0,0,0,1,1,1))*/
+
 
 var _sortedframe = [];
 var sort = false;
@@ -49,10 +58,31 @@ for(var e = array_length(_sortedframe)-1; e >= 0;e--){
 	
 	pos[i] = [coords[0]*dir+currentframe[_last-3],coords[1]+currentframe[_last-2],rotation + coords[2]];
 	
+}
+
+for(var o = 0; o < array_length(char.attach); o++){
+
+	var l = movvec.length();
+	var d = movvec.dir();
+	var att = char.attach[o];
+	var w = char.attach[o][3];
+	
+	var _x = pos[att[4]][0];
+	var _y = pos[att[4]][1];
+	
+	draw_sprite_ext(att[0],0,x+att[1]+_x,y+att[2]+_y,dir,1,w*clamp(l/18,0,1)*angle_difference(d+180+sin(ani*4)*8,-90),c_white,1)
+	
+	
+}
+
+for(var e = array_length(_sortedframe)-1; e >= 0;e--){
+
+	var i = _sortedframe[e];
+
 	var scale = currentframe[i][1];
 	
 	draw_sprite_ext(sprite,i,x+pos[i][0], y+pos[i][1], dir, scale, pos[i][2]*dir,c_white,1)
-	
+
 }
 
 for(var n = 0; n < array_length(filters); n++){
@@ -68,4 +98,6 @@ for(var n = 0; n < array_length(filters); n++){
 	}
 
 }
+
+
 

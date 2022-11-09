@@ -20,21 +20,15 @@ function __gramin_basicAttackShootVisual(){
 		
 	var frame1 = animation_get_frame(char.anims.gramin_shoot_dir, _pos);
 	var frame2 = animation_get_frame(char.anims.gramin_shoot_dir_recoil, _pos);
-	char.abilities.basic_attack.cast_time = 0.08;
-	var last = array_length(frame1)-1;
-					
-	frame1[last] = 0;
-	frame2[last-1] = 2;
-	frame2[last] = 0.5;
-		
-	var animation = animation_construct(frame1, frame2);
 	
-	show_debug_message("gay");
+	char.abilities.basic_attack.cast_time = 0.08;
+		
+	var animation = animation_construct([frame1, frame2], [0, 0.5], [framestyle.linear, framestyle.backease]);
 	
 	if _s != sign(movvec.x) and movvec.length() > 5 {
-		play_animation(animation, 4, animation_type_full);
+		play_animation(animation, 4, animation_type_full,,,0.4);
 	} else {
-		play_animation(animation, 4, animation_type_partial, [0, 1, 2, 10, 11], true);
+		play_animation(animation, 4, animation_type_partial, [0, 1, 2, 10, 11], true, 0.4);
 	}
 
 }
@@ -52,7 +46,7 @@ function character_Gramin(){
 		attach: [],
 		abilities: {
 		
-			basic_attack: new Ability([0.2, 1.8], ability_type.onetime, {}, 
+			basic_attack: new Ability([0.25, 1.8], ability_type.onetime, {}, 
 			
 				function(n){
 					
@@ -172,7 +166,7 @@ function character_Gramin(){
 		
 					__gramin_basicAttackShootVisual();
 		
-				}, function(){}, 1/0.3, ultimatekenn, #9A1D1C, true)
+				}, function(){}, 1/0.3, ultimatekenn, #9A1D1C, true, true)
 		
 			}
 

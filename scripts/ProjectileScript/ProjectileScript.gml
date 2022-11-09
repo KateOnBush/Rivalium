@@ -7,7 +7,9 @@ obj_projectile_gramin_gun1bullet,
 obj_projectile_gramin_ult_bullet,
 obj_projectile_gramin_net,
 obj_projectile_gramin_ult_rocket,
-obj_projectile_gramin_ult_smalldebris];
+obj_projectile_gramin_ult_smalldebris,
+obj_projectile_lenya_blue_bullet,
+obj_projectile_lenya_red_bullet];
 
 global.explosions_array = [obj_explosion_gramin, obj_explosion_gramin_ult];
 

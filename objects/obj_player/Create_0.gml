@@ -116,7 +116,9 @@ function perform_flip(_forward, _start){
 
 shoot_dir = 0;
 
-function play_animation(animation, speed, type, bones = [], priority = false){
+animation_blend_speed = 0.2;
+
+function play_animation(animation, speed, type, bones = [], priority = false, blendspeed = 0.2){
 
 	animation_playing = 1;
 	animation_played_speed = speed;
@@ -125,7 +127,20 @@ function play_animation(animation, speed, type, bones = [], priority = false){
 	animation_played = animation;
 	animation_played_bones = bones;
 	animation_played_priority = priority;
+	animation_blend_speed = blendspeed;
 
+}
+
+function setup_character(n){
+	
+	character_id = n;
+	char = characters[character_id-1];
+	spd = char.speed;
+	sprite = char.sprite
+	offset = [sprite_get_xoffset(sprite),sprite_get_yoffset(sprite)]
+	currentframe = animation_get_frame(char.anims.animation_idle, 0);
+	base = char.base;
+	
 }
 
 function step_animation(){
