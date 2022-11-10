@@ -12,7 +12,3 @@ global.dt = 1;
 global.__fps = 10;
 
 global.debugmode = true;
-
-model = buffer_load("3zi zwin.vbx");
-
-global.modelzwin = vertex_create_buffer_from_buffer(model, global.v_format);

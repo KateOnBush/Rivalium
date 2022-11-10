@@ -6,9 +6,9 @@ if physicsComponent != undefined {
 
 	//Physics
 	
-	physicsComponent.movvec.y += grav;
-	x += physicsComponent.movvec.x;
-	y += physicsComponent.movvec.y;
+	physicsComponent.movvec.y += grav*dtime;
+	x += physicsComponent.movvec.x*dtime;
+	y += physicsComponent.movvec.y*dtime;
 	
 
 }

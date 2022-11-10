@@ -20,7 +20,7 @@ function EntityHealthComponent(hp, armor) constructor{
 function entity_create_request(entity, x, y, 
 								physicsComponent = undefined, 
 								healthComponent = undefined,
-								entityParamaters = []
+								entityParameters = []
 								){
 
 	var _ind = array_find_by_value(global.entity_array, entity)
@@ -40,8 +40,8 @@ function entity_create_request(entity, x, y,
 	buffer_write(buffer, buffer_u8, healthComponent == undefined ? 0 : 1);
 	buffer_write(buffer, buffer_u32, healthComponent == undefined ? 0 : healthComponent.health)
 	buffer_write(buffer, buffer_u8, healthComponent == undefined ? 0 : round(healthComponent.armor*100));
-	for(var i = 0; i < array_length(entityParamaters); i++){
-		buffer_write(buffer, buffer_s32, round(entityParamaters[i]*100));	
+	for(var i = 0; i < array_length(entityParameters); i++){
+		buffer_write(buffer, buffer_s32, round(entityParameters[i]*100));
 	}
 	
 	network_send_raw(obj_network.server, buffer, global.dataSize);
@@ -50,3 +50,23 @@ function entity_create_request(entity, x, y,
 
 }
 
+
+function entity_create(entity, owner, ID, x, y, 
+						physicsComponent = undefined,
+						healthComponent = undefined,
+						entityParameters = undefined){
+							
+	var _ind = array_find_by_value(global.entity_array, entity)
+	
+	if _ind == -1 return;	
+		
+	var o = instance_create_depth(x, y, 0, global.entity_array[_ind]);
+	o.owner = owner;
+	o.ID = ID;
+	o.physicsComponent = physicsComponent;
+	o.healthComponent = healthComponent;
+	o.parameters = entityParameters;
+		
+	return o;
+
+}

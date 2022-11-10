@@ -19,13 +19,12 @@ if global.debugmode {
 
 }
 
-
 draw_set_color(c_black)
 if grappling draw_line(x,y,grappling_coords[0],grappling_coords[1])
 
-/*matrix_set(matrix_world, matrix_build(x,y,0,0,mousex/10,0,100,100,100))
+/*matrix_set(matrix_world, matrix_build(x,y,0,0,mousex/10,0,10,10,10))
 
-vertex_submit(global.modelzwin, pr_trianglestrip, sprite_get_texture(tMbow, -1));
+mesh.zabi.Render();
 
 matrix_set(matrix_world, matrix_build(0,0,0,0,0,0,1,1,1))*/
 

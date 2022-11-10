@@ -8,3 +8,5 @@ physicsComponent = undefined;
 solidComponent = undefined;
 
 healthComponent = undefined;
+
+paramaters = [];

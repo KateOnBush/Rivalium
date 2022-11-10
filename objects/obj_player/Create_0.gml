@@ -1,5 +1,5 @@
 // @description Insert description here
-// You can write your code in this editor
+// You can write your code in this editor 
 
 characters = setupCharacterData();
 
@@ -183,6 +183,10 @@ bg = {
 	height: sprite_get_height(Sprite27)
 
 }*/
+
+mesh = penguin_load("COOLSTUFF.derg", global.v_format);
+
+show_message(variable_struct_get_names(mesh));
 
 healthbefore = 0;
 

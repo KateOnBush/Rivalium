@@ -56,7 +56,7 @@ function character_Lenya(){
 		attach: [[base_character_lenya_hair,0,-2,0.7,6]],
 		abilities: {
 		
-			basic_attack: new Ability([0.4, 0.2], ability_type.onetime, {}, function(n){
+			basic_attack: new Ability([0.35, 0.35], ability_type.onetime, {}, function(n){
 
 				var d = point_direction(x, y, mousex, mousey);
 				var proj = n == 1 ? obj_projectile_lenya_red_bullet : obj_projectile_lenya_blue_bullet;

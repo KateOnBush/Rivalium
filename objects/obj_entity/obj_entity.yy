@@ -1,7 +1,7 @@
 {
   "resourceType": "GMObject",
   "resourceVersion": "1.0",
-  "name": "obj_custom_instance",
+  "name": "obj_entity",
   "spriteId": null,
   "solid": false,
   "visible": true,
