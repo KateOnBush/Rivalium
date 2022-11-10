@@ -1,10 +1,11 @@
-global.entity_array = [];
+#macro entityParameterLimit 6
 
-global.solid_components = [];
+global.entity_array = [];
 
 function EntityPhysicsComponent(MovementVector2) constructor{
 
-	self.movvec = MovementVector2;
+	self.x = MovementVector2.x;
+	self.y = MovementVector2.y;
 
 }
 
@@ -17,10 +18,9 @@ function EntityHealthComponent(hp, armor) constructor{
 
 
 function entity_create_request(entity, x, y, 
-								directionComponent = 0, 
-								solidComponent = undefined, 
 								physicsComponent = undefined, 
-								healthComponent = undefined
+								healthComponent = undefined,
+								entityParamaters = []
 								){
 
 	var _ind = array_find_by_value(global.entity_array, entity)
@@ -34,20 +34,19 @@ function entity_create_request(entity, x, y,
 	buffer_write(buffer, buffer_u16, _ind);
 	buffer_write(buffer, buffer_s32, round(x*100));
 	buffer_write(buffer, buffer_s32, round(y*100));
-	buffer_write(buffer, buffer_s16, round(directionComponent*10));
-	buffer_write(buffer, buffer_u8, solidComponent == undefined ? 0 : 1)
-	buffer_write(buffer, buffer_u8, solidComponent == undefined ? 0 : solidComponent)
 	buffer_write(buffer, buffer_u8, physicsComponent == undefined ? 0 : 1)
 	buffer_write(buffer, buffer_s32, physicsComponent == undefined ? 0 : round(physicsComponent.movvec.x*100));
 	buffer_write(buffer, buffer_s32, physicsComponent == undefined ? 0 : round(physicsComponent.movvec.y*100));
-	buffer_write(buffer, buffer_u8, healthComponent == undefined ? 0 : 1)
+	buffer_write(buffer, buffer_u8, healthComponent == undefined ? 0 : 1);
 	buffer_write(buffer, buffer_u32, healthComponent == undefined ? 0 : healthComponent.health)
 	buffer_write(buffer, buffer_u8, healthComponent == undefined ? 0 : round(healthComponent.armor*100));
+	for(var i = 0; i < array_length(entityParamaters); i++){
+		buffer_write(buffer, buffer_s32, round(entityParamaters[i]*100));	
+	}
 	
 	network_send_raw(obj_network.server, buffer, global.dataSize);
 	
 	buffer_delete(buffer);
-	
 
 }
 

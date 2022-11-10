@@ -17,7 +17,9 @@ enum stype {
 	playercast,
 	addeffect,
 	explosioncreate, //11
-	projectilepositioncorrection //12
+	projectilepositioncorrection, //12
+	entityupdate, //13
+	entitydestroy //14
 
 }
 
