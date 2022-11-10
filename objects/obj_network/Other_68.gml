@@ -281,10 +281,10 @@ if async_load[? "type"] == network_type_data {
 			
 			if string(ownerid) == global.playerid and instance_exists(lagcomper) {
 			
-				instance_destroy(lagcomper);
 				var dx = lerp(lagcomper.x, _x, 0.5), dy = lerp(lagcomper.y ,_y , 0.5);
 				projectile_create(ob, ownerid, dx, dy, sp, dr, col, dieoncol, lifespan, damage, bleed, heal, ID, bounce, dx, dy);
-			
+				instance_destroy(lagcomper);			
+				
 			} else if string(ownerid) != global.playerid {
 			
 				projectile_create(ob, ownerid, _x, _y, sp, dr, col, dieoncol, lifespan, damage, bleed, heal, ID, bounce, __px, __py);
