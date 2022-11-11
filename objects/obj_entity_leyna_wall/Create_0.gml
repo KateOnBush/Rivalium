@@ -5,7 +5,9 @@ grown = false;
 
 growbranches = 0;
 
-growMaxBranches = 0;
+growMaxBranches = 20;
+
+
 
 
 // Inherit the parent event

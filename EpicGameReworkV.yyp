@@ -72,6 +72,7 @@
     {"id":{"name":"character_Leyna","path":"scripts/character_Leyna/character_Leyna.yy",},"order":2,},
     {"id":{"name":"ultimatekenn","path":"sprites/ultimatekenn/ultimatekenn.yy",},"order":4,},
     {"id":{"name":"obj_explosion","path":"objects/obj_explosion/obj_explosion.yy",},"order":16,},
+    {"id":{"name":"base_character_lenya_wall_block","path":"sprites/base_character_lenya_wall_block/base_character_lenya_wall_block.yy",},"order":9,},
     {"id":{"name":"EventsScript","path":"scripts/EventsScript/EventsScript.yy",},"order":15,},
     {"id":{"name":"font0","path":"fonts/font0/font0.yy",},"order":1,},
     {"id":{"name":"HUD_vignette","path":"sprites/HUD_vignette/HUD_vignette.yy",},"order":9,},
