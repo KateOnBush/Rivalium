@@ -1,14 +1,16 @@
 {
-  "resourceType": "GMObject",
-  "resourceVersion": "1.0",
-  "name": "obj_solid",
-  "spriteId": null,
+  "spriteId": {
+    "name": "spr_block",
+    "path": "sprites/spr_block/spr_block.yy",
+  },
   "solid": true,
   "visible": true,
-  "managed": true,
   "spriteMaskId": null,
   "persistent": false,
-  "parentObjectId": null,
+  "parentObjectId": {
+    "name": "obj_solid",
+    "path": "objects/obj_solid/obj_solid.yy",
+  },
   "physicsObject": false,
   "physicsSensor": false,
   "physicsShape": 1,
@@ -25,7 +27,11 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Game Logic",
-    "path": "folders/Game Logic.yy",
+    "name": "gameplay",
+    "path": "folders/Objects/gameplay.yy",
   },
+  "resourceVersion": "1.0",
+  "name": "obj_obstacle1",
+  "tags": [],
+  "resourceType": "GMObject",
 }

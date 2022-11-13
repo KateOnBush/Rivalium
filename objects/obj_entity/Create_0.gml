@@ -3,10 +3,12 @@
 
 ownerID = 0;
 
+ID = 0;
+
 physicsComponent = undefined;
 
 solidComponent = undefined;
 
 healthComponent = undefined;
 
-paramaters = [];
+parameters = [];

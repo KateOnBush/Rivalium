@@ -1,16 +1,19 @@
 {
   "resourceType": "GMObject",
   "resourceVersion": "1.0",
-  "name": "obj_entity_leyna_wall",
-  "spriteId": null,
-  "solid": false,
-  "visible": true,
+  "name": "obj_obstacle_entity",
+  "spriteId": {
+    "name": "spr_block_wall",
+    "path": "sprites/spr_block_wall/spr_block_wall.yy",
+  },
+  "solid": true,
+  "visible": false,
   "managed": true,
   "spriteMaskId": null,
   "persistent": false,
   "parentObjectId": {
-    "name": "obj_entity",
-    "path": "objects/obj_entity/obj_entity.yy",
+    "name": "obj_solid",
+    "path": "objects/obj_solid/obj_solid.yy",
   },
   "physicsObject": false,
   "physicsSensor": false,
@@ -25,14 +28,12 @@
   "physicsKinematic": false,
   "physicsShapePoints": [],
   "eventList": [
-    {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","isDnD":false,"eventNum":0,"eventType":0,"collisionObjectId":null,},
     {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","isDnD":false,"eventNum":0,"eventType":3,"collisionObjectId":null,},
-    {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","isDnD":false,"eventNum":0,"eventType":8,"collisionObjectId":null,},
   ],
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Leyna",
-    "path": "folders/Characters/Leyna.yy",
+    "name": "Collisions",
+    "path": "folders/Environment & Visuals/Collisions.yy",
   },
 }

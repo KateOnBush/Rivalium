@@ -55,6 +55,7 @@
     {"id":{"name":"fire_particle","path":"sprites/fire_particle/fire_particle.yy",},"order":5,},
     {"id":{"name":"ProjectileScript","path":"scripts/ProjectileScript/ProjectileScript.yy",},"order":8,},
     {"id":{"name":"AnimationLibrary","path":"scripts/AnimationLibrary/AnimationLibrary.yy",},"order":5,},
+    {"id":{"name":"InputsLibrary","path":"scripts/InputsLibrary/InputsLibrary.yy",},"order":20,},
     {"id":{"name":"obj_projectile","path":"objects/obj_projectile/obj_projectile.yy",},"order":2,},
     {"id":{"name":"MathLibrary","path":"scripts/MathLibrary/MathLibrary.yy",},"order":11,},
     {"id":{"name":"HUD","path":"sprites/HUD/HUD.yy",},"order":8,},
@@ -70,6 +71,7 @@
     {"id":{"name":"base_character_gramin_net","path":"sprites/base_character_gramin_net/base_character_gramin_net.yy",},"order":3,},
     {"id":{"name":"character_data","path":"scripts/character_data/character_data.yy",},"order":4,},
     {"id":{"name":"character_Leyna","path":"scripts/character_Leyna/character_Leyna.yy",},"order":2,},
+    {"id":{"name":"obj_obstacle_entity","path":"objects/obj_obstacle_entity/obj_obstacle_entity.yy",},"order":4,},
     {"id":{"name":"ultimatekenn","path":"sprites/ultimatekenn/ultimatekenn.yy",},"order":4,},
     {"id":{"name":"obj_explosion","path":"objects/obj_explosion/obj_explosion.yy",},"order":16,},
     {"id":{"name":"base_character_lenya_wall_block","path":"sprites/base_character_lenya_wall_block/base_character_lenya_wall_block.yy",},"order":9,},
@@ -124,8 +126,8 @@
     "children": [],
   },
   "RoomOrderNodes": [
-    {"roomId":{"name":"animator","path":"rooms/animator/animator.yy",},},
     {"roomId":{"name":"Room2","path":"rooms/Room2/Room2.yy",},},
+    {"roomId":{"name":"animator","path":"rooms/animator/animator.yy",},},
   ],
   "Folders": [
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Animator Tool","folderPath":"folders/Animator Tool.yy","order":4,},

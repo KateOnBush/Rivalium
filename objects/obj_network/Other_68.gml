@@ -427,8 +427,11 @@ if async_load[? "type"] == network_type_data {
 				
 			case stype.entityupdate:
 				
+				show_debug_message("Creating a cool entity!");
+				
 				var ind = buffer_read(buff, buffer_u16);
-				var ownerID = buffer_read(buff, buffer_u16);
+				var ownerID = string(buffer_read(buff, buffer_u16));
+				show_debug_message(ownerID);
 				var __ID = buffer_read(buff, buffer_u16);
 				var temp_x = buffer_read(buff, buffer_s32)/100;
 				var temp_y = buffer_read(buff, buffer_s32)/100;

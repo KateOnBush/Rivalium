@@ -74,7 +74,25 @@ function character_Lenya(){
 			}, 0.1, kennability2, 0),
 				
 				
-			ability1: new Ability(5, ability_type.onetime, {}, function(){}, function(){}, function(){}, 0, kennability2, 0),
+			ability1: new Ability(5, ability_type.onetime, {}, function(){
+			
+				
+				var dd = point_direction(x, y + 80, mousex, mousey);
+				
+				var createdx = x + (sign(mousex - x) == sign(movvec.x) ? 16*movvec.x : sign(mousex - x)*60);
+				var createdy = y + 80;
+			
+				entity_create_request(obj_entity_leyna_wall, createdx, createdy,,,[dd, dd]);
+		
+			
+			}, 
+			function(){
+			
+				if on_ground play_animation(char.anims.ability1, 2.8, animation_type_partial, [0, 1, 9, 10], true)
+				else play_animation(char.anims.ability1, 2.8, animation_type_full);
+				
+			
+			}, function(){}, 0, kennability2, 0),
 				
 				
 			ability2: new Ability(5, ability_type.onetime, {}, function(){}, function(){}, function(){}, 0, kennability2, 0),

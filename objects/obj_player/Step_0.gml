@@ -55,33 +55,6 @@ linethreshold = dtlerp(linethreshold, movvec.length()>12 ? min((movvec.length()-
 part_type_alpha3(linepart, 0, 0, 0.8*linethreshold)
 part_type_life(linepart, fps*1.3, fps*1.7)
 
-surf_refresh_rate -= global.dt;
-
-/*if surf_refresh_rate <= 0 && linespeedblend > 0.01 {
-	
-	surf_refresh_rate = 5;
-	
-	surface_set_target(surf_behind);
-	
-	draw_clear_alpha(c_white, 0);
-	
-	for(var i = sprite_get_number(sprite)-1; i >= 0;i--){
-		
-		//gpu_set_fog(true, c_white, 0, 0)
-		draw_sprite_ext(sprite,i,48+pos[i][0],48+pos[i][1],dir,1,pos[i][2]*dir,c_white,1)
-		//gpu_set_fog(false, c_white, 0, 0)
-
-	}
-	
-	surface_reset_target()
-
-	var s = sprite_create_from_surface(surf_behind, 0, 0, 96, 96, false, false, 48, 48);
-	part_type_sprite(linespeed, s, false, false, false)
-	part_particles_create(global.partSystemBehind, x, y, linespeed, 1)
-	sprite_delete(s);
-
-}*/
-
 ultimatecharge = min(ultimatecharge, ultimatechargemax)
 
 
@@ -144,12 +117,12 @@ if slide==0 && !grappled {
 var djratio = 1.5;
 var spddj = (double_jump_boost ? djratio : 1);
 
-var k_right = keyboard_check(ord("D")) && !casting;
-var k_left = keyboard_check(ord("Q")) && !casting;
-var k_dash = keyboard_check(vk_lshift) && !casting;
-var k_jump = keyboard_check_pressed(ord("Z")) && !casting;
-var k_slide = keyboard_check(ord("S")) && !casting;
-var k_grapple = keyboard_check(vk_space) && !casting;
+var k_right = input_right.check() && !casting;
+var k_left = input_left.check() && !casting;
+var k_dash = input_dash.check() && !casting;
+var k_jump = input_up.check() && !casting;
+var k_slide = input_down.check() && !casting;
+var k_grapple = input_grapple.check() && !casting;
 
 if (k_right || k_left || slide) and movvec.length()>0.01 dir = sign(movvec.x);
 if (dir==0) dir = 1;

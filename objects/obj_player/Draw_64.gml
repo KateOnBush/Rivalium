@@ -35,7 +35,7 @@ if global.debugmode {
 	dp+=dis;
 	
 	draw_set_color(c_white);
-	draw_text(20, 30+dp, "dir: " + string(dir) + ", on_ground: " + string(on_ground));
+	draw_text(20, 30+dp, "player id: " + global.playerid);
 	dp+=dis;
 	
 	draw_set_color(c_white)
@@ -87,7 +87,8 @@ draw_set_halign(fa_center)
 draw_set_color(c_white)
 char.abilities.basic_attack.draw(128, height-128,1, HUDalpha);
 draw_sprite_ext(ability_outline, 0, 128, height-128, 0.52, 0.52, 0, c_white, HUDalpha)
-draw_sprite(mouse_icon,0,128, height-64+28)
+input_basicAttack.draw(128-20, height-64+28);
+input_basicAttackAlternate.draw(128+20, height-64+28);
 
 if char.abilities.ultimate.cooldown == 0 && !char.abilities.ultimate.active && ultimatecharge == ultimatechargemax {
 
@@ -100,17 +101,17 @@ part_system_drawit(ultimatePart)
 char.abilities.ultimate.draw(width-128*1.15, height-128, 1.3, HUDalpha);
 draw_set_alpha(HUDalpha)
 draw_sprite_ext(ability_outline, 0, width-128*1.15, height-128, 0.02 + 1.3/2, 0.02 + 1.3/2, 0, c_white, HUDalpha);
-draw_text(width-128*1.15, height-128+64*1.3+22,"X")
+input_ultimate.draw(width-128*1.15, height-128+64*1.3+22);
 
 char.abilities.ability1.draw(width-128*1.15-144, height-128+32, 0.5, HUDalpha);
 draw_set_alpha(1*HUDalpha)
 draw_sprite_ext(ability_outline, 0, width-128*1.15-144, height-128+32, 0.02 + 0.25, 0.02 + 0.25, 0, c_white, HUDalpha)
-draw_text(width-128*1.15-144+32+16, height-128+32+16,"A")
+input_ability1.draw(width-128*1.15-144+32+16, height-128+32+16)
 
 char.abilities.ability2.draw(width-128*1.15-208, height-48, 0.5, HUDalpha);
 draw_set_alpha(1*HUDalpha)
 draw_sprite_ext(ability_outline, 0, width-128*1.15-208, height-48, 0.02 + 0.25, 0.02 + 0.25, 0, c_white, HUDalpha)
-draw_text(width-128*1.15-208+32+16, height-48+16,"E")
+input_ability2.draw(width-128*1.15-208+32+16, height-48+16);
 draw_set_alpha(1)
 
 var k = HUDalpha*0.1*height;

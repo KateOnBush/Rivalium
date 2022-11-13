@@ -1,6 +1,29 @@
 // @description Insert description here
 // You can write your code in this editor 
 
+//INPUTS
+
+input_left = get_input(input.keyboard, ord("Q"));
+input_right = get_input(input.keyboard, ord("D"));
+input_up = get_input(input.keyboard, ord("Z"));
+input_down = get_input(input.keyboard, ord("S"));
+
+input_grapple = get_input(input.keyboard, vk_space);
+input_dash = get_input(input.keyboard, vk_shift);
+
+
+
+input_basicAttack = get_input(input.mouse, mb_left);
+input_basicAttackAlternate = get_input(input.mouse, mb_right);
+
+input_ability1 = get_input(input.keyboard, ord("A"));
+input_ability2 = get_input(input.keyboard, ord("E"));
+input_ultimate = get_input(input.keyboard, ord("X"));
+
+//----------
+
+
+
 characters = setupCharacterData();
 
 character_id = 1;
@@ -14,8 +37,6 @@ function bone_depth_sorting(bone1, bone2){
 last_update = current_time;
 
 zoom = 3;
-
-speedboost = 0;
 
 pushed_blend = 0;
 
@@ -185,8 +206,6 @@ bg = {
 }*/
 
 mesh = penguin_load("COOLSTUFF.derg", global.v_format);
-
-show_message(variable_struct_get_names(mesh));
 
 healthbefore = 0;
 
