@@ -16,6 +16,21 @@ if !hits {
 	
 	}
 
+	for(var i = 0; i < instance_number(obj_obstacle_entity); i++){
+	
+		var _inst = instance_find(obj_obstacle_entity, i);
+		
+		var _d = distance_to_object(_inst);
+		
+		if (_d < radius) {
+		
+			_inst.componentTo.damage(damage);
+		
+		}
+		
+	
+	}
+
 }
 
 if !hits and !visual {

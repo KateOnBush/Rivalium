@@ -37,9 +37,9 @@ function InputKeyboard(inputKey) : Input(inputKey) constructor{
 	
 	shortname = key_to_short_name(inputid)
 	
-	static draw = function(x, y){
+	draw = function(x, y){
 	
-		return draw_text(x, y, shortname);
+		draw_text(x, y, shortname);
 	
 	}
 
@@ -68,9 +68,9 @@ function InputMouse(inputKey) : Input(inputKey) constructor{
 	name = mouse_to_name(inputid);
 	sprind = mouse_to_ind(inputid);
 	
-	static draw = function(x, y){
+	draw = function(x, y){
 	
-		return draw_sprite(mouse_icon, sprind, x, y)
+		draw_sprite(mouse_icon, sprind, x, y);
 	
 	}
 

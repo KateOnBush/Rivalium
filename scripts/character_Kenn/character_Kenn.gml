@@ -67,7 +67,7 @@ function character_Kenn(){
 		
 				}}, function(){
 			
-					add_effect(effecttype.boost, 8, {multiplier: 1.25}, playerEffects, true);
+					add_effect(effecttype.boost, 8, {multiplier: 1.45}, playerEffects, true);
 			
 				}, function(){
 			

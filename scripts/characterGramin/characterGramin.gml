@@ -26,9 +26,9 @@ function __gramin_basicAttackShootVisual(){
 	var animation = animation_construct([frame1, frame2], [0, 0.5], [framestyle.linear, framestyle.backease]);
 	
 	if _s != sign(movvec.x) and movvec.length() > 5 {
-		play_animation(animation, 4, animation_type_full,,,0.4);
+		play_animation(animation, 6, animation_type_full,,,0.4);
 	} else {
-		play_animation(animation, 4, animation_type_partial, [0, 1, 2, 10, 11], true, 0.4);
+		play_animation(animation, 6, animation_type_partial, [0, 1, 2, 10, 11], true, 0.4);
 	}
 
 }
@@ -117,6 +117,13 @@ function character_Gramin(){
 			ability2: new Ability(5, ability_type.onetime, {}, function(){
 		
 				heal_player(50);
+				
+				var dd = point_direction(x, y + 80, mousex, mousey);
+				
+				var createdx = x + (sign(mousex - x) == sign(movvec.x) ? 16*movvec.x : sign(mousex - x)*60);
+				var createdy = y + 80;
+			
+				entity_create_request(obj_entity_leyna_wall, createdx, createdy,20,,new EntityHealthComponent(100, 0),[dd, dd]);
 		
 				}, function(){}, function(){}, 0, kennability2, 0),
 		

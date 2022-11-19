@@ -37,7 +37,16 @@ if col and spd > 0{
 		if !pl while(!place_meeting(px+lengthdir_x(n,dir), py+lengthdir_y(n,dir), obj_solid) and n<spd){
 			n++;
 		}
+		
+		var collidedBlock = instance_place(px+lengthdir_x(n+1,dir), py+lengthdir_y(n+1,dir), obj_solid);
+		
 		if !bounce and !pl{
+		
+			if collidedBlock && collidedBlock.object_index == obj_obstacle_entity {
+			
+				collidedBlock.componentTo.damage(damage);
+			
+			}
 		
 			px += lengthdir_x(n,dir);
 			py += lengthdir_y(n,dir);
@@ -47,7 +56,6 @@ if col and spd > 0{
 
 			if !buffer_exists(dataBuffer) dataBuffer = buffer_create(global.dataSize, buffer_fixed, 1);
 	
-			var collidedBlock = instance_place(px+lengthdir_x(n+1,dir), py+lengthdir_y(n+1,dir), obj_solid);
 			if !instance_exists(collidedBlock) exit;
 			var orientation = collidedBlock.image_angle;
 			orientation = angle_difference(orientation, floor(orientation/90)*90);

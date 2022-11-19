@@ -8,12 +8,26 @@ if growbranches < growMaxBranches and !grown {
 
 } else grown = true;
 
-if !grown and ownerID == global.playerid and obj_player.input_ability1.check(){
+if takingdir and !obj_player.input_ability1.check() takingdir = false;
 
-	parameters[1] = dtlerp(parameters[1], 
-	point_direction(obj_player.x, obj_player.y, obj_player.mousex, obj_player.mousey), 0.2);
+if takingdir {
+
+	if takingdirtimer>0{
 	
+		newdir = point_direction(obj_player.x, obj_player.y, obj_player.mousex, obj_player.mousey);
+		parameters[1] -= angle_difference(parameters[1], newdir)*0.1*dtime;
+
+	} else takingdir = 0
+	
+	takingdirtimer -= dtime/60;
+
+}
+
+
+if ownerID == global.playerid and current_time - last_updated > 16 and takingdir {
+
 	entity_update_request(self);
+	last_updated = current_time;
 
 }
 

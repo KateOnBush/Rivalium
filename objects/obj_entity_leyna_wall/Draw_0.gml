@@ -18,7 +18,7 @@ for(var i = 0; i < growbranches; i++){
 	posx += lengthdir_x(s*dist, currentdir);
 	posy += lengthdir_y(s*dist, currentdir);
 	
-	currentdir -= angle_difference(parameters[0], parameters[1])*lerpmom;
+	currentdir += angle_difference(parameters[1], parameters[0])*lerpmom;
 
 }
 

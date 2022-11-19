@@ -9,7 +9,17 @@ growbranches = 0;
 
 lerpmom = 0.06;
 
+last_updated = current_time;
+
 newdir = 0;
+
+takingdir = true;
+
+takingdirtimer = 0.5;
+
+changedirtime = 5;
+
+pomdir = 0;
 
 growMaxBranches = 15;
 
@@ -24,13 +34,22 @@ blocks = array_create(growMaxBranches);
 for(var i = 0; i < growMaxBranches; i++){
 
 	spr_inds[i] = irandom_range(0, sprite_get_number(sprite)-1);
-	blocks[i] = instance_create_depth(x, y, depth, obj_obstacle_entity);
+	blocks[i] = entity_create_solid_component(x, y, self);
 	blocks[i].image_xscale = 2;
 	blocks[i].image_yscale = 1.3;
 
 }
 
-
 // Inherit the parent event
 event_inherited();
+
+destroy = function(){
+
+	for(var i = 0; i < array_length(blocks); i++){
+	
+		if instance_exists(blocks[i]) instance_destroy(blocks[i]);
+	
+	}
+
+}
 

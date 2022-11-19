@@ -17,7 +17,7 @@ function EntityHealthComponent(hp, armor) constructor{
 }
 
 
-function entity_create_request(entity, x, y, 
+function entity_create_request(entity, x, y, life = 10,
 								physicsComponent = undefined, 
 								healthComponent = undefined,
 								entityParameters = []
@@ -41,9 +41,11 @@ function entity_create_request(entity, x, y,
 	buffer_write(buffer, buffer_u32, healthComponent == undefined ? 0 : healthComponent.health)
 	buffer_write(buffer, buffer_u8, healthComponent == undefined ? 0 : round(healthComponent.armor*100));
 	buffer_write(buffer, buffer_u16, 0);
+	buffer_write(buffer, buffer_u16, life);
 	for(var i = 0; i < array_length(entityParameters); i++){
 		buffer_write(buffer, buffer_s32, round(entityParameters[i]*100));
 	}
+	
 	
 	network_send_raw(obj_network.server, buffer, global.dataSize);
 	
@@ -77,6 +79,7 @@ function entity_update_request(entity_instance){
 	buffer_write(buffer, buffer_u32, healthComponent == undefined ? 0 : healthComponent.health)
 	buffer_write(buffer, buffer_u8, healthComponent == undefined ? 0 : round(healthComponent.armor*100));
 	buffer_write(buffer, buffer_u16, o.ID);
+	buffer_write(buffer, buffer_u16, 0);
 	for(var i = 0; i < array_length(entityParameters); i++){
 		buffer_write(buffer, buffer_s32, round(entityParameters[i]*100));
 	}
@@ -106,6 +109,16 @@ function entity_create(entity, owner, ID, x, y,
 	show_debug_message(entityParameters);
 	show_debug_message(o.parameters);
 		
+	return o;
+
+}
+
+function entity_create_solid_component(x, y, entity){
+
+	var o = instance_create_depth(x, y, entity.depth, obj_obstacle_entity);
+	
+	o.componentTo = entity;
+	
 	return o;
 
 }

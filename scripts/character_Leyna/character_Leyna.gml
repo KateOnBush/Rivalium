@@ -60,7 +60,7 @@ function character_Lenya(){
 
 				var d = point_direction(x, y, mousex, mousey);
 				var proj = n == 1 ? obj_projectile_lenya_red_bullet : obj_projectile_lenya_blue_bullet;
-				projectile_create_request(proj, x, y, 60, d, true, true, 20);
+				projectile_create_request(proj, x, y, 60, d, true, true, 20, 50);
 			
 			}, function(n){ // Cast visual
 			
@@ -82,7 +82,7 @@ function character_Lenya(){
 				var createdx = x + (sign(mousex - x) == sign(movvec.x) ? 16*movvec.x : sign(mousex - x)*60);
 				var createdy = y + 80;
 			
-				entity_create_request(obj_entity_leyna_wall, createdx, createdy,,,[dd, dd]);
+				entity_create_request(obj_entity_leyna_wall, createdx, createdy,20,,new EntityHealthComponent(100, 0),[dd, dd]);
 		
 			
 			}, 

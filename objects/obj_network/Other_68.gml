@@ -426,12 +426,11 @@ if async_load[? "type"] == network_type_data {
 				break;
 				
 			case stype.entityupdate:
-				
-				show_debug_message("Creating a cool entity!");
+		
+			{
 				
 				var ind = buffer_read(buff, buffer_u16);
 				var ownerID = string(buffer_read(buff, buffer_u16));
-				show_debug_message(ownerID);
 				var __ID = buffer_read(buff, buffer_u16);
 				var temp_x = buffer_read(buff, buffer_s32)/100;
 				var temp_y = buffer_read(buff, buffer_s32)/100;
@@ -470,6 +469,8 @@ if async_load[? "type"] == network_type_data {
 					
 				} else {
 				
+					if ownerID == global.playerid break;
+				
 					already.physicsComponent = hasPhysicsComponent ? new EntityPhysicsComponent(new Vector2(mov_x, mov_y)) : undefined;
 					already.healthComponent = hasHealthComponent ? new EntityHealthComponent(hp, armor) : undefined;
 					already.x = temp_x;
@@ -482,7 +483,32 @@ if async_load[? "type"] == network_type_data {
 			
 				break;
 		
+			}
+			
+			case stype.entitydestroy:
+			{
+				
+				var entityID = buffer_read(buff, buffer_u16);
+				
+				show_debug_message(string(entityID) + " is being destroyed!");
+				
+				for(var j = 0; j < instance_number(obj_entity); j++){
+				
+					var _inst = instance_find(obj_entity, j);
+					
+					if _inst.ID == entityID with(_inst) {
+						destroy();
+						instance_destroy();
+					}
+				
+				}
+				
+				break;
+			
+			}
+		
 		}
+		
 		
 		
 	}

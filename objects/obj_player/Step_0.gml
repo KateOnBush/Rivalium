@@ -27,11 +27,11 @@ mousex = global.mouse.get_x();
 mousey = global.mouse.get_y();
 
 part_type_size(ult,0.8,1.5,0,0.05*global.dt)
-part_type_life(ult, fps*2, fps*3)
-part_type_speed(ult, 0.35*global.dt, 0.6*global.dt, 0, 0.01*global.dt)
+part_type_life(ult, fpstime*2, fpstime*3)
+part_type_speed(ult, 0.75*dtime, 0.9*dtime, 0, 0.01*dtime)
 part_type_direction(ult, 80, 100, 0, 5);
 part_type_color3(ult, col1, col2, col3)
-part_type_alpha3(ult, 0.2, 0.8, 0)
+part_type_alpha3(ult, 0.2*HUDalpha, 0.8*HUDalpha, 0)
 part_type_orientation(ult, -10, 10, 0, 4*global.dt, false)
 
 part_type_speed(linepart, 16*global.dt, 20*global.dt, 0, 0);
@@ -120,7 +120,7 @@ var spddj = (double_jump_boost ? djratio : 1);
 var k_right = input_right.check() && !casting;
 var k_left = input_left.check() && !casting;
 var k_dash = input_dash.check() && !casting;
-var k_jump = input_up.check() && !casting;
+var k_jump = input_up.pressed() && !casting;
 var k_slide = input_down.check() && !casting;
 var k_grapple = input_grapple.check() && !casting;
 
@@ -540,7 +540,7 @@ ani = ani + spdboost*global.dt/60;
 
 currentframe = animation_get_frame(char.anims.animation_idle, ani*0.4 mod 1);
 
-if run > 0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_run,ani*(1.6*spd/27) mod 1), run);
+if run > 0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_run,ani*(1.35*spd/27) mod 1), run);
 
 if !on_ground {
 	
