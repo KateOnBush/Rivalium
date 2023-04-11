@@ -3,25 +3,6 @@
 
 var dataSize = global.dataSize;
 
-enum stype {
-
-	none,
-	playerjoin,
-	playerupdate,
-	playergrapple,
-	playerflip,
-	playerping,
-	projectilecreate,
-	playerhit,
-	projectiledestroy,
-	playercast,
-	addeffect,
-	explosioncreate, //11
-	projectilepositioncorrection, //12
-	entityupdate, //13
-	entitydestroy //14
-
-}
 
 
 if async_load[? "type"] == network_type_data {
@@ -41,9 +22,9 @@ if async_load[? "type"] == network_type_data {
 		
 		switch(type) {
 		
-			case stype.playerjoin:
+			case SERVER_RESPONSE.PLAYER_JOIN:
 			
-				var ID = string(buffer_read(buff, buffer_u16));
+				var ID = buffer_read(buff, buffer_u16);
 				var connect = buffer_read(buff, buffer_u8);
 				var isme = buffer_read(buff, buffer_u8);
 				var charid = buffer_read(buff, buffer_u8);
@@ -93,14 +74,16 @@ if async_load[? "type"] == network_type_data {
 			
 				break;
 			
-			case stype.playerupdate:
+			case SERVER_RESPONSE.PLAYER_UPDATE:
 	
 				if global.playerid == -1 continue;
 			
-				var ID = string(buffer_read(buff, buffer_u16));
+				var ID = buffer_read(buff, buffer_u16);
 		
 				var _x = buffer_read(buff, buffer_s32)/100;
 				var _y = buffer_read(buff, buffer_s32)/100;
+				var movvecx = buffer_read(buff, buffer_s32)/100;
+				var movvecy = buffer_read(buff, buffer_s32)/100;
 		
 				if (ID == global.playerid) {
 			
@@ -111,6 +94,8 @@ if async_load[? "type"] == network_type_data {
 				
 					obj_player.rec_x = _x;
 					obj_player.rec_y = _y;
+					obj_player.rec_mx = movvecx;
+					obj_player.rec_my = movvecy;
 					obj_player.playerhealth = real(hp);
 					obj_player.ultimatecharge = real(ch);
 					obj_player.dead = dead;
@@ -166,8 +151,8 @@ if async_load[? "type"] == network_type_data {
 			
 				}
 			
-				p.movvec.x = buffer_read(buff, buffer_s32)/100;
-				p.movvec.y = buffer_read(buff, buffer_s32)/100;
+				p.movvec.x = movvecx;
+				p.movvec.y = movvecy;
 			
 				p.updated = current_time;
 			
@@ -194,11 +179,11 @@ if async_load[? "type"] == network_type_data {
 			
 				break;
 	
-			case stype.playergrapple:
+			case SERVER_RESPONSE.PLAYER_GRAPPLE:
 	
 				if global.playerid == -1 continue;
 	
-				var ID = string(buffer_read(buff, buffer_u16));
+				var ID = buffer_read(buff, buffer_u16);
 		
 				if (ID == global.playerid) continue;
 				if is_undefined(ds_map_find_value(global.players, ID)) continue;
@@ -228,11 +213,11 @@ if async_load[? "type"] == network_type_data {
 				break;
 			
 		
-			case stype.playerflip:
+			case SERVER_RESPONSE.PLAYER_FLIP:
 	
 				if global.playerid == -1 continue;
 	
-				var ID = string(buffer_read(buff, buffer_u16));
+				var ID = buffer_read(buff, buffer_u16);
 		
 				if (ID == global.playerid) continue;
 				if is_undefined(ds_map_find_value(global.players, ID)) continue;
@@ -251,14 +236,14 @@ if async_load[? "type"] == network_type_data {
 			
 				break;
 			
-			case stype.playerping:
+			case SERVER_RESPONSE.PING:
 		
 				var st = buffer_read(buff, buffer_u8);
 				if(st == 0){
 			
 					var b = buffer_create(dataSize, buffer_fixed, 1);
 					buffer_seek(b, buffer_seek_start, 0);
-					buffer_write(b, buffer_u8, 5);
+					buffer_write(b, buffer_u8, SERVER_REQUEST.PING);
 				
 					network_send_raw(obj_network.server, b, buffer_get_size(b));
 				
@@ -273,9 +258,9 @@ if async_load[? "type"] == network_type_data {
 			
 				break;
 		
-			case stype.projectilecreate: //Projectile
+			case SERVER_RESPONSE.PROJECTILE_CREATE: //Projectile
 		
-				var ownerid = string(buffer_read(buff, buffer_u16));
+				var ownerid = buffer_read(buff, buffer_u16);
 				var ob = buffer_read(buff, buffer_u16);
 				var _x = buffer_read(buff, buffer_s32)/100;
 				var _y = buffer_read(buff, buffer_s32)/100;
@@ -287,30 +272,29 @@ if async_load[? "type"] == network_type_data {
 				var damage = buffer_read(buff, buffer_u16);
 				var bleed = buffer_read(buff, buffer_u16);
 				var heal = buffer_read(buff, buffer_u16);
-				var ID = string(buffer_read(buff, buffer_u16));
-				var lagcomper = buffer_read(buff, buffer_u32);
+				var ID = buffer_read(buff, buffer_u16);
 				var bounce = buffer_read(buff, buffer_u8);
 				var __px = buffer_read(buff, buffer_s32)/100;
 				var __py = buffer_read(buff, buffer_s32)/100;
 			
-				if string(ownerid) == global.playerid and instance_exists(lagcomper) {
-			
-					var dx = lerp(lagcomper.x, _x, 0.5), dy = lerp(lagcomper.y ,_y , 0.5);
-					projectile_create(ob, ownerid, dx, dy, sp, dr, col, dieoncol, lifespan, damage, bleed, heal, ID, bounce, dx, dy);
-					instance_destroy(lagcomper);			
-				
-				} else if string(ownerid) != global.playerid {
-			
-					projectile_create(ob, ownerid, _x, _y, sp, dr, col, dieoncol, lifespan, damage, bleed, heal, ID, bounce, __px, __py);
-			
+				if ownerid == global.playerid {
+					
+					with(obj_projectile){
+						show_debug_message("Checking for: {0}", self.ID);
+						if (self.ID == 0){
+							instance_destroy();	
+						}
+					}
 				}
+				
+				projectile_create(ob, ownerid, _x, _y, sp, dr, col, dieoncol, lifespan, damage, bleed, heal, ID, bounce, __px, __py);
 		
 				break;
 			
 		
-			case stype.playerhit:
+			case SERVER_RESPONSE.PLAYER_HIT:
 		
-				var hit = string(buffer_read(buff, buffer_u16));
+				var hit = buffer_read(buff, buffer_u16);
 				if (hit == global.playerid){
 			
 					obj_player.hit();
@@ -319,9 +303,9 @@ if async_load[? "type"] == network_type_data {
 			
 				break;
 		
-			case stype.projectiledestroy:
+			case SERVER_RESPONSE.PROJECTILE_DESTROY:
 		
-				var proj = string(buffer_read(buff, buffer_u16));
+				var proj = buffer_read(buff, buffer_u16);
 				for(var i = 0; i < instance_number(obj_projectile); i++){
 			
 					var inst = instance_find(obj_projectile, i);
@@ -335,13 +319,11 @@ if async_load[? "type"] == network_type_data {
 				}
 				break;
 		
-			case stype.playercast:
+			case SERVER_RESPONSE.PLAYER_ABILITY_CAST:
 		
 				var ID = string(buffer_read(buff, buffer_u16));
 			
-				if (ID == global.playerid) continue;
-			
-				if is_undefined(ds_map_find_value(global.players, ID)) continue;
+				if is_undefined(ds_map_find_value(global.players, ID)) && ID != global.playerid continue;
 			
 				var p = global.players[? ID];
 			
@@ -349,11 +331,15 @@ if async_load[? "type"] == network_type_data {
 			
 				var abi_n = buffer_read(buff, buffer_u8);
 			
-				with(p) cast_ability(abi, abi_n);
-			
+				if (ID == global.playerid) {
+					obj_player.cast_ability(abi, abi_n)
+				} else {
+					with(p) cast_ability(abi, abi_n);
+				}
+				
 				break;
 		
-			case stype.addeffect: 
+			case SERVER_RESPONSE.EFFECT_ADD: 
 		
 				var ID = string(buffer_read(buff, buffer_u16));
 			
@@ -377,11 +363,13 @@ if async_load[? "type"] == network_type_data {
 			
 				if (e_type == effecttype.boost || e_type == effecttype.slow) e_data = {multiplier: buffer_read(buff, buffer_u16)/100};
 			
-				add_effect(e_type, e_duration, e_data, p.playerEffects, false);
+				show_debug_message("speedy speed!");
+			
+				add_effect(e_type, e_duration, e_data, p);
 			
 				break;
 		
-			case stype.explosioncreate:
+			case SERVER_RESPONSE.EXPLOSION_CREATE:
 		
 				var ID = string(buffer_read(buff, buffer_u16));
 			
@@ -390,20 +378,21 @@ if async_load[? "type"] == network_type_data {
 				var _y = buffer_read(buff, buffer_s32)/100;
 				var rad = buffer_read(buff, buffer_u16);
 				var dmg = buffer_read(buff, buffer_u16);
-				var life = buffer_read(buff, buffer_u16);
 			
-				explosion_create(expl, ID, _x, _y, rad, dmg, life);
+				explosion_create(expl, ID, _x, _y, rad, dmg);
 			
 				break;
 			
 		
-			case stype.projectilepositioncorrection:
+			case SERVER_RESPONSE.PROJECTILE_UPDATE:
 		
-				var _ID = string(buffer_read(buff, buffer_u16));
+				var _ID = buffer_read(buff, buffer_u16);
 				var _x = buffer_read(buff, buffer_s32)/100;
 				var _y = buffer_read(buff, buffer_s32)/100;
 				var _mx = buffer_read(buff, buffer_s32)/100;
 				var _my = buffer_read(buff, buffer_s32)/100;
+				
+				//show_debug_message("Received {0}, x: {1} y: {2}, mx: {3} my: {4}", _ID, _x, _y, _mx, _my);
 			
 				for(var i = 0; i < instance_number(obj_projectile); i++){
 			
@@ -425,7 +414,7 @@ if async_load[? "type"] == network_type_data {
 				}
 				break;
 				
-			case stype.entityupdate:
+			case SERVER_RESPONSE.ENTITY_UPDATE:
 		
 			{
 				
@@ -485,7 +474,7 @@ if async_load[? "type"] == network_type_data {
 		
 			}
 			
-			case stype.entitydestroy:
+			case SERVER_RESPONSE.ENTITY_DESTROY:
 			{
 				
 				var entityID = buffer_read(buff, buffer_u16);

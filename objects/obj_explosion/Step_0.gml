@@ -15,6 +15,8 @@ if !hits {
 		obj_player.movvec.y += lengthdir_y(17, _dir)*_e;
 	
 	}
+	
+	var entity_hits = [];
 
 	for(var i = 0; i < instance_number(obj_obstacle_entity); i++){
 	
@@ -24,7 +26,10 @@ if !hits {
 		
 		if (_d < radius) {
 		
-			_inst.componentTo.damage(damage);
+			if !array_contains(entity_hits, _inst.componentTo) {
+				_inst.componentTo.damage(damage);
+				array_push(entity_hits, _inst.componentTo);
+			}
 		
 		}
 		
@@ -47,7 +52,7 @@ if !hits and !visual {
 		
 		show_debug_message(_damage);
 		
-		if (global.playerid == ownerID) inflict_damage(damage, 0, _inst.ID);
+		if (global.playerid == ownerID) explosion_hit(ID, _inst.ID);
 
 	}
 

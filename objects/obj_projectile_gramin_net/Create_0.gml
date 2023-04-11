@@ -13,16 +13,3 @@ part_type_size(trail, 0.05, 0.08, 0, 0);
 
 timer = false;
 
-anon = function(){
-	
-	screen_shake_position(50, 100, 0.25, x, y);
-	if ownerID == global.playerid explosion_create_request(obj_explosion_gramin, x, y, 150, 20);
-	
-	self.destroy();
-	
-}
-
-on_hit = anon;
-
-
-

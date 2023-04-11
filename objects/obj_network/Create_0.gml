@@ -3,7 +3,7 @@
 
 server_ip = "127.0.0.1";
 
-port = 8080
+port = 2003;
 
 server = network_create_socket(network_socket_ws);
 

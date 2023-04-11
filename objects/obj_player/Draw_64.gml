@@ -35,12 +35,18 @@ if global.debugmode {
 	dp+=dis;
 	
 	draw_set_color(c_white);
-	draw_text(20, 30+dp, "player id: " + global.playerid);
+	draw_text(20, 30+dp, "player id: " + string(global.playerid));
 	dp+=dis;
 	
 	draw_set_color(c_white)
 	draw_text(20, 30+dp, "speed: " + string(spd) + ", boost: " + string(spdboost));
 	dp+=dis;
+	
+	draw_set_color(c_white)
+	draw_text(20, 30+dp, "effects: " + string(effects_str));
+	dp+=dis;
+	
+	
 	
 	
 

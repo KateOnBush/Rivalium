@@ -1,17 +1,31 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 
-global.projectiles_array = [obj_projectile_kenn_dagger,
+global.projectiles_array = [
+
+obj_projectile_kenn_dagger,
 obj_projectile_kenn_dagger_transformed,
+
 obj_projectile_gramin_gun1bullet,
 obj_projectile_gramin_ult_bullet,
 obj_projectile_gramin_net,
 obj_projectile_gramin_ult_rocket,
 obj_projectile_gramin_ult_smalldebris,
-obj_projectile_lenya_blue_bullet,
-obj_projectile_lenya_red_bullet];
 
-global.explosions_array = [obj_explosion_gramin, obj_explosion_gramin_ult];
+obj_projectile_lenya_blue_bullet,
+obj_projectile_lenya_red_bullet,
+obj_projectile_lenya_grenade
+
+];
+
+global.explosions_array = [
+
+obj_explosion_gramin, 
+obj_explosion_gramin_ult, 
+
+obj_explosion_lenya_grenade
+
+];
 
 function projectile_create(proj, ownerid, x, y, speed, direction, collision, dieoncol, life, damage = 0, bleed = 0, heal = 0, ID = 0, bounce = false, px = 0, py = 0){
 
@@ -35,61 +49,18 @@ function projectile_create(proj, ownerid, x, y, speed, direction, collision, die
 
 }
 
-function projectile_create_request(proj, x, y, speed, direction, collision, dieoncol, life, damage = 0, bleed = 0, heal = 0, bounce = false){
+function projectile_create_fake(proj, x, y, speed, direction, collision, dieoncol, bounce = false){
 
-	var o = array_find_by_value(global.projectiles_array, proj)
-	if o == -1 return;
-	var _buff = buffer_create(global.dataSize, buffer_fixed, 1);
-	buffer_seek(_buff, buffer_seek_start, 0);
-	buffer_write(_buff, buffer_u8, 6)
-	buffer_write(_buff, buffer_u16, o)
-	buffer_write(_buff, buffer_s32, round(x*100))
-	buffer_write(_buff, buffer_s32, round(y*100))
-	buffer_write(_buff, buffer_s32, round(speed*100))
-	buffer_write(_buff, buffer_s16, round(direction*10))
-	buffer_write(_buff, buffer_u8, collision);
-	buffer_write(_buff, buffer_u8, dieoncol);
-	buffer_write(_buff, buffer_u8, life);
-	buffer_write(_buff, buffer_u16, damage)
-	buffer_write(_buff, buffer_u16, bleed)
-	buffer_write(_buff, buffer_u16, heal)
-	var lagcompen = projectile_create(o, global.playerid, x, y, speed, direction, collision, dieoncol, 1, damage, bleed, heal, 0, bounce, x, y);
-	buffer_write(_buff, buffer_u32, lagcompen);
-	buffer_write(_buff, buffer_u8, bounce);
-	
-	network_send_raw(obj_network.server, _buff, global.dataSize);
-	
-	buffer_delete(_buff);
+	var lagcompen = projectile_create(array_find_by_value(global.projectiles_array, proj), global.playerid, x, y, speed, direction, collision, dieoncol, 0.25, 0, 0, 0, 0, bounce, x, y);
+	return lagcompen;
 
 }
-
-function explosion_create_request(explosion, x, y, radius = 50, damage = 0, lifetime = 5){
-
-	var o = array_find_by_value(global.explosions_array, explosion);
-	if o == -1 return; 
-	var _buff = buffer_create(global.dataSize, buffer_fixed, 1);
-	buffer_seek(_buff, buffer_seek_start, 0);
-	buffer_write(_buff, buffer_u8, 12)
-	buffer_write(_buff, buffer_u16, o)
-	buffer_write(_buff, buffer_s32, round(x*100))
-	buffer_write(_buff, buffer_s32, round(y*100))
-	buffer_write(_buff, buffer_u16, radius)
-	buffer_write(_buff, buffer_u16, damage);
-	buffer_write(_buff, buffer_u8, lifetime);
-	
-	network_send_raw(obj_network.server, _buff, global.dataSize);
-	
-	buffer_delete(_buff);
-	
-
-}
-
-function explosion_create(explind, ownerid, x, y, radius = 50, damage = 0, lifetime = 5){
+function explosion_create(explind, ownerid, x, y, radius = 50, damage = 0){
 
 	var _o = instance_create_depth(x, y, 0, global.explosions_array[explind]);
 	
 	_o.damage = damage;
-	_o.lifetime = lifetime;
+	_o.lifetime = 5;
 	_o.radius = radius;
 	_o.ownerID = ownerid;
 	

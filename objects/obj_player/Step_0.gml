@@ -3,7 +3,6 @@
 
 //Really Cool!
 
-
 health_blend = dtlerp(health_blend, playerhealth/playerhealthmax, 0.5);
 
 if healthbefore != playerhealth {
@@ -36,19 +35,25 @@ part_type_orientation(ult, -10, 10, 0, 4*global.dt, false)
 
 part_type_speed(linepart, 16*global.dt, 20*global.dt, 0, 0);
 
-linespeedblend = dtlerp(linespeedblend, dash>0 or (spdboost>1 && movvec.length()>10), 0.4);
+linespeedblend = dtlerp(linespeedblend, dash>0 or (spdboost>1 && movvec.length()>10) or movvec.length()>40, 0.4);
 
 part_type_life(linespeed, fpstime*0.2, fpstime*0.25)
 var dd = movvec.dir();
 part_type_orientation(linespeed, dd, dd, 0, 0, 0);
 
 if surf_refresh_rate <= 0 && linespeedblend > 0.01 {
-	surf_refresh_rate = 2.5;
+	surf_refresh_rate = 20;
 	repeat(5){
-		var _e = random(40)-20;
-		part_particles_create(global.partSystemBehind, x+lengthdir_x(_e, movvec.dir()+90), y+lengthdir_y(_e, movvec.dir()+90), linespeed, 1);
+		var _e = random(40)-20, _s = random(80);
+		part_particles_create(global.partSystemBehind, 
+		
+			x+lengthdir_x(_e, movvec.dir()+90) + lengthdir_x(_s, movvec.dir()+180), 
+			y+lengthdir_y(_e, movvec.dir()+90) + lengthdir_y(_s, movvec.dir()+180), 
+			
+		linespeed, 1);
 	}
 }
+surf_refresh_rate -= 5*dtime;
 
 linethreshold = dtlerp(linethreshold, movvec.length()>12 ? min((movvec.length()-12)/15,1)*0.9+0.1 : 0, 0.08);
 
@@ -65,7 +70,7 @@ if global.connected and current_time - last_update >= 15 {
 	if (!buffer_exists(updateDataBuffer)) updateDataBuffer = buffer_create(global.dataSize, buffer_fixed, 1);
 
 	buffer_seek(updateDataBuffer, buffer_seek_start, 0);
-	buffer_write(updateDataBuffer, buffer_u8, 2)
+	buffer_write(updateDataBuffer, buffer_u8, SERVER_REQUEST.POSITION_UPDATE)
 	buffer_write(updateDataBuffer, buffer_s32, round(x*100))
 	buffer_write(updateDataBuffer, buffer_s32, round(y*100))
 	buffer_write(updateDataBuffer, buffer_s32, round(movvec.x*100))
@@ -184,7 +189,7 @@ if k_grapple && !grappling && !grappled && grapple_cooldown == 0 && !on_ground a
 	
 		var buff = buffer_create(global.dataSize, buffer_fixed, 1);
 		buffer_seek(buff, buffer_seek_start, 0);
-		buffer_write(buff, buffer_u8, 3);
+		buffer_write(buff, buffer_u8, SERVER_REQUEST.GRAPPLING_POSITION);
 		buffer_write(buff, buffer_s32, round(grappling_coords_init[0]*100))
 		buffer_write(buff, buffer_s32, round(grappling_coords_init[1]*100))
 		buffer_write(buff, buffer_u8, 0);
@@ -288,7 +293,7 @@ if grappling && !grappled {
 	
 			var buff = buffer_create(global.dataSize, buffer_fixed, 1);
 			buffer_seek(buff, buffer_seek_start, 0);
-			buffer_write(buff, buffer_u8, 3);
+			buffer_write(buff, buffer_u8, SERVER_REQUEST.GRAPPLING_POSITION);
 			buffer_write(buff, buffer_s32, round(grappling_coords[0]*100))
 			buffer_write(buff, buffer_s32, round(grappling_coords[1]*100))
 			buffer_write(buff, buffer_u8, 1);
@@ -634,33 +639,33 @@ if !casting and !grappling and !dash{
 	if mouse_check_button_released(mb_left){
 
 		castedAbility = 0;
-		char.abilities.basic_attack.cast(); 
+		char.abilities.basic_attack.requestCast(); 
 
 	} else if mouse_check_button_released(mb_right){
 
 		castedAbility = 0;
-		char.abilities.basic_attack.cast(1);
+		char.abilities.basic_attack.requestCast(1);
 
 	}
 
 	if keyboard_check_pressed(ord("X")){
 
 		castedAbility = 3;
-		char.abilities.ultimate.cast()
+		char.abilities.ultimate.requestCast()
 
 	}
 
 	if keyboard_check_pressed(ord("A")){
 
 		castedAbility = 1;
-		char.abilities.ability1.cast()	
+		char.abilities.ability1.requestCast()	
 
 	}
 	
 	if keyboard_check_pressed(ord("E")){
 
 		castedAbility = 2;
-		char.abilities.ability2.cast()	
+		char.abilities.ability2.requestCast()	
 
 	}
 

@@ -11,14 +11,15 @@ input_down = get_input(input.keyboard, ord("S"));
 input_grapple = get_input(input.keyboard, vk_space);
 input_dash = get_input(input.keyboard, vk_shift);
 
-
-
 input_basicAttack = get_input(input.mouse, mb_left);
 input_basicAttackAlternate = get_input(input.mouse, mb_right);
 
 input_ability1 = get_input(input.keyboard, ord("A"));
 input_ability2 = get_input(input.keyboard, ord("E"));
 input_ultimate = get_input(input.keyboard, ord("X"));
+
+rec_mx = 0;
+rec_my = 0;
 
 //----------
 
@@ -126,7 +127,7 @@ function perform_flip(_forward, _start){
 	
 		var buff = buffer_create(global.dataSize, buffer_fixed, 1);
 		buffer_seek(buff, buffer_seek_start, 0);
-		buffer_write(buff, buffer_u8, 4);
+		buffer_write(buff, buffer_u8, SERVER_REQUEST.FLIP);
 		buffer_write(buff, buffer_u8, _forward);
 		buffer_write(buff, buffer_u8, round(_start*100))
 		network_send_raw(obj_network.server, buff, buffer_get_size(buff));
@@ -242,10 +243,10 @@ part_type_orientation(linepart, 0, 0, 0, 0, true)
 
 linespeed = part_type_create();
 
-part_type_shape(linespeed, pt_shape_line)
-part_type_size(linespeed, 0.3, 0.3, 0, 0)
+part_type_sprite(linespeed,line_particle,false,false,false);
+part_type_size(linespeed, 0.4, 0.6, 0, 0)
 part_type_color2(linespeed, c_white, c_ltgray)
-part_type_alpha2(linespeed, 0.25, 0)
+part_type_alpha2(linespeed, 0.3, 0)
 
 linespeedblend = 0;
 
@@ -351,6 +352,39 @@ slide_blend = 0;
 slide_cooldown = 0;
 slope_blend = 0;
 
+function cast_ability(a, n){
+
+	with(self){
+
+		switch(a){
+			
+			case 0:
+					
+				char.abilities.basic_attack.cast(n);
+				break;
+					
+			case 1:
+					
+				char.abilities.ability1.cast(n);
+				break;
+					
+			case 2:
+					
+				char.abilities.ability2.cast(n);
+				break;
+					
+			case 3:
+					
+				char.abilities.ultimate.cast(n);
+				break;
+				
+					
+			
+	}
+	
+	}
+
+}
 
 double_jump = false;
 

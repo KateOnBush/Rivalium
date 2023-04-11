@@ -8,3 +8,5 @@ global.__fps = 1000000/delta_time;
 if keyboard_check_released(vk_f1) global.debugmode = !global.debugmode;
 
 processEvents();
+
+if (keyboard_check(ord("R"))) game_restart();

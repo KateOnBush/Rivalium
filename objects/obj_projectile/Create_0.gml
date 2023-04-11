@@ -24,9 +24,11 @@ dieoncol = false
 
 mass = 1;
 
-on_collision = function(){};
+on_collision = NULLFUNC;
 
-on_hit = function(player){}
+on_hit = NULLFUNC;
+
+on_destroy = NULLFUNC;
 
 lastUpdated = current_time;
 
@@ -56,14 +58,9 @@ visibleTimeout = function(){
 
 }
 
-destroy = function(){
+on_destroy = NULLFUNC;
 
-	var b = buffer_create(global.dataSize, buffer_fixed, 1)
-	buffer_seek(b, buffer_seek_start, 0);
-	buffer_write(b, buffer_u8, 7);
-	buffer_write(b, buffer_u16, real(ID))
-	network_send_raw(obj_network.server, b, global.dataSize)
-	buffer_delete(b)
+destroy = function(){
 	
 	instance_destroy();
 

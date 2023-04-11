@@ -1,6 +1,8 @@
 /// @description Insert description here
 // You can write your code in this editor
 
+mask_index = projectile_collision_mask;
+
 life -= global.dt/60;
 
 if life<0 instance_destroy();
@@ -22,7 +24,7 @@ if col and spd > 0{
 		if pl {
 		
 			buffer_seek(dataBuffer, buffer_seek_start, 0);
-			buffer_write(dataBuffer, buffer_u8, 7);
+			buffer_write(dataBuffer, buffer_u8, SERVER_REQUEST.PLAYER_PROJECTILE_HIT);
 			buffer_write(dataBuffer, buffer_u16, real(ID))
 			buffer_write(dataBuffer, buffer_u32, id)
 			buffer_write(dataBuffer, buffer_u16, real(pl.ID))
@@ -53,8 +55,6 @@ if col and spd > 0{
 			spd = 0;
 		
 		} else if !pl {
-
-			if !buffer_exists(dataBuffer) dataBuffer = buffer_create(global.dataSize, buffer_fixed, 1);
 	
 			if !instance_exists(collidedBlock) exit;
 			var orientation = collidedBlock.image_angle;
@@ -62,35 +62,36 @@ if col and spd > 0{
 			
 			var s = 0;
 			while(place_meeting(px+lengthdir_x(s,dir + 180), py+lengthdir_y(s,dir + 180), obj_solid)){
-				s++;
+				s+=dtime;
 			}
 			px += lengthdir_x(s, dir + 180);
 			py += lengthdir_y(s, dir + 180);
 			
-			var kx = 3*sign(lengthdir_x(1,dir));
-			var ky = 3*sign(lengthdir_y(1,dir));
+			var ar = [orientation, orientation + 90, orientation + 180, orientation + 270];
+			var o = dir + 180;
+			for(var i = 0; i < array_length(ar); i++){
+				var cDir = ar[i];
+				if place_meeting(px+lengthdir_x(2, cDir), py+lengthdir_y(2, cDir), obj_solid){
+					o = cDir;
+					break;
+				}
+			}
 			
-			var kx_x = lengthdir_x(kx, orientation);
-			var kx_y = lengthdir_y(kx, orientation);
-			
-			var ky_x = lengthdir_x(ky, orientation);
-			var ky_y = lengthdir_y(ky, orientation);
-		
-			var side = place_meeting(px+kx_x, py+kx_y, obj_solid); //Side
-			var topbot = place_meeting(px+ky_y, py+ky_y, obj_solid);
-			
-			var newdir;
-
-			if side { newdir = orientation - angle_difference(dir, orientation); }
-			else { newdir = 90 + orientation - angle_difference(dir, 90 + orientation); }
-			
-			dir = newdir + 180;
+			dir = o - angle_difference(dir + 180, o);
 			
 			bounce_count++;
 			spd *= 0.7;
+		
+		}
+		
+		if (ownerID == global.playerid) && !pl {
 			
+			if !buffer_exists(dataBuffer) dataBuffer = buffer_create(global.dataSize, buffer_fixed, 1);
+		
+			//show_debug_message("Sending {0}, x: {1} y: {2}, mx: {3} my: {4}", ID, px, py, lengthdir_x(spd, dir), lengthdir_y(spd, dir));
+		
 			buffer_seek(dataBuffer, buffer_seek_start, 0);
-			buffer_write(dataBuffer, buffer_u8, 13);
+			buffer_write(dataBuffer, buffer_u8, SERVER_REQUEST.PROJECTILE_UPDATE);
 			buffer_write(dataBuffer, buffer_u16, real(ID));
 			buffer_write(dataBuffer, buffer_s32, round(px*100));
 			buffer_write(dataBuffer, buffer_s32, round(py*100));
@@ -98,7 +99,7 @@ if col and spd > 0{
 			buffer_write(dataBuffer, buffer_s32, round(lengthdir_y(spd, dir)*100));
 	
 			network_send_raw(obj_network.server, dataBuffer, global.dataSize);
-		
+			
 		}
 		
 		collided = true;

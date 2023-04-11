@@ -16,14 +16,6 @@ part_type_speed(trail, 1*dtime, 1.5*dtime, 0, 0);
 
 part_type_life(trail, 60/dtime, 60/dtime)
 
-if ID != 0 and !timer{
-
-	timer++;
-	
-	createEvent(1.5, anon, self);
-	
-}
-
 /*if spd>0 {
 	part_particles_create(global.partSystem, x+random_range(-2, 2), y+random_range(-2, 2), trail, 1)
 }

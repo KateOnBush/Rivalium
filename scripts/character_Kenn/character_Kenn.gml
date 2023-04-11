@@ -21,31 +21,24 @@ function character_Kenn(){
 				function (n){
 			
 					var _heal = char.abilities.ability1.active ? 15 : 0;
+					var proj = char.abilities.ultimate.active ? obj_projectile_kenn_dagger_transformed : obj_projectile_kenn_dagger;
 			
-					if(char.abilities.ultimate.active){
+					repeat(n == 1 ? 3 : 1){
 			
-						projectile_create_request(obj_projectile_kenn_dagger_transformed, x, y, 70, point_direction(x, y, mousex, mousey), true, false, 5, 35, 10, _heal*2);
-			
-						if n == 1 repeat(3){
-			
-							projectile_create_request(obj_projectile_kenn_dagger_transformed, x, y, 70, point_direction(x, y, mousex, mousey) + irandom_range(-20,20), true, false, 5, 35, 10, _heal*2);
-			
-						}
-			
-					} else {
-			
-						projectile_create_request(obj_projectile_kenn_dagger, x, y, 70, point_direction(x, y, mousex, mousey), true, false, 5, 25, 0, _heal)
-			
-						if n == 1 repeat(3){
-			
-							projectile_create_request(obj_projectile_kenn_dagger, x, y, 70, point_direction(x, y, mousex, mousey) + irandom_range(-20,20), true, false, 5, 25, 0 , _heal)
-			
-						}
+						projectile_create_fake(proj, x, y, 70, point_direction(x, y, mousex, mousey) + (n == 1 ? irandom_range(-20,20) : 0), true, false);
 			
 					}
-			
+					if sign(mousex - x) != sign(movvec.x) and movvec.length() > 4 {
+						dir = sign(mousex - x);
+						play_animation(char.anims.kenn_basic_attack, 4.5, animation_type_full);
+					} else play_animation(char.anims.kenn_basic_attack, 3, animation_type_partial, [0, 1]);
+					
+				},
+				function (n){
+				
 					screen_shake(5, 20, 0.05); 
-				}, 
+				
+				},
 				function (n){
 					if sign(mousex - x) != sign(movvec.x) and movvec.length() > 4 {
 						dir = sign(mousex - x);
@@ -57,19 +50,16 @@ function character_Kenn(){
 				}, 
 				1/4.5, basicattackkenn, 0, false, false),
 		
-			ability1: new Ability(18, ability_type.active, {active_time: 12, active_func: function(){}, end_func: function(){}}, function(){
-		
-				}, function(){}, function(){}, 0.2, kennability1, 0),
+			ability1: new Ability(18, ability_type.active, {active_time: 12, active_func: function(){}, end_func: function(){}}, 
+			function(){}, function(){}, function(){}, function(){}, 0.2, kennability1, 0),
 		
 			ability2: new Ability(13, ability_type.active, {active_time: 8, active_func: function(){}, end_func: function(){
 		
 					removeFilter(base_character_kenn_filter1);
 		
-				}}, function(){
-			
-					add_effect(effecttype.boost, 8, {multiplier: 1.45}, playerEffects, true);
-			
-				}, function(){
+				}}, function(){},
+				
+				function(){}, function(){
 			
 					addFilter(base_character_kenn_filter1, -5, 0.8);
 			
@@ -81,6 +71,9 @@ function character_Kenn(){
 					removeFilter(base_character_kenn_transformed)
 		
 				}}, function(){
+				
+				
+				},function(){
 			
 					screen_shake(10, 50, 2.2);
 					camera_ultimate_zoom(350, 2.5, easeInOutBack, 0.5, easeInOutBack, 0.5);

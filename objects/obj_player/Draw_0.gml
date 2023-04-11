@@ -14,6 +14,7 @@ if dir==0 dir=1;
 
 if global.debugmode { 
 	
+	if mask_index draw_sprite(mask_index, 0, x, y);
 	draw_set_color(c_aqua)
 	draw_arrow(x, y, x+movvec.x*10, y+movvec.y*10, 5);
 

@@ -56,11 +56,13 @@ function character_Lenya(){
 		attach: [[base_character_lenya_hair,0,-2,0.7,6]],
 		abilities: {
 		
-			basic_attack: new Ability([0.35, 0.35], ability_type.onetime, {}, function(n){
+			basic_attack: new Ability([0.35, 0.35], ability_type.onetime, {}, NULLFUNC, function(n){
 
 				var d = point_direction(x, y, mousex, mousey);
 				var proj = n == 1 ? obj_projectile_lenya_red_bullet : obj_projectile_lenya_blue_bullet;
-				projectile_create_request(proj, x, y, 60, d, true, true, 20, 50);
+				//projectile_create_fake(proj, x, y, 60, d, true, true);	
+				if (n == 0) __leyna_shootVisualBlueHand();
+				else __leyna_shootVisualRedHand();
 			
 			}, function(n){ // Cast visual
 			
@@ -74,7 +76,9 @@ function character_Lenya(){
 			}, 0.1, kennability2, 0),
 				
 				
-			ability1: new Ability(5, ability_type.onetime, {}, function(){
+			ability1: new Ability(0.3, ability_type.onetime, {}, NULLFUNC, 
+			
+			function(){
 			
 				
 				var dd = point_direction(x, y + 80, mousex, mousey);
@@ -82,7 +86,7 @@ function character_Lenya(){
 				var createdx = x + (sign(mousex - x) == sign(movvec.x) ? 16*movvec.x : sign(mousex - x)*60);
 				var createdy = y + 80;
 			
-				entity_create_request(obj_entity_leyna_wall, createdx, createdy,20,,new EntityHealthComponent(100, 0),[dd, dd]);
+				//entity_create_request(obj_entity_leyna_wall, createdx, createdy,20,,new EntityHealthComponent(100, 0),[dd, dd]);
 		
 			
 			}, 
@@ -95,10 +99,36 @@ function character_Lenya(){
 			}, function(){}, 0, kennability2, 0),
 				
 				
-			ability2: new Ability(5, ability_type.onetime, {}, function(){}, function(){}, function(){}, 0, kennability2, 0),
+			//
+			ability2: new Ability(.1, ability_type.activecharges, {charges: 1, cooldown_charge: .1, charge_cast_time: 0, charge_time: 0, active_time: 5, active_func: NULLFUNC, end_func: NULLFUNC},
+			
+			function(){
+				
+				if char.abilities.ability2.active return;
+		
+				var _d = point_direction(x, y, mousex, mousey)+random_range(-2,2);
+				var __spd = point_distance(0,0, lengthdir_x(25, _d)+movvec.x/3, lengthdir_y(25, _d)+movvec.y/3);
+				var __d = point_direction(0,0, lengthdir_x(25, _d)+movvec.x/3, lengthdir_y(25, _d)+movvec.y/3);
+				
+				projectile_create_fake(obj_projectile_lenya_grenade, x, y - 10, __spd, __d, true, false, true);
+				if sign(mousex - x) != sign(movvec.x) and movvec.length() > 4 {
+					dir = sign(mousex - x);
+					play_animation(char.anims.ability2, 4.5, animation_type_full);
+				} else play_animation(char.anims.ability2, 3, animation_type_partial, [0, 1]);
+			
+			}, NULLFUNC, function(){
+				
+				if char.abilities.ability2.active return;
+				
+				if sign(mousex - x) != sign(movvec.x) and movvec.length() > 4 {
+					dir = sign(mousex - x);
+					play_animation(char.anims.ability2, 4.5, animation_type_full);
+				} else play_animation(char.anims.ability2, 3, animation_type_partial, [0, 1]);
+				
+			}, NULLFUNC, 0, kennability2, 0),
 				
 				
-			ultimate: new Ability(5, ability_type.onetime, {}, function(){}, function(){}, function(){}, 0, kennability2, 0),
+			ultimate: new Ability(5, ability_type.onetime, {}, NULLFUNC, NULLFUNC, NULLFUNC, NULLFUNC, 0, kennability2, 0),
 		
 		}
 

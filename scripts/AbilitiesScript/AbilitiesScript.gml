@@ -16,7 +16,7 @@ function secstr(s){
 	
 }
 
-function Ability(acooldown, atype, atype_data, acast_func, acast_visual_func, acasting_func, acast_time, asprite, acolor, aultimate = false, castblock = false) constructor{
+function Ability(acooldown, atype, atype_data, acast_fake, acast_func, acast_visual_func, acasting_func, acast_time, asprite, acolor, aultimate = false, castblock = false) constructor{
 
 	init_cooldown = acooldown;
 	ultimate = aultimate;
@@ -24,6 +24,7 @@ function Ability(acooldown, atype, atype_data, acast_func, acast_visual_func, ac
 	cooldown = 0;
 	type = atype;
 	typedata = atype_data;
+	cast_fake = acast_fake;
 	cast_func = acast_func;
 	cast_visual_func = acast_visual_func;
 	casting_func = acasting_func;
@@ -79,30 +80,50 @@ function Ability(acooldown, atype, atype_data, acast_func, acast_visual_func, ac
 	
 	if type == ability_type.activecharges charge_cast_time = typedata.charge_cast_time;
 	
+	static forceCooldown = function(n = 0){
+	
+		cooldown = (cooldownHasCondition ? cooldownCondition(n) : init_cooldown[n]);
+		active = false;
+		charges = 0;
+		active_time = 0;
+	
+	}
+	
+	static requestCast = function(n = 0){
+	
+		if cooldown > 0 return false;
+		if active && type == ability_type.active return false;
+		if charges == 0 && (type == ability_type.charges or type == ability_type.activecharges) return;
+		if castHasCondition && !castCondition() return;
+			
+		cast_fake(n);
+			
+		if global.connected {
+			
+			var cb = other.castedAbility;
+			
+			var buff = buffer_create(global.dataSize, buffer_fixed, 1);
+			buffer_seek(buff, buffer_seek_start, 0);
+			buffer_write(buff, buffer_u8, SERVER_REQUEST.ABILITY_CAST);
+			buffer_write(buff, buffer_u8, cb);
+			buffer_write(buff, buffer_u8, n);
+				
+			network_send_raw(obj_network.server, buff, global.dataSize);
+				
+			buffer_delete(buff);
+			
+		}
+	
+	}
+	
 	static cast = function(n = 0){
 	
 		if other.object_index == obj_player {
+			
 			if cooldown > 0 return false;
 			if active && type == ability_type.active return false;
 			if charges == 0 && (type == ability_type.charges or type == ability_type.activecharges) return;
 			if castHasCondition && !castCondition() return;
-			
-			if global.connected {
-			
-				var cb = other.castedAbility;
-			
-				var buff = buffer_create(global.dataSize, buffer_fixed, 1);
-				buffer_seek(buff, buffer_seek_start, 0);
-				buffer_write(buff, buffer_u8, 8);
-				buffer_write(buff, buffer_u8, cb);
-				buffer_write(buff, buffer_u8, n);
-				
-				network_send_raw(obj_network.server, buff, global.dataSize);
-				
-				buffer_delete(buff);
-			
-			}
-			
 			
 		}
 		
@@ -123,32 +144,32 @@ function Ability(acooldown, atype, atype_data, acast_func, acast_visual_func, ac
 		
 			if type != ability_type.activecharges or active {
 		
-			if charges == 0 return false;
+				if charges == 0 return false;
 		
-			charges -= 1;
+				charges -= 1;
 		
-			if charges > 0 {
+				if charges > 0 {
 			
-				cooldown = init_cooldown_charge;
-				if type == ability_type.activecharges charge_time = 0;
+					cooldown = init_cooldown_charge;
+					if type == ability_type.activecharges charge_time = 0;
 			
-			} else {
-				cooldown = init_cooldown[n];
-				charge_time = init_charge_time;
-				if type == ability_type.activecharges {
-					charges = 0;
-					charge_time = 0;
-					cooldown = 0;
+				} else {
+					cooldown = init_cooldown[n];
+					charge_time = init_charge_time;
+					if type == ability_type.activecharges {
+						charges = 0;
+						charge_time = 0;
+						cooldown = 0;
+					}
 				}
-			}
 			
 			}
 		
 		}
 		if type == ability_type.active or type == ability_type.activecharges{
 		
+			if (type != ability_type.activecharges or !active) active_time = init_active_time;
 			active = true;
-			active_time = init_active_time;
 		
 		}
 	

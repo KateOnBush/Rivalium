@@ -1,6 +1,9 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 
+global.emptyFunction = function(){}
+#macro NULLFUNC global.emptyFunction
+
 function __gramin_basicAttackShoot(){
 		
 	var _d = point_direction(x, y, mousex, mousey);
@@ -9,7 +12,7 @@ function __gramin_basicAttackShoot(){
 	var _x = lengthdir_x(6, _d);
 	var _y = lengthdir_y(6, _d);
 				
-	projectile_create_request(bull, x+_x, y-10+_y, 80, _d+random_range(-5,5), true, true, 50, 20, 0, 0);
+	projectile_create_fake(bull, x+_x, y-10+_y, 80, _d+random_range(-5,5), true, true);
 				
 }
 
@@ -46,11 +49,12 @@ function character_Gramin(){
 		attach: [],
 		abilities: {
 		
-			basic_attack: new Ability([0.25, 1.8], ability_type.onetime, {}, 
+			basic_attack: new Ability([0.25, 1.8], ability_type.onetime, {},
 			
 				function(n){
 					
 					__gramin_basicAttackShoot();
+					__gramin_basicAttackShootVisual();
 					
 					if n = 1 {
 				
@@ -64,7 +68,7 @@ function character_Gramin(){
 			
 					}
 			
-				}, function(n){
+				}, NULLFUNC, function(n){
 					
 					__gramin_basicAttackShootVisual();
 					
@@ -84,7 +88,7 @@ function character_Gramin(){
 					dir = sign(mousex - x);
 				}, 0, kennability1, 0, false, false),
 		
-			ability1: new Ability(1.5, ability_type.onetime, {}, 
+			ability1: new Ability(1.5, ability_type.onetime, {},
 			
 				function(){
 		
@@ -93,16 +97,16 @@ function character_Gramin(){
 					var __spd = point_distance(0,0, lengthdir_x(25, _d)+movvec.x/3, lengthdir_y(25, _d)+movvec.y/3);
 					var __d = point_direction(0,0, lengthdir_x(25, _d)+movvec.x/3, lengthdir_y(25, _d)+movvec.y/3);
 				
-					projectile_create_request(obj_projectile_gramin_net, x, y-10, __spd, __d, true, false, 50, 20, 0, 0, true);
+					projectile_create_fake(obj_projectile_gramin_net, x, y-10, __spd, __d, true, false, true);
 
 
-				}, function(){
+				}, NULLFUNC, function(){
 		
 						var _s = sign(mousex - x);
 						var _pos = 1 - abs(angle_difference(point_direction(x, y, mousex, mousey), -270))/180;
 	
 						if _s != sign(movvec.x) and movvec.length() > 5 {
-							play_animation(char.anims.gramin_ability1, 3, animation_type_partial, [3, 4, 5, 6, 7, 8, 9, 10, 11], true);
+							play_animation(char.anims.gramin_ability1, 3, animation_type_partial, [3, 4, 5, 6, 7, 8, 9, 10, 11], true);	
 						} else {
 							play_animation(char.anims.gramin_ability1, 3, animation_type_partial, [10, 11], true);
 						}
@@ -110,22 +114,11 @@ function character_Gramin(){
 		
 				}, function(){
 				
-						dir = sign(mousex - x);
+					dir = sign(mousex - x);
 					
 				}, 0.33, kennability1, 0),
 		
-			ability2: new Ability(5, ability_type.onetime, {}, function(){
-		
-				heal_player(50);
-				
-				var dd = point_direction(x, y + 80, mousex, mousey);
-				
-				var createdx = x + (sign(mousex - x) == sign(movvec.x) ? 16*movvec.x : sign(mousex - x)*60);
-				var createdy = y + 80;
-			
-				entity_create_request(obj_entity_leyna_wall, createdx, createdy,20,,new EntityHealthComponent(100, 0),[dd, dd]);
-		
-				}, function(){}, function(){}, 0, kennability2, 0),
+			ability2: new Ability(5, ability_type.onetime, {}, NULLFUNC, NULLFUNC, NULLFUNC, NULLFUNC, 0, kennability2, 0),
 		
 			ultimate: new Ability(0.2, ability_type.activecharges, {charges: 30, cooldown_charge: 0.1, charge_cast_time: 0, charge_time: 0, active_time: 20, active_func: function(){}, 
 			
@@ -138,28 +131,32 @@ function character_Gramin(){
 			
 					return on_ground or char.abilities.ultimate.active;
 			
-				}}, function(){ //Cast
+				}}, function(){
+		
+					__gramin_basicAttackShootVisual();
+				
+				}, function(){ //Cast
 			
 					if !char.abilities.ultimate.active{
 			
 						camera_ultimate_zoom(400, 1/0.3, easeInSixth, 0.4, easeInSixth, 0.4);
 						return;
 			
+					} else {
+						
+						var anon = function(){
+			
+							var _d = point_direction(x, y, mousex, mousey)+random_range(-2,2);
+							var _x = -lengthdir_x(20, _d);
+							var _y = -lengthdir_y(20, _d);
+							movvec.x = abs(movvec.x + _x) < abs(_x) ? _x : movvec.x + _x;
+							movvec.y = abs(movvec.y + _y) < abs(_y) ? _y : movvec.y + _y;
+							projectile_create_fake(obj_projectile_gramin_ult_rocket, x-_x/3, y-10-_y/3, 60, _d, true, true);
+			
+						}
+						createEvent(0.1, anon, self);
+						
 					}
-			
-					var anon = function(){
-			
-						var _d = point_direction(x, y, mousex, mousey)+random_range(-2,2);
-						var _x = -lengthdir_x(20, _d);
-						var _y = -lengthdir_y(20, _d);
-						movvec.x = abs(movvec.x + _x) < abs(_x) ? _x : movvec.x + _x;
-						movvec.y = abs(movvec.y + _y) < abs(_y) ? _y : movvec.y + _y;
-						projectile_create_request(obj_projectile_gramin_ult_rocket, x-_x/3, y-10-_y/3, 60, _d, true, true, 10, 0, 0, 0);
-			
-					}
-			
-					createEvent(0.1, anon, self);
-			
 			
 				}, function(){ //Visual Cast
 		
