@@ -1,14 +1,15 @@
 /// @description Insert description here
 // You can write your code in this editor
 
-
-if physicsComponent != undefined {
+if physics {
 
 	//Physics
 	
-	physicsComponent.movvec.y += grav*dtime;
-	x += physicsComponent.movvec.x*dtime;
-	y += physicsComponent.movvec.y*dtime;
-	
+	my += grav*dtime;
+	_x += mx*dtime;
+	_y += my*dtime;
 
 }
+
+x = dtlerp(x, _x, .8);
+y = dtlerp(y, _y, .8);

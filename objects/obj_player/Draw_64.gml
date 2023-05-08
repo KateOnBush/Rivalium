@@ -1,10 +1,19 @@
 /// @description Insert description here
 // You can write your code in this editor
 
-display_set_gui_size(1280,720)
+var w = 1280, h = 720;
+
+display_set_gui_size(w, h)
 
 draw_set_halign(fa_left);
 draw_set_valign(fa_top);
+
+var dd = convert_3d_to_2d(viewmat, projmat, x, y - 104, 0);
+var barx = dd.x * w - 50, bary = (1 - dd.y) * h;
+draw_sprite(s_healthbar, 0, barx, bary);
+draw_sprite_part(s_healthbar, 1, 0, 0, 100*health_blend_red, 40, barx, bary);
+draw_sprite_part(s_healthbar, 2, 0, 0, 100*health_blend, 40, barx, bary);
+draw_sprite_part(s_healthbar, 3, 0, 0, 100*ultimatecharge_blend, 40, barx, bary);
 
 if global.debugmode {
 
@@ -28,6 +37,13 @@ if global.debugmode {
 	
 	draw_set_color(c_orange)
 	draw_text(20, 30+dp, "fps: " + string(fps) + ", ping: " + string(global.ping) + "ms");
+	dp+=dis;
+	
+	draw_set_color(#f696ff)
+	draw_text(20, 30+dp, "on_ground: " + string(on_ground) + ", slide: " + string(slide));
+	dp+=dis;
+	
+	draw_text(20, 30+dp, "slope: " + string(slope_angle) + ", state: " + string(state));
 	dp+=dis;
 	
 	draw_set_color(c_white)
@@ -63,10 +79,6 @@ draw_set_alpha(0.8*HUDalpha)
 draw_sprite_stretched(HUD_vignette,0,0,0,width,height)
 draw_set_alpha(1*HUDalpha)
 
-part_system_drawit(lines)
-
-part_particles_create(lines, width/2, height/2, linepart, max((2+linethreshold*2)*global.dt,1))
-
 //sprite_set_offset(HUD,1920/2, 1080);
 
 draw_sprite(HUD,0,width/2 - 1920/2,height - 1080)
@@ -95,14 +107,6 @@ char.abilities.basic_attack.draw(128, height-128,1, HUDalpha);
 draw_sprite_ext(ability_outline, 0, 128, height-128, 0.52, 0.52, 0, c_white, HUDalpha)
 input_basicAttack.draw(128-20, height-64+28);
 input_basicAttackAlternate.draw(128+20, height-64+28);
-
-if char.abilities.ultimate.cooldown == 0 && !char.abilities.ultimate.active && ultimatecharge == ultimatechargemax {
-
-	part_particles_create(ultimatePart, width-128*1.15 + random_range(-64,64)*1.3, height-128, ult, irandom(15*global.dt))
-	
-}
-
-part_system_drawit(ultimatePart)
 
 char.abilities.ultimate.draw(width-128*1.15, height-128, 1.3, HUDalpha);
 draw_set_alpha(HUDalpha)

@@ -7,7 +7,7 @@ grown = false;
 
 growbranches = 0;
 
-lerpmom = 0.06;
+lerpmom = 2.3;
 
 last_updated = current_time;
 
@@ -15,13 +15,15 @@ newdir = 0;
 
 takingdir = true;
 
-takingdirtimer = 0.5;
+takingdirtimermax = 0.6
+takingdirtimer = takingdirtimermax;
 
 changedirtime = 5;
 
 pomdir = 0;
 
 growMaxBranches = 15;
+
 
 sprite = base_character_lenya_wall_block;
 

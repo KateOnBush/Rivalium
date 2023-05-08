@@ -3,8 +3,6 @@
 
 var dataSize = global.dataSize;
 
-
-
 if async_load[? "type"] == network_type_data {
 
 	var buff = async_load[? "buffer"];
@@ -28,6 +26,8 @@ if async_load[? "type"] == network_type_data {
 				var connect = buffer_read(buff, buffer_u8);
 				var isme = buffer_read(buff, buffer_u8);
 				var charid = buffer_read(buff, buffer_u8);
+				var hp = buffer_read(buff, buffer_u16);
+				var ult = buffer_read(buff, buffer_u16);
 				var maxhp = buffer_read(buff, buffer_u16);
 				var maxult = buffer_read(buff, buffer_u16);
 			
@@ -41,13 +41,15 @@ if async_load[? "type"] == network_type_data {
 						instance_create_depth(_x,_y,0,obj_player)
 						global.playerid = ID;
 					
-						obj_player.setup_character(charid)
-
-
-						obj_player.playerhealthmax = real(maxhp);
-						obj_player.playerhealth = real(maxhp);
-						obj_player.ultimatechargemax = real(maxult);
-						obj_player.ultimatecharge = 220;
+						with (obj_player) { 
+							
+							setup_character(charid); 
+							playerhealthmax = maxhp;
+							playerhealth = hp;
+							ultimatechargemax = maxult;
+							ultimatecharge = ult;
+							
+						}
 			
 					} else {
 			
@@ -60,13 +62,14 @@ if async_load[? "type"] == network_type_data {
 						}
 				
 						var p = global.players[? ID];
-				
-						p.character_id = charid;
-						p.playerhealthmax = maxhp;
-						p.playerhealth = maxhp;
-						p.ultimatechargemax = maxult;
-						p.ultimatecharge = 0;
-				
+						
+						with(p) {
+							setup_character(charid); 
+							playerhealthmax = maxhp;
+							playerhealth = hp;
+							ultimatechargemax = maxult;
+							ultimatecharge = ult;
+						}
 			
 					}
 				
@@ -84,27 +87,44 @@ if async_load[? "type"] == network_type_data {
 				var _y = buffer_read(buff, buffer_s32)/100;
 				var movvecx = buffer_read(buff, buffer_s32)/100;
 				var movvecy = buffer_read(buff, buffer_s32)/100;
+				
+				var _on_ground = buffer_read(buff, buffer_u8);
+				var _jump_prep = buffer_read(buff, buffer_u8)/100;
+				var _wall_slide = buffer_read(buff, buffer_u8);
+				var _grappling = buffer_read(buff, buffer_u8);
+				var _grappled = buffer_read(buff, buffer_u8);
+				var _dir = buffer_read(buff, buffer_s8);
+				var _dash = buffer_read(buff, buffer_u8);
+				var _slide = buffer_read(buff, buffer_u8);
+				var _grounded = buffer_read(buff, buffer_u8);
+				var _slope_blend = buffer_read(buff, buffer_u8)/100;
+				var _playerhealth = real(buffer_read(buff, buffer_u16));
+				var _ultimatecharge = real(buffer_read(buff, buffer_u16));
+				var _playerhealthmax = real(buffer_read(buff, buffer_u16));
+				var _ultimatechargemax = real(buffer_read(buff, buffer_u16));
+				var _charid = buffer_read(buff, buffer_u8);
+				var _dead = buffer_read(buff, buffer_u8);
+				var _mousex = buffer_read(buff, buffer_s32)/100;
+				var _mousey = buffer_read(buff, buffer_s32)/100;
 		
 				if (ID == global.playerid) {
-			
-					buffer_seek(buff, buffer_seek_start,dataSize*currentPacket + 30);
-					var hp = buffer_read(buff, buffer_u16);
-					var ch = buffer_read(buff, buffer_u16);
-					var dead = buffer_read(buff, buffer_u8);
+					
+					with (obj_player) {
 				
-					obj_player.rec_x = _x;
-					obj_player.rec_y = _y;
-					obj_player.rec_mx = movvecx;
-					obj_player.rec_my = movvecy;
-					obj_player.playerhealth = real(hp);
-					obj_player.ultimatecharge = real(ch);
-					obj_player.dead = dead;
+						rec_x = _x;
+						rec_y = _y;
+						rec_mx = movvecx;
+						rec_my = movvecy;
+						playerhealth = _playerhealth;
+						ultimatecharge = _ultimatecharge;
+						dead = _dead;
+						if (character_id != _charid) {
+							setup_character(_charid);
+						}
 				
+					}
 					continue;
-			
 				}
-		
-
 			
 				if is_undefined(ds_map_find_value(global.players, ID)) {
 			
@@ -147,37 +167,55 @@ if async_load[? "type"] == network_type_data {
 						}
 
 					}
+					
+					movvec.x = movvecx;
+					movvec.y = movvecy;
+			
+					updated = current_time;
+			
+					on_ground = _on_ground;
+					jump_prep = _jump_prep;
+					wall_slide = _wall_slide
+					grappling = _grappling
+					grappled = _grappled;
+					dir = _dir;
+					dash = _dash;
+					slide = _slide;
+					grounded = _grounded;
+					slope_blend = _slope_blend;
+					playerhealth = _playerhealth;
+					ultimatecharge = _ultimatecharge;
+					playerhealthmax = _playerhealthmax;
+					ultimatechargemax = _ultimatechargemax;
+					if (character_id != _charid) {
+						setup_character(_charid);
+					}
+					dead = _dead;
+					mousex = _mousex;
+					mousey = _mousey;
 				
 			
 				}
 			
-				p.movvec.x = movvecx;
-				p.movvec.y = movvecy;
-			
-				p.updated = current_time;
-			
-				p.on_ground = buffer_read(buff, buffer_u8);
-				p.run = buffer_read(buff, buffer_u8)/100;
-				p.jump_prep = buffer_read(buff, buffer_u8)/100;
-				p.wall_slide = buffer_read(buff, buffer_u8);
-				p.grappling = buffer_read(buff, buffer_u8);
-				p.grappled = buffer_read(buff, buffer_u8);
-				p.dir = buffer_read(buff, buffer_s8);
-				p.dash = buffer_read(buff, buffer_u8);
-				p.slide = buffer_read(buff, buffer_u8);
-				p.grounded = buffer_read(buff, buffer_u8);
-				p.slope_blend = buffer_read(buff, buffer_u8)/100;
-				p.playerhealth = real(buffer_read(buff, buffer_u16));
-				p.ultimatecharge = real(buffer_read(buff, buffer_u16));
-				p.playerhealthmax = real(buffer_read(buff, buffer_u16));
-				p.ultimatechargemax = real(buffer_read(buff, buffer_u16));
-				var char_id = buffer_read(buff, buffer_u8);
-				p.setup_character(char_id);
-				p.dead = buffer_read(buff, buffer_u8);
-				p.mousex = buffer_read(buff, buffer_s32)/100;
-				p.mousey = buffer_read(buff, buffer_s32)/100;
-			
 				break;
+				
+			case SERVER_RESPONSE.PLAYER_FORCED_DASH:
+			
+				var ID = buffer_read(buff, buffer_u16);
+				var _dir = buffer_read(buff, buffer_s16)/100;
+				var _time = buffer_read(buff, buffer_u16)/100;
+				var _mult = buffer_read(buff, buffer_u16)/100;
+				
+				if (ID == global.playerid && instance_exists(obj_player)) {
+				
+					with(obj_player){
+						playerDash(_dir, _time, _mult);
+					}
+				
+				}
+				
+				break;
+				
 	
 			case SERVER_RESPONSE.PLAYER_GRAPPLE:
 	
@@ -276,6 +314,8 @@ if async_load[? "type"] == network_type_data {
 				var bounce = buffer_read(buff, buffer_u8);
 				var __px = buffer_read(buff, buffer_s32)/100;
 				var __py = buffer_read(buff, buffer_s32)/100;
+				var bounceFriction = buffer_read(buff, buffer_u8)/100;
+				var hasGrav = buffer_read(buff, buffer_u8);
 			
 				if ownerid == global.playerid {
 					
@@ -287,8 +327,10 @@ if async_load[? "type"] == network_type_data {
 					}
 				}
 				
-				projectile_create(ob, ownerid, _x, _y, sp, dr, col, dieoncol, lifespan, damage, bleed, heal, ID, bounce, __px, __py);
-		
+				var o = projectile_create(ob, ownerid, _x, _y, sp, dr, col, dieoncol, lifespan, damage, bleed, heal, ID, bounce, __px, __py, bounceFriction, hasGrav);
+				o.bounceFriction = bounceFriction;
+				o.hasGrav = hasGrav;
+				
 				break;
 			
 		
@@ -321,27 +363,24 @@ if async_load[? "type"] == network_type_data {
 		
 			case SERVER_RESPONSE.PLAYER_ABILITY_CAST:
 		
-				var ID = string(buffer_read(buff, buffer_u16));
-			
-				if is_undefined(ds_map_find_value(global.players, ID)) && ID != global.playerid continue;
+				var ID = buffer_read(buff, buffer_u16);
 			
 				var p = global.players[? ID];
+				if (ID == global.playerid && instance_exists(obj_player)) p = obj_player;
+				
+				if (p == undefined) continue;
 			
 				var abi = buffer_read(buff, buffer_u8);
 			
 				var abi_n = buffer_read(buff, buffer_u8);
 			
-				if (ID == global.playerid) {
-					obj_player.cast_ability(abi, abi_n)
-				} else {
-					with(p) cast_ability(abi, abi_n);
-				}
+				with(p) cast_ability(abi, abi_n);
 				
 				break;
 		
 			case SERVER_RESPONSE.EFFECT_ADD: 
 		
-				var ID = string(buffer_read(buff, buffer_u16));
+				var ID = buffer_read(buff, buffer_u16);
 			
 				var p;
 			
@@ -361,9 +400,7 @@ if async_load[? "type"] == network_type_data {
 			
 				var e_data = {};
 			
-				if (e_type == effecttype.boost || e_type == effecttype.slow) e_data = {multiplier: buffer_read(buff, buffer_u16)/100};
-			
-				show_debug_message("speedy speed!");
+				if (e_type == EFFECT.ACCELERATION || e_type == EFFECT.SLOW) e_data = {multiplier: buffer_read(buff, buffer_u16)/100};
 			
 				add_effect(e_type, e_duration, e_data, p);
 			
@@ -414,61 +451,81 @@ if async_load[? "type"] == network_type_data {
 				}
 				break;
 				
-			case SERVER_RESPONSE.ENTITY_UPDATE:
+			case SERVER_RESPONSE.ENTITY_CREATE:
 		
 			{
 				
 				var ind = buffer_read(buff, buffer_u16);
-				var ownerID = string(buffer_read(buff, buffer_u16));
+				var ownerID = buffer_read(buff, buffer_u16);
 				var __ID = buffer_read(buff, buffer_u16);
-				var temp_x = buffer_read(buff, buffer_s32)/100;
-				var temp_y = buffer_read(buff, buffer_s32)/100;
+				var _x = buffer_read(buff, buffer_s32)/100;
+				var _y = buffer_read(buff, buffer_s32)/100;
 				
-				var hasPhysicsComponent = buffer_read(buff, buffer_u8);
 				var mov_x = buffer_read(buff, buffer_s32)/100;
 				var mov_y = buffer_read(buff, buffer_s32)/100;
 				
-				var hasHealthComponent = buffer_read(buff, buffer_u8);
 				var hp = buffer_read(buff, buffer_u32);
 				var armor = buffer_read(buff, buffer_u8)/100;
 				
+				var life = buffer_read(buff, buffer_u8);
+				
 				var params = [];
 				for(var i = 0; i < entityParameterLimit; i++){
-					array_push(params, buffer_read(buff, buffer_s32)/100);	
+					array_push(params, buffer_read(buff, buffer_s32)/100);
+					show_debug_message(params[i]);
+				}
+			
+				entity_create(ind, ownerID, __ID, _x, _y,
+				mov_x, mov_y, hp, armor, life, params);
+			
+				break;
+		
+			}
+			
+			case SERVER_RESPONSE.ENTITY_UPDATE:
+		
+			{
+			
+				var ownerID = buffer_read(buff, buffer_u16);
+				var __ID = buffer_read(buff, buffer_u16);
+				
+				var ent = noone;
+				for(var i = 0; i < instance_number(obj_entity); i++){
+					var cEnt = instance_find(obj_entity, i);
+					if (cEnt.ID == __ID) {
+						ent = cEnt;
+						break;
+					}
 				}
 				
-				var exists = false;
-				var already = 0;
-				for(var j = 0; j < instance_number(obj_entity); j++){
+				if (ent == noone) break;
+				
+				var _x = buffer_read(buff, buffer_s32)/100;
+				var _y = buffer_read(buff, buffer_s32)/100;
+				
+				var mx = buffer_read(buff, buffer_s32)/100;
+				var my = buffer_read(buff, buffer_s32)/100;
+				
+				if (ownerID != global.playerid) {
+				
+					ent._x = _x;
+					ent._y = _y;
+				
+					ent.mx = mx;
+					ent.my = my;
 					
-					already = instance_find(obj_entity, j);
-					if already.ID == __ID {
-						exists = true;
-						break;	
+				}
+				
+				ent.hp = buffer_read(buff, buffer_u32);
+				ent.armor = buffer_read(buff, buffer_u8)/100;
+				
+				if (ownerID != global.playerid) {
+				
+					for(var i = 0; i < entityParameterLimit; i++){
+						ent.parameters[i] = buffer_read(buff, buffer_s32)/100;
 					}
 					
 				}
-				
-				if !exists {
-					
-					entity_create(ind, ownerID, __ID, temp_x, temp_y,
-					hasPhysicsComponent ? new EntityPhysicsComponent(new Vector2(mov_x, mov_y)) : undefined,
-					hasHealthComponent ? new EntityHealthComponent(hp, armor) : undefined,
-					params);
-					
-				} else {
-				
-					if ownerID == global.playerid break;
-				
-					already.physicsComponent = hasPhysicsComponent ? new EntityPhysicsComponent(new Vector2(mov_x, mov_y)) : undefined;
-					already.healthComponent = hasHealthComponent ? new EntityHealthComponent(hp, armor) : undefined;
-					already.x = temp_x;
-					already.y = temp_y;
-					already.ownerID = ownerID;
-					already.parameters = params;
-				
-				}
-				
 			
 				break;
 		
@@ -478,8 +535,6 @@ if async_load[? "type"] == network_type_data {
 			{
 				
 				var entityID = buffer_read(buff, buffer_u16);
-				
-				show_debug_message(string(entityID) + " is being destroyed!");
 				
 				for(var j = 0; j < instance_number(obj_entity); j++){
 				

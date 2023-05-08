@@ -6,13 +6,21 @@ game_set_speed(60, gamespeed_fps);
 view_set_visible(1, false);
 view_set_visible(0, true);
 
-
+show_rig = false;
 
 clicked_scale = 1;
 
-sprite = base_character_kenn_attempt;
+sprite = base_character_kenn;
 
 pos = [];
+
+presets = [
+	[0, 1, "Kenn"],
+	[1, 2, "Gramin"],
+	[2, 3, "Lenya"],
+	[3, 4, "Masr"]
+]
+
 
 function pop_message(msg){
 
@@ -29,6 +37,8 @@ global.selected_keyframe = 0;
 global.playing = false
 
 global.selected_bone = 0
+
+global.hovered = -1;
 
 global.boneSetup = false
 

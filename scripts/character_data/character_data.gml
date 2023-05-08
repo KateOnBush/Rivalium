@@ -7,7 +7,8 @@ function setupCharacterData(){
 	var characters = [
 		character_Kenn(),
 		character_Gramin(),
-		character_Lenya()
+		character_Lenya(),
+		character_Masr()
 		]
 	
 	return characters;

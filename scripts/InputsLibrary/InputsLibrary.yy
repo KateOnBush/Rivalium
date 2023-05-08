@@ -5,7 +5,7 @@
   "isCompatibility": false,
   "isDnD": false,
   "parent": {
-    "name": "Game Logic",
-    "path": "folders/Game Logic.yy",
+    "name": "libraries",
+    "path": "folders/Game Logic/libraries.yy",
   },
 }

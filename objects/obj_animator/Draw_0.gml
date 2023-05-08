@@ -2,6 +2,42 @@
 // You can write your code in this editor
 //350,200
 
+for(var i = 0; i < array_length(global.animation); i++){
+
+	var key = global.animation[i];
+	if array_length(key) < array_length(empty_frame(sprite)) {
+		key = empty_frame(sprite);	
+	} else {
+		for(var j = 0; j < array_length(key) - 4; j++){
+			var bon = key[j];
+			if array_length(bon) < array_length(empty_bone()) {
+				bon = empty_bone();	
+			}
+		}
+	
+	}
+
+}
+
+window_set_cursor(cr_default)
+
+var ww = room_width, hh = room_height;
+
+var dep = 16, d = 46, xs = 16, w = 320, h = 42;
+
+var tx = room_width / 2 + (room_width - 1280)/4, ty = room_height - 48 - 32,
+	tw = 1280, th = 96;
+	
+var SCALE = 5, EDx = w + xs + 32, EDy = 32, EDx2 = room_width - 52, EDy2 = room_height - th - 64 - 32;
+
+var isInEditor = is_between(EDx, mouse_x, EDx2, true) && is_between(EDy, mouse_y, EDy2, true);
+
+draw_set_color(c_gray)
+draw_set_alpha(0.4)
+draw_rectangle(0, hh - 64 - 96, ww, hh, false);
+draw_set_alpha(1)
+
+
 function update_frame(){
 
 	currentframe = global.animation[global.selected_keyframe];
@@ -11,51 +47,60 @@ function update_frame(){
 var midx = sprite_get_width(sprite)/2;
 var midy = sprite_get_height(sprite)/2;
 
-var he = ["Linear", "Quadratic", "Back Ease", "Exponential"];
-
-var bon = ["Start boning", "Bone parent", "Finish Boning"];
+var he = ["Lin.", "Quad.", "Back.", "Expo."];
 
 draw_set_font(font0)
-var dep = 5;
-var d = 20;
-var addk = draw_button_simple(10,10+dep,40,20+dep,"+")
-var delk = draw_button_simple(60,10+dep,90,20+dep,"-")
-var dupk = draw_button_simple(110,10+dep,140,20+dep,"++")
-dep+=d;
+
 //[ [ -10,-16,7 ],[ -10,-3,0 ],[ -6,8,8 ],[ -6,17,2 ],[ 2,8,8 ],[ 3,18,4 ],[ 2,-22,7 ],[ 1,-4,8 ],[ 0,5,-1 ],[ 8,-4,10 ],[ 7,-16,7 ] ]
-var saveanim = draw_button_simple(10,10+dep,70,20+dep,"Save .anim")
-var openanim = draw_button_simple(80,10+dep,140,20+dep,"Open .anim")
+
+var boning = draw_button_simple(xs, dep, xs + w, dep + h, global.boneSetup == 0 ? "Animation mode" : "Rig mode", 0, true);
 dep+=d;
-var playanim = draw_button_simple(10,10+dep,140,20+dep,global.playing ? "Stop" : "Play")
+var bonejson = draw_button_simple(xs, dep, xs + w * .48, dep + h, "Import rig")
+var exportrig = draw_button_simple(xs + w * .52, dep, xs + w, dep + h, "Export rig")
+dep+=1.5*d;
+var saveanim = draw_button_simple(xs, dep, xs + w * .48, dep + h, "Save")
+var openanim = draw_button_simple(xs + w * .52, dep, xs + w, dep + h, "Open")
 dep+=d;
-var setquad = draw_button_simple(10,10+dep,140,20+dep,"Type: " + he[global.animation[global.selected_keyframe][array_length(global.animation[global.selected_keyframe])-2]]);
+var importtext = draw_button_simple(xs, dep, xs + w * .48, dep + h, "Paste JSON");
+var copycode = draw_button_simple(xs + w * .52, dep, xs + w, dep + h, "Copy JSON");
 dep+=d;
-var setspd = draw_button_simple(10,10+dep,140,20+dep,"Set speed")
+
+var t = 0, dis = (w - 4)/3;
+var sbones = draw_button_simple(xs + t, dep, xs + t + dis, dep + h, animator_rig, 0, !show_bones) || keyboard_check_released(ord("B"));
+t+=dis + 2;
+var showrig = draw_button_simple(xs + t, dep, xs + t + dis, dep + h, animator_rig, 1, show_rig) || keyboard_check_released(ord("R"));
+t+=dis + 2;
+var sorigin = draw_button_simple(xs + t, dep, xs + t + dis, dep + h, animator_rig, 2, show_org) || keyboard_check_released(ord("O"));
+
+dep += d;
+var changechar = draw_button_simple(xs, dep, xs + w, dep + h, "Load character preset");
+dep+=1.5*d;
+var resetbon = draw_button_simple(xs, dep, xs + w, dep + h, "Reset bone")
+dep += d;
+var resetbonepos = draw_button_simple(xs, dep, xs + w * .48, dep + h, "Reset pos.")
+var resetbonescale = draw_button_simple(xs + w * .52, dep, xs + w, dep + h, "Reset scale")
 dep+=d;
-var sbones = draw_button_simple(10,10+dep,70,20+dep,show_bones ? "Hide Bon." : "Show Bon.") || keyboard_check_released(ord("B"));
-var sorigin = draw_button_simple(80,10+dep,140,20+dep,show_org ? "Hide Or." : "Show Or.") || keyboard_check_released(ord("O"));
+var resetpos = draw_button_simple(xs, dep, xs + w, dep + h, "Reset position")
 dep+=d;
-var boning = draw_button_simple(10,10+dep,70,20+dep,bon[global.boneSetup]);
-var bonejson = draw_button_simple(80,10+dep,140,20+dep, "JSON Bone");
+var resetx = draw_button_simple(xs, dep, xs + w * .48, dep + h, "Reset X")
+var resety = draw_button_simple(xs + w * .52, dep, xs + w, dep + h, "Reset Y")
 dep+=d;
-var resetpos = draw_button_simple(10,10+dep,140,20+dep,"Reset position")
+var resetbones = draw_button_simple(xs, dep, xs + w, dep + h, "Reset keyframe")
 dep+=d;
-var resetx = draw_button_simple(10,10+dep,70,20+dep,"Reset X")
-var resety = draw_button_simple(80,10+dep,140,20+dep,"Reset Y")
-dep+=d;
-var resetbones = draw_button_simple(10,10+dep,140,20+dep,"Reset keyframe")
-dep+=d;
-var resetbon = draw_button_simple(10,10+dep,70,20+dep,"Reset bone")
-var resetbonepos = draw_button_simple(80,10+dep,105,20+dep,"Pos")
-var resetbonescale = draw_button_simple(115,10+dep,140,20+dep,"Scale")
-dep+=d;
-var importtext = draw_button_simple(10,10+dep,70,20+dep, "Paste JSON");
-var copycode = draw_button_simple(80,10+dep,140,20+dep, "Copy JSON");
-dep+=d;
-var resetani = draw_button_simple(10,10+dep,140,20+dep,"Reset Animation")
-dep+=d;
-var changechar = draw_button_simple(10,10+dep,140,20+dep,"Change Character")
-var bonebase = draw_button_simple(150,10+dep,150+130,20+dep,"Pre-defined Bone Base")
+var resetani = draw_button_simple(xs, dep, xs + w, dep + h, "Reset animation")
+dep+=1.2*d;
+
+var t = 0, dis = (w - 6)/4;
+var addk = draw_button_simple(xs + t, dep, xs + t + dis, dep + h * 1.2, animator_add, 0)
+t+=dis + 2;
+var delk = draw_button_simple(xs + t, dep, xs + t + dis, dep + h * 1.2, animator_add, 1)
+t+=dis + 2;
+var dupk = draw_button_simple(xs + t, dep, xs + t + dis, dep + h * 1.2, animator_add, 2)
+t+=dis + 2;
+var setquad = draw_button_simple(xs + t, dep, xs + t + dis, dep + h * 1.2, animator_add, 3);
+
+var playanim = draw_button_simple(xs, ty - th/2, xs + 120, ty - th/2 + 48, animator_play, global.playing)
+var setspd = draw_button_simple(xs, ty + th/2 - 48, xs + 120, ty + th/2, "x" + string(animspd));
 
 var setdepth = keyboard_check_released(ord("D"));
 
@@ -152,30 +197,6 @@ if resetbonepos and !global.playing {
 
 }
 
-if bonebase and !global.playing {
-
-	var yes = get_integer("Bone base number:", 1);
-	
-	try {
-		
-		var _base = base_character(yes);
-		
-		var t = _base[0];
-		
-		if array_length(_base) != sprite_get_number(sprite) throw "";
-		
-		base = _base;
-		temporary_base = base;
-		
-		
-		
-	} catch(err) {
-	
-		show_message_async("Invalid number");
-	
-	}
-
-}
 
 if bonejson {
 
@@ -208,16 +229,18 @@ if sorigin show_org = !show_org;
 
 if changechar and !global.playing {
 
-	var yes = get_integer("Character number: (THIS WILL RESET THE ANIMATION AND DELETE UNSAVED DATA)", 0);
-	
-	if yes != undefined {
+	dropdown_create(array_map(presets, function(e){ return e[2] }), function(n){
 	
 		try{
+			
+			var yes = n;
+	
+			var charid = presets[yes][0], baseid = presets[yes][1];
 	
 			var sex = setupCharacterData()[yes];
-			sprite = sex.sprite
-			base = empty_bone_base(sprite);
-			temporary_base = empty_bone_base(sprite);
+			sprite = sex.sprite;
+			base = base_character(baseid) ?? empty_bone_base(sprite);
+			temporary_base = base_character(baseid) ?? empty_bone_base(sprite);
 			currentframe = empty_frame(sprite);
 			pos = [];
 			
@@ -228,8 +251,8 @@ if changechar and !global.playing {
 			
 		}catch(err){ show_message_async("Invalid character")};
 	
-	}
-
+	})
+	
 }
 
 if importtext and !global.playing {
@@ -316,20 +339,16 @@ if keyboard_check_released(vk_escape) and global.boneSetup>0{
 
 for(var l = 0; l < sprite_get_number(sprite); l++){
 
-	var t = draw_button_simple(390, 10+l*26, 390+24, 34+l*26, "");
+	var t = draw_button_simple(ww - 50, EDy + 50 * l, ww - 2, 48 + EDy + l * 50, "", 0, global.selected_bone == l);
 	
-	if global.selected_bone == l {
-		
-		draw_set_color(c_green);
-		draw_rectangle(390, 10+l*26, 390+24, 34+l*26, false);
-		draw_set_color(c_black)
-	
-	}
-	draw_sprite_ext(sprite, l, 390+12, 22+l*26, 0.75, 0.75, 0, c_white, 1);
+	draw_sprite_ext(sprite, l, ww - 50 + 24, EDy + 50 * l + 24, 1, 1, 0, c_white, 1);
 	
 	draw_set_color(c_red)
 	draw_set_valign(fa_bottom)
 	draw_set_halign(fa_left);
+	if array_length(global.animation[global.selected_keyframe]) < 4 {
+		show_debug_message(global.animation);
+	}
 	var _dep = global.animation[global.selected_keyframe][l][4];
 	draw_text_transformed(390+2, 34+l*26-2, _dep > 0 ? string(_dep) : "", 0.6, 0.6, 0);
 	draw_set_color(c_black);
@@ -457,7 +476,7 @@ if saveanim and !global.playing and global.boneSetup = 0 {
 	var file = get_save_filename("animation file|*.anim","")
 	if file!=""{
 	
-		var str = json_stringify(global.animation);
+		var str = base64_encode(json_stringify(global.animation));
 		var f = file_text_open_write(file);
 		file_text_write_string(f, str);
 		file_text_close(f);
@@ -477,11 +496,35 @@ if openanim and !global.playing and global.boneSetup = 0 {
 			
 			var t = json_parse(str);
 			if typeof(t) != "array" throw "nig";
+			for(var i = 0; i < array_length(t); i++){
+				var frame = t[i];
+				for(var j = 0; j < array_length(frame)-4; j++){
+					var bone = frame[j];
+					if (array_length(bone) < 6) {
+						for(var s = array_length(bone); s < 6; s++){
+							bone[s] = empty_bone()[s];
+						}
+					}
+				}
+			}
 			global.animation = t;
+			global.selected_keyframe = 0;
+			global.selected_bone = 0;
 			
 		}catch(err){
 		
-			show_message_async("Corrupted file");
+			try {
+				var t = json_parse(base64_decode(str));
+				global.animation = t;
+				global.selected_keyframe = 0;
+				global.selected_bone = 0;
+				
+			} catch(err){
+			
+				show_message_async("Corrupted file");
+			
+			}
+			
 		
 		}
 	}
@@ -569,17 +612,20 @@ if dupk and !global.playing and global.boneSetup = 0{
 	update_frame();
 
 }
+draw_sprite(keyframe_timeline,0,room_width / 2 + (room_width - 1280)/4, room_height - 48 - 32)
 
-draw_text(10,10,fps);
 
-draw_sprite(animator_keyframes,0,20,300)
-for(var s = 5; s<100; s+=5){
+for(var s = 0; s<50; s+=1){
 
 	draw_set_color(c_white)
-	var add = 0;
-	if s = 50 add+=10;
-	if s mod 10 == 0 add+=5;
-	draw_line(20+s*3.6,300,20+s*3.6,310+add)
+	draw_set_alpha(0.2)
+	var add = 0.2;
+	if s mod 2 == 0 add += 0.2;
+	if s mod 10 == 0 add += 0.2;
+	if s mod 50 == 0 add += 0.1;
+	draw_line(tx + tw * s/100, ty - add * th/2, tx + tw * s/100, ty + add * th/2);
+	draw_line(tx - tw * s/100, ty - add * th/2, tx - tw * s/100, ty + add * th/2);
+	draw_set_alpha(1);
 
 }
 
@@ -588,12 +634,15 @@ for(var k=0; k<array_length(global.animation); k++){
 
 	var keyframe = global.animation[k]
 	var keyframe_t = keyframe[array_length(keyframe)-1];
-	var ind = global.animation[k][array_length(global.animation[k])-2]*2;
-	if global.selected_keyframe == k ind++;
+	var key = global.selected_keyframe == k;
+	var kind = global.animation[k][array_length(global.animation[k])-2];
 	
-	draw_sprite(animator_keyframes,ind+1,20+360*keyframe_t,300)
+	var kfx = tx - tw/2 + tw * keyframe_t, kfy = ty;
 	
-	if mouse_check_button_pressed(mb_left) and is_between(20+360*keyframe_t,mouse_x,20+360*keyframe_t+8,true) and is_between(300,mouse_y,348,true){
+	draw_sprite(animator_keyframes,key, kfx, kfy);
+	draw_sprite(animator_keyframes_styles,kind, kfx, kfy);
+	
+	if mouse_check_button_pressed(mb_left) and is_between(kfx - 12, mouse_x, kfx + 12, true) and is_between(kfy - 48, mouse_y, kfy + 48,true){
 	
 		global.selected_keyframe = k;
 		moveTemp = 10;
@@ -610,7 +659,7 @@ for(var k=0; k<array_length(global.animation); k++){
 		
 		var time = key[array_length(key)-1];
 		
-		time = (mouse_x-20)/360
+		time = (mouse_x - (tx - tw/2))/tw;
 		time = clamp(time,0.01,0.99)
 		
 		if global.selected_keyframe>0{
@@ -635,12 +684,12 @@ for(var k=0; k<array_length(global.animation); k++){
 
 }
 
-if global.playing draw_sprite(animator_keyframes,9,20+animfr*360,300);
+if global.playing draw_sprite(animator_keyframes,2, tx - tw/2 + tw * animfr, ty);
 
 moveTemp = max(moveTemp - 1, 0);
 
 
-if !global.playing and is_between(x-50,mouse_x,x+50,true) and is_between(y-50,mouse_y,y+50,true) and global.boneSetup == 0{
+if !global.playing and isInEditor and global.boneSetup == 0{
 	
 	var last = array_length(global.animation[global.selected_keyframe])-1;
 	
@@ -651,8 +700,8 @@ if !global.playing and is_between(x-50,mouse_x,x+50,true) and is_between(y-50,mo
 		move_coords=[mouse_x,mouse_y]
 	} else if mouse_check_button(mb_right){
 	
-		global.animation[global.selected_keyframe][last-3] = init_coords[0] + mouse_x - move_coords[0];
-		global.animation[global.selected_keyframe][last-2] = init_coords[1] + mouse_y - move_coords[1];
+		global.animation[global.selected_keyframe][last-3] = init_coords[0] + (mouse_x - move_coords[0])/SCALE;
+		global.animation[global.selected_keyframe][last-2] = init_coords[1] + (mouse_y - move_coords[1])/SCALE;
 		
 		draw_sprite_ext(animator_rotator, 3, mouse_x, mouse_y, 0.5, 0.5, 0, c_white, 0.8);
 		
@@ -661,7 +710,7 @@ if !global.playing and is_between(x-50,mouse_x,x+50,true) and is_between(y-50,mo
 	
 	}
 
-} else if global.boneSetup == 1 and is_between(x-50,mouse_x,x+50,true) and is_between(y-50,mouse_y,y+50,true) {
+} else if global.boneSetup == 1 and isInEditor {
 
 	if mouse_check_button_pressed(mb_left){
 		move_coords=[mouse_x,mouse_y]
@@ -673,8 +722,8 @@ if !global.playing and is_between(x-50,mouse_x,x+50,true) and is_between(y-50,mo
 	} else if mouse_check_button(mb_left){
 	
 	
-		temporary_base[global.selected_bone][0] = init_coords[0] + mouse_x - move_coords[0];
-		temporary_base[global.selected_bone][1] = init_coords[1] + mouse_y - move_coords[1];
+		temporary_base[global.selected_bone][0] = init_coords[0] + (mouse_x - move_coords[0])/SCALE;
+		temporary_base[global.selected_bone][1] = init_coords[1] + (mouse_y - move_coords[1])/SCALE;
 		
 		draw_sprite_ext(animator_rotator, 4, mouse_x, mouse_y, 0.5, 0.5, 0, c_white, 0.8);
 		
@@ -697,8 +746,8 @@ if !global.playing and is_between(x-50,mouse_x,x+50,true) and is_between(y-50,mo
 	
 		for(var i = 0; i < array_length(temporary_base); i++){
 		
-			temporary_base[i][0] = init_coord_list[i][0] + mouse_x - move_coords[0];
-			temporary_base[i][1] = init_coord_list[i][1] + mouse_y - move_coords[1];
+			temporary_base[i][0] = init_coord_list[i][0] + (mouse_x - move_coords[0])/SCALE;
+			temporary_base[i][1] = init_coord_list[i][1] + (mouse_y - move_coords[1])/SCALE;
 		
 		}
 		
@@ -720,13 +769,23 @@ for(var i = 0; i < sprite_get_number(sprite); i++){
 	_sortedframe[i] = i;
 }
 
+draw_set_color(c_dkgrey)
+draw_set_alpha(0.4)
+draw_rectangle(EDx, EDy, EDx2, EDy2, false)
+
+draw_set_alpha(.9)
+draw_set_color(c_red)
+draw_line(EDx,y + (79-48) * SCALE, EDx2,y + (79-48) * SCALE)
+draw_set_alpha(1)
+
+
 function bone_depth_sorting(bone1, bone2){
 
-	return currentframe[bone2][4] - currentframe[bone1][4];
+	return currentframe[bone2][4] - currentframe[bone1][4];	
 
 }
 
-array_sort(_sortedframe, bone_depth_sorting)
+_sortedframe = array_bubble_sort(_sortedframe, bone_depth_sorting)
 
 for(var e = array_length(_sortedframe)-1; e >= 0;e--){
 
@@ -739,7 +798,7 @@ for(var e = array_length(_sortedframe)-1; e >= 0;e--){
 	
 	var _bone = base[i]
 	
-	var _parent = [], _parent_b = 0;
+	var _parent = [], _parent_b = base[i][2];
 	
 	coords = calculate_bone_position(base, currentframe, i);
 	
@@ -749,21 +808,58 @@ for(var e = array_length(_sortedframe)-1; e >= 0;e--){
 
 	selected+=0.001;
 	
-	var scale = currentframe[i][1];
+	var _t = 1;
+	if (global.hovered == i) {
+		_t = 1.2;
+		window_set_cursor(cr_handpoint);	
+	}
 	
-	draw_sprite_ext(sprite,i,x+pos[i][0], y+pos[i][1], 1, scale, pos[i][2],c_white,(show_bones and !(global.selected_bone == i)) ? 0.2 : 1 )
+	var yscale = currentframe[i][1] * SCALE * _t;
+	var xscale = currentframe[i][5] * SCALE * _t;
+	
+	draw_sprite_ext(sprite,i,x+pos[i][0] * SCALE, y+pos[i][1] * SCALE, xscale, yscale, pos[i][2],c_white,(show_bones and !(global.selected_bone == i)) ? 0.2 : 1 )
 	
 	gpu_set_blendmode_ext(bm_one, bm_one);
-	if global.selected_bone == i draw_sprite_ext(sprite,i,x+pos[i][0], y+pos[i][1],1, scale,pos[i][2],c_white,1) 
+	if global.selected_bone == i or global.hovered == i draw_sprite_ext(sprite,i,x+pos[i][0] * SCALE, y+pos[i][1] * SCALE, xscale, yscale,pos[i][2],c_white,1) 
 	gpu_set_blendmode(bm_normal)
 
+	
+}
+
+if showrig show_rig = !show_rig;
+
+if show_rig {
+	
+	for(var i = 0; i < array_length(base); i++){
+
+		var _bone_i = i;
+		var _parent_i = base[i][2];
+	
+		if (_parent_i != -1){
+	
+			var bx = pos[_bone_i][0], by = pos[_bone_i][1],
+				px = pos[_parent_i][0], py = pos[_parent_i][1];
+			
+			var _dir = point_direction(px, py, bx, by);
+			var _dist = point_distance(px, py, bx, by) * SCALE;
+		
+			draw_sprite_ext(rig_bone, 0, x + px * SCALE, y + py * SCALE, 2.5, _dist/28, _dir - 90, c_white, 0.8);
+		
+		}
+
+	}
+}
+
+if global.hovered != -1 && mouse_check_button_pressed(mb_left){
+
+	global.selected_bone = global.hovered;
 	
 }
 
 var e = global.selected_bone;
 var fr = global.animation[global.selected_keyframe];
 
-if !global.playing and global.boneSetup = 0 and is_between(x-100,mouse_x,x+100,true) and is_between(y-100,mouse_y,y+100,true) {
+if !global.playing and global.boneSetup = 0 and isInEditor {
 
 	if mouse_check_button_pressed(mb_left) {
 	
@@ -782,12 +878,12 @@ if !global.playing and global.boneSetup = 0 and is_between(x-100,mouse_x,x+100,t
 		if controlled == 1 {
 		
 			draw_set_color(c_black)
-			draw_line(x+pos[e][0], y+pos[e][1],mouse_x,mouse_y)
-			draw_sprite_ext(animator_rotator,0,x+pos[e][0], y+pos[e][1],1,1,fr[global.selected_bone][0],c_white,0.2)
+			draw_line(x+pos[e][0] * SCALE, y+pos[e][1] * SCALE,mouse_x,mouse_y)
+			draw_sprite_ext(animator_rotator,0,x+pos[e][0] * SCALE, y+pos[e][1] * SCALE,1,1,fr[global.selected_bone][0],c_white,0.4)
 		
 			global.animation[global.selected_keyframe][global.selected_bone][0] = 
-			starting_angle + angle_difference(point_direction(x+pos[e][0], y+pos[e][1],mouse_x,mouse_y),
-			point_direction(x+pos[e][0], y+pos[e][1],clicked_coords[0],clicked_coords[1]));
+			starting_angle + angle_difference(point_direction(x+pos[e][0] * SCALE, y+pos[e][1] * SCALE, mouse_x, mouse_y),
+			point_direction(x+pos[e][0] * SCALE, y+pos[e][1] * SCALE,clicked_coords[0],clicked_coords[1]));
 		
 			update_frame();
 		
@@ -795,11 +891,15 @@ if !global.playing and global.boneSetup = 0 and is_between(x-100,mouse_x,x+100,t
 		
 			var vecs = new Vector2(0, 0);
 			
-			vecs.polar(pos[e][2]-90, 1);
-			
 			var vec2 = new Vector2(mouse_x - x - pos[e][0], mouse_y - y - pos[e][1]);
 			
 			var vec_orig = new Vector2(clicked_coords[0] - x - pos[e][0], clicked_coords[1] - y - pos[e][1]);
+			
+			var hscale = true;
+			
+			if (abs(angle_difference(vec_orig.dir(), pos[e][2])) < 45) hscale = false;
+			
+			vecs.polar(pos[e][2] - (hscale ? 90 : 0), 1);
 			
 			var dot = vec2.dot(vecs);
 			
@@ -809,7 +909,7 @@ if !global.playing and global.boneSetup = 0 and is_between(x-100,mouse_x,x+100,t
 			
 			vecs = vecs.multiply(dot);
 			
-			global.animation[global.selected_keyframe][global.selected_bone][1] = clicked_scale * dot/dot2;
+			global.animation[global.selected_keyframe][global.selected_bone][hscale ? 1 : 5] = clicked_scale * dot/dot2;
 			
 			draw_line(x+pos[e][0], y+pos[e][1], x+pos[e][0] + vecs.x, y+pos[e][1] + vecs.y);
 			
@@ -820,8 +920,8 @@ if !global.playing and global.boneSetup = 0 and is_between(x-100,mouse_x,x+100,t
 		
 		} else if controlled == 3 {
 		
-			global.animation[global.selected_keyframe][global.selected_bone][2] = mouse_x - clicked_coords[0] + starting_offset[0];
-			global.animation[global.selected_keyframe][global.selected_bone][3] = mouse_y - clicked_coords[1] + starting_offset[1];
+			global.animation[global.selected_keyframe][global.selected_bone][2] = (mouse_x - clicked_coords[0])/SCALE + starting_offset[0];
+			global.animation[global.selected_keyframe][global.selected_bone][3] = (mouse_y - clicked_coords[1])/SCALE + starting_offset[1];
 			
 			draw_sprite_ext(animator_rotator, 4, mouse_x, mouse_y, 0.5, 0.5, 0, c_white, 0.8);
 			
@@ -837,12 +937,50 @@ if show_org draw_sprite_ext(animator_rotator, 2, x, y, 0.6, 0.6, 0, c_white, 0.8
 
 global.animation[0][array_length(global.animation[0])-1] = 0;
 
-draw_set_color(c_black)
-draw_rectangle(x-100,y-100,x+100,y+100,true)
 
 draw_set_valign(fa_middle);
 draw_set_halign(fa_center);
-draw_text_ext_transformed(x, y - 70, global.message, 20, 300, 0.7, 0.7, 0);
+draw_set_color(c_white)
+draw_set_alpha(1)
+draw_set_font(font_animator)
+draw_text_ext_transformed(x, y - 150, global.message, 20, 300, 1.4, 1.4, 0);
 
-draw_set_color(c_red)
-draw_line(x-100,y+79-48,x+100,y+79-48)
+if instance_number(clickable_bone) != array_length(base) {
+
+	with (clickable_bone) {
+		instance_destroy();
+	}
+	
+	for(var i = 0; i < array_length(base); i++){
+		var o = instance_create_depth(x, y, -10, clickable_bone);
+		o.bonid = i;
+	}
+
+}
+global.hovered = -1;
+
+for(var j = 0; j < instance_number(clickable_bone); j++){
+
+	var c = instance_find(clickable_bone, j);
+	var bon = c.bonid;
+	
+	with(c) {
+		sprite_collision_mask(other.sprite, true, bboxmode_automatic, 0, 0, 96, 96, bboxkind_precise, 0)
+	}
+	
+	c.x = x + pos[bon][0] * SCALE;
+	c.y = y + pos[bon][1] * SCALE;
+	
+	c.image_angle = pos[bon][2];
+	c.sprite_index = sprite;
+	c.image_index = bon;
+	
+	
+	c.image_yscale = currentframe[bon][1] * SCALE;
+	c.image_xscale = currentframe[bon][5] * SCALE;
+	
+	if (collision_point(mouse_x, mouse_y, c, true, true)) {
+		global.hovered = bon;	
+	}
+
+}

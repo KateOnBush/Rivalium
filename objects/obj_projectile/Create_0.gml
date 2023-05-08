@@ -1,6 +1,8 @@
 /// @description Insert description here
 // You can write your code in this editor
 
+bounceFriction = 0.7;
+hasGrav = true;
 ID = 0;
 
 px = 0;

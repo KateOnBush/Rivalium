@@ -1,6 +1,21 @@
 // @description Insert description here
 // You can write your code in this editor 
 
+invisible = false;
+invisible_blend = 1;
+free_blend = 0;
+
+sortedframe = [];
+rotation_offset = 0;
+length_before_dash = 0;
+
+show_debug_overlay(true);
+
+viewmat = matrix_build_lookat(0, 0, 0, 0, 0, 0, 0, 1, 0);
+projmat = matrix_build_projection_perspective_fov(90, 16/9, 3, 8000);
+
+playerInitShader();
+
 //INPUTS
 
 input_left = get_input(input.keyboard, ord("Q"));
@@ -21,7 +36,10 @@ input_ultimate = get_input(input.keyboard, ord("X"));
 rec_mx = 0;
 rec_my = 0;
 
-//----------
+
+state = PLAYER_STATE.FREE;
+
+slide_side = 1;
 
 
 
@@ -117,94 +135,20 @@ p = 0;
 surf_refresh_rate = 0;
 surf_behind = -1;
 
-function perform_flip(_forward, _start){
-
-	flipping = true;
-	flipping_forward = _forward;
-	flip = _start;
-	
-	if global.connected {
-	
-		var buff = buffer_create(global.dataSize, buffer_fixed, 1);
-		buffer_seek(buff, buffer_seek_start, 0);
-		buffer_write(buff, buffer_u8, SERVER_REQUEST.FLIP);
-		buffer_write(buff, buffer_u8, _forward);
-		buffer_write(buff, buffer_u8, round(_start*100))
-		network_send_raw(obj_network.server, buff, buffer_get_size(buff));
-	
-	}
-
-}
-
 shoot_dir = 0;
 
 animation_blend_speed = 0.2;
-
-function play_animation(animation, speed, type, bones = [], priority = false, blendspeed = 0.2){
-
-	animation_playing = 1;
-	animation_played_speed = speed;
-	animation_played_prog = 0;
-	animation_played_type = type;
-	animation_played = animation;
-	animation_played_bones = bones;
-	animation_played_priority = priority;
-	animation_blend_speed = blendspeed;
-
-}
-
-function setup_character(n){
-	
-	character_id = n;
-	char = characters[character_id-1];
-	spd = char.speed;
-	sprite = char.sprite
-	offset = [sprite_get_xoffset(sprite),sprite_get_yoffset(sprite)]
-	currentframe = animation_get_frame(char.anims.animation_idle, 0);
-	base = char.base;
-	
-}
-
-function step_animation(){
-
-	if animation_played_type = animation_type_full {
-	
-		currentframe = animation_blend(currentframe, animation_get_frame(animation_played, animation_played_prog), animation_playing_blend);
-		
-	} else if animation_played_type = animation_type_partial{
-	
-		currentframe = animation_blend_partial(currentframe, animation_get_frame(animation_played, animation_played_prog), animation_playing_blend, animation_played_bones);
-	
-	}
-
-	if animation_played_prog >= 0.99 {
-	
-		animation_playing = 0;
-		animation_played_prog = 0.99;
-	
-	}
-
-}
 
 ssx = 0;
 ssy = 0;
 ftimer = 0;
 screenshake = {
 	
-		intensity: 0,
-		frequency: 0,
-		duration: 0
+	intensity: 0,
+	frequency: 0,
+	duration: 0
 	
-	}
-
-/*backgroundlay = layer_create(50)
-background = layer_background_create(backgroundlay, Sprite27);
-bg = {
-
-	width: sprite_get_width(Sprite27),
-	height: sprite_get_height(Sprite27)
-
-}*/
+}
 
 mesh = penguin_load("COOLSTUFF.derg", global.v_format);
 
@@ -223,36 +167,9 @@ health_blend_red = 0;
 
 char = characters[character_id-1];
 
-ultimatePart = part_system_create();
-ult = part_type_create();
-part_system_depth(ultimatePart, 5)
-
-part_system_automatic_draw(ultimatePart, false)
-part_type_sprite(ult, fire_particle, false, false, true)
-
-lines = part_system_create();
-linepart = part_type_create();
-linethreshold = 0;
-
-show_debug_overlay(true)
-
-part_type_sprite(linepart,line_particle,false,false,false);
-part_type_alpha3(linepart,0, 0, 0)
-part_type_direction(linepart, 0, 360, 0, 0)
-part_type_orientation(linepart, 0, 0, 0, 0, true)
-
-linespeed = part_type_create();
-
-part_type_sprite(linespeed,line_particle,false,false,false);
-part_type_size(linespeed, 0.4, 0.6, 0, 0)
-part_type_color2(linespeed, c_white, c_ltgray)
-part_type_alpha2(linespeed, 0.3, 0)
-
-linespeedblend = 0;
-
-part_system_automatic_draw(lines, false)
-
 filters = [];
+
+wall_side = 0;
 
 function Filter(asprite, adepth, aalpha) constructor{
 
@@ -312,6 +229,7 @@ currentframe = animation_get_frame(char.anims.animation_idle, 0);
 base = char.base;
 
 vel = 0;
+k_move = false;
 
 grounded = 0;
 grounded_blend = 0;
@@ -351,40 +269,6 @@ slide = 0;
 slide_blend = 0;
 slide_cooldown = 0;
 slope_blend = 0;
-
-function cast_ability(a, n){
-
-	with(self){
-
-		switch(a){
-			
-			case 0:
-					
-				char.abilities.basic_attack.cast(n);
-				break;
-					
-			case 1:
-					
-				char.abilities.ability1.cast(n);
-				break;
-					
-			case 2:
-					
-				char.abilities.ability2.cast(n);
-				break;
-					
-			case 3:
-					
-				char.abilities.ultimate.cast(n);
-				break;
-				
-					
-			
-	}
-	
-	}
-
-}
 
 double_jump = false;
 

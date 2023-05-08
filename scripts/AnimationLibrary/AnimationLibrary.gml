@@ -3,7 +3,7 @@
 #macro animation_type_full 0
 #macro animation_type_partial 1
 
-enum framestyle{
+enum framestyle {
 
 	linear,
 	quadratic,
@@ -20,18 +20,18 @@ function empty_bone_base(i){
 
 function empty_bone(){
 
-	return [0, 1 , 0, 0, 0]; //rot, scale, xoffset, yoffset, depth
+	return [0, 1, 0, 0, 0, 1]; //rot, hscale, xoffset, yoffset, depth, wscale
 
 }
 
 function empty_frame(sprite){
 
-	var arr = array_create(sprite_get_number(sprite)+4,empty_bone());
+	var arr = array_create(sprite_get_number(sprite)+4,empty_bone()); //bones
 	
-	arr[array_length(arr)-1] = 0;
-	arr[array_length(arr)-2] = 0;
-	arr[array_length(arr)-3] = 0;
-	arr[array_length(arr)-4] = 0;
+	arr[array_length(arr)-1] = 0; //xoffset
+	arr[array_length(arr)-2] = 0; //yoffset
+	arr[array_length(arr)-3] = 0; //style
+	arr[array_length(arr)-4] = 0; //timestamp
 	
 	return arr;
 	
@@ -63,18 +63,20 @@ function calculate_bone_position(base, frame, n){
 		
 		var _dir = -90;
 		
-		var dot = (bone[0] - parent[0]) * lengthdir_x(1, _dir) + (bone[1] - parent[1]) * lengthdir_y(1, _dir);
+		var _doth = (bone[0] - parent[0]) * lengthdir_x(1, _dir) + (bone[1] - parent[1]) * lengthdir_y(1, _dir),
+			_dotw = (bone[0] - parent[0]) * lengthdir_x(1, _dir + 90) + (bone[1] - parent[1]) * lengthdir_y(1, _dir + 90);
 		
-		dot *= frame[parent_n][1] - 1;
+		var disth = _doth * frame[parent_n][1],
+			distw = _dotw * frame[parent_n][5];
 		
-		var dist = point_distance(parent[0], parent[1], bone[0], bone[1]);
-		var angl = point_direction(parent[0], parent[1], bone[0], bone[1]);
+		var dist = point_distance(0, 0, distw, disth);
+		var angl = point_direction(0, 0, distw, disth);
 		
 		var rot = pos[2] + frame[parent_n][0];
 		
 		return [
-		pos[0] + lengthdir_x(dist, angl + rot) + lengthdir_x(dot, _dir + frame[parent_n][0]) + frame[n][2], 
-		pos[1] + lengthdir_y(dist, angl + rot) + lengthdir_y(dot, _dir + frame[parent_n][0]) + frame[n][3],
+		pos[0] + lengthdir_x(dist, angl + rot) + frame[n][2],
+		pos[1] + lengthdir_y(dist, angl + rot) + frame[n][3],
 		rot
 		]
 		
@@ -152,13 +154,14 @@ function animation_blend(frame1, frame2, pc){
 	for(var p = 0; p < l - 4; p++){
 
 		var d = frame1[p][0] - pc * angle_difference(frame1[p][0], frame2[p][0]);
-		var scale = lerp(frame1[p][1], frame2[p][1], pc);
+		var yscale = lerp(frame1[p][1], frame2[p][1], pc);
 		var xoffset, yoffset, dep;
 		xoffset = lerp(frame1[p][2], frame2[p][2], pc);
 		yoffset = lerp(frame1[p][3], frame2[p][3], pc);
 		var de = frame2[p][4];
+		var xscale = lerp(frame1[p][5], frame2[p][5], pc);
 		
-		nframe[p] = [d, scale, xoffset, yoffset, de];
+		nframe[p] = [d, yscale, xoffset, yoffset, de, xscale];
 			
 			
 	}
@@ -204,3 +207,33 @@ function animation_construct(frames, keytimes, styles){
 
 }
 
+function require_animation_file(path) {
+
+	static loadedAnimations = {};
+	
+	if loadedAnimations[$ path] != undefined {
+	
+		return loadedAnimations[$ path];
+	
+	} else {
+	
+		try {
+	
+			var f = file_text_open_read(path);
+			var str = file_text_read_string(f);
+			
+			loadedAnimations[$ path] = json_parse(base64_decode(str));
+			
+			file_text_close(f);
+			
+			return loadedAnimations[$ path];
+	
+		} catch(err){
+	
+			throw "Unable to load animation file: " + path;
+		
+		}
+		
+	}
+
+}

@@ -80,7 +80,7 @@ if col and spd > 0{
 			dir = o - angle_difference(dir + 180, o);
 			
 			bounce_count++;
-			spd *= 0.7;
+			spd *= bounceFriction;
 		
 		}
 		
@@ -125,8 +125,9 @@ if !collided or bounce {
 	var _x = lengthdir_x(spd, dir);
 	var _y = lengthdir_y(spd, dir);
 
-	dir = point_direction(0, 0, _x, _y+dtime*grav);
-	spd = point_distance(0, 0, _x, _y+dtime*grav); 
+	var _add = hasGrav ? dtime * grav : 0;
+	dir = point_direction(0, 0, _x, _y + _add);
+	spd = point_distance(0, 0, _x, _y + _add); 
 	
 }
 

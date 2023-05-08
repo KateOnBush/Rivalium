@@ -18,8 +18,26 @@ for(var i = 0; i < growbranches; i++){
 	posx += lengthdir_x(s*dist, currentdir);
 	posy += lengthdir_y(s*dist, currentdir);
 	
-	currentdir += angle_difference(parameters[1], parameters[0])*lerpmom;
+	var n = i * 3 / growMaxBranches, rn = floor(n);
+	var stepGrow = 3/growMaxBranches;
+	
+	currentdir += angle_difference(parameters[1 + rn], currentdir)*stepGrow*lerpmom;
 
+}
+
+
+var xx = x, yy = y;
+for(var i = 0; i < 4; i++){
+
+	draw_set_color(c_white);
+	var nxx, nyy;
+	nxx = xx + lengthdir_x(dist * 5, parameters[i]);
+	nyy = yy + lengthdir_y(dist * 5, parameters[i]);
+	draw_line(xx, yy, nxx, nyy)
+	draw_text(xx, yy, i);
+	xx = nxx;
+	yy = nyy;
+	
 }
 
 

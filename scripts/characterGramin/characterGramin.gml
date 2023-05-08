@@ -139,7 +139,7 @@ function character_Gramin(){
 			
 					if !char.abilities.ultimate.active{
 			
-						camera_ultimate_zoom(400, 1/0.3, easeInSixth, 0.4, easeInSixth, 0.4);
+						camera_ultimate_zoom(0.7, 5, easeInSixth, 0.4, easeInSixth, 0.4);
 						return;
 			
 					} else {
@@ -162,7 +162,7 @@ function character_Gramin(){
 		
 					if !char.abilities.ultimate.active{
 			
-						play_animation(char.anims.gramin_ultimate, 0.35, animation_type_full, [], true);
+						play_animation(char.anims.gramin_ultimate, 0.2, animation_type_full, [], true);
 						sprite = base_character_gramin_ult;
 						return;
 			

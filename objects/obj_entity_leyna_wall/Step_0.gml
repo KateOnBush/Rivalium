@@ -12,10 +12,21 @@ if takingdir and !obj_player.input_ability1.check() takingdir = false;
 
 if takingdir {
 
-	if takingdirtimer>0{
+	newdir = point_direction(x, y, obj_player.mousex, obj_player.mousey);
 	
-		newdir = point_direction(obj_player.x, obj_player.y, obj_player.mousex, obj_player.mousey);
-		parameters[1] -= angle_difference(parameters[1], newdir)*0.1*dtime;
+	if takingdirtimer>0.4 {
+	
+		parameters[1] = angular_dtlerp(parameters[1], newdir, .1);
+		parameters[2] = parameters[1];
+	
+	} else if takingdirtimer>0.2 {
+	
+		parameters[2] = angular_dtlerp(parameters[2], newdir, .1);
+		parameters[3] = parameters[2];
+	
+	} else if takingdirtimer>0 {
+	
+		parameters[3] = angular_dtlerp(parameters[3], newdir, .1);
 
 	} else takingdir = 0
 	

@@ -8,7 +8,7 @@ function character_Kenn(){
 		speed: 28,
 		id: 1,
 		base: base_character(1),
-		sprite: base_character_kenn_attempt,
+		sprite: base_character_kenn,
 		anims: animations(1),
 		particles: {
 			boost: part_type_create()
@@ -30,7 +30,7 @@ function character_Kenn(){
 					}
 					if sign(mousex - x) != sign(movvec.x) and movvec.length() > 4 {
 						dir = sign(mousex - x);
-						play_animation(char.anims.kenn_basic_attack, 4.5, animation_type_full);
+						play_animation(char.anims.kenn_basic_attack, 3, animation_type_full);
 					} else play_animation(char.anims.kenn_basic_attack, 3, animation_type_partial, [0, 1]);
 					
 				},
@@ -42,7 +42,7 @@ function character_Kenn(){
 				function (n){
 					if sign(mousex - x) != sign(movvec.x) and movvec.length() > 4 {
 						dir = sign(mousex - x);
-						play_animation(char.anims.kenn_basic_attack, 4.5, animation_type_full);
+						play_animation(char.anims.kenn_basic_attack, 3, animation_type_full);
 					} else play_animation(char.anims.kenn_basic_attack, 3, animation_type_partial, [0, 1]);
 				}, 
 				function (n){
@@ -70,27 +70,27 @@ function character_Kenn(){
 		
 					removeFilter(base_character_kenn_transformed)
 		
-				}}, function(){
-				
-				
-				},function(){
+				}}, NULLFUNC, function(){
 			
-					screen_shake(10, 50, 2.2);
-					camera_ultimate_zoom(350, 2.5, easeInOutBack, 0.5, easeInOutBack, 0.5);
+					screen_shake(10, 50, 2.5);
+					camera_ultimate_zoom(0.7, 5, easeInOutBack, 0.5, easeInOutBack, 0.5);
 		
 				}, function(){
 			
-					play_animation(char.anims.kenn_ultimate, 0.4, animation_type_full, true);
+					play_animation(char.anims.kenn_ultimate, 0.2, animation_type_full, true);
 					dir = 1;
 					ultpart = part_type_create();
 					part_type_shape(ultpart, pt_shape_sphere)
 					part_type_color2(ultpart, #821511, #302727);
 					part_type_size(ultpart, 0.03, 0.05, 0, 0);
 					part_type_alpha2(ultpart,0.5, 0)
+					createEvent(2.5, function(){
+						 addFilter(base_character_kenn_transformed, -10, 1)
+						 screen_shake(100, 200, 0.1);
+					}, self)
 			
 				}, function(){
 		
-					if char.abilities.ultimate.cast_time < 0.1 addFilter(base_character_kenn_transformed, -10, 1);
 					movvec.x *= power(0.01, dtime);
 					movvec.y *= power(0.01, dtime);
 					part_type_speed(ultpart, 1*dtime, 3*dtime, -0.01*dtime, 0);

@@ -5,7 +5,7 @@
   "isCompatibility": false,
   "isDnD": false,
   "parent": {
-    "name": "Data",
-    "path": "folders/Game Logic/Data.yy",
+    "name": "data",
+    "path": "folders/Game Logic/data.yy",
   },
 }

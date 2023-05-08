@@ -1,14 +1,14 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 
-enum effecttype {
+enum EFFECT {
 
-	heal,
-	bleed,
-	boost,
-	slow,
-	invisible,
-	stunned,
+	HEAL,
+	BURN,
+	ACCELERATION,
+	SLOW,
+	VULNERABILITY,
+	INVISIBILITY
 
 }
 

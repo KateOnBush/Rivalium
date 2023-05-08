@@ -126,3 +126,46 @@ function dtlerp(a, b, n){
 	return lerp(a, b, 1 - power(1 - n, global.dt));
 
 }
+
+function angular_lerp(a, b, n){
+
+	return a + angle_difference(b, a) * n;
+
+}
+
+function angular_dtlerp(a, b, n){
+
+	return angular_lerp(a, b, 1 - power(1 - n, dtime));
+
+}
+
+function array_duplicate(array){
+
+	var n = array_length(array);
+	var nArr = array_create(n, 0);
+	array_copy(nArr, 0, array, 0, n);
+
+	return nArr;
+
+}
+
+function array_bubble_sort(arr, predicateFn) {
+	
+   var n = array_length(arr);
+   var swapped = true;
+  
+   while (swapped) {
+		swapped = false;
+		for (var i = 0; i < n - 1; i++) {
+			if (predicateFn(arr[i], arr[i + 1]) > 0) {
+				var c = arr[i + 1];
+				arr[i + 1] = arr[i];
+				arr[i] = c;
+				swapped = true;
+			}
+		}
+		n--;
+	};
+  
+	return arr;
+}

@@ -36,18 +36,29 @@ global.mouse = {
 function screen_shake(aintensity, afrequency, aduration){
 
 	with(obj_player){
+		/*
 		if abs(screenshake.frequency - afrequency)<10{
 			screenshake.intensity += aintensity;
 		} else screenshake.intensity = max(aintensity, screenshake.intensity);
 		screenshake.frequency = max(afrequency, screenshake.frequency);
 		screenshake.duration = aduration;
+		*/
+		
+		ppfx_id.SetEffectParameter(FX_EFFECT.SHAKE, PP_SHAKE_SPEED, afrequency);
+		ppfx_id.SetEffectParameter(FX_EFFECT.SHAKE, PP_SHAKE_MAGNITUDE, 0.006);
+		createEvent(aduration, function(){
+		
+			ppfx_id.SetEffectParameter(FX_EFFECT.SHAKE, PP_SHAKE_SPEED, 0);
+			ppfx_id.SetEffectParameter(FX_EFFECT.SHAKE, PP_SHAKE_MAGNITUDE, 0);
+		
+		}, obj_player)
+		
 
 	}
 
 }
 
 function camera_ultimate_zoom(amount, time, ease_in_func, easeintime, ease_out_func, easeouttime){
-	
 	
 	with(obj_player){
 	
