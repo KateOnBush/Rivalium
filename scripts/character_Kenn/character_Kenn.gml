@@ -33,12 +33,7 @@ function character_Kenn(){
 						play_animation(char.anims.kenn_basic_attack, 3, animation_type_full);
 					} else play_animation(char.anims.kenn_basic_attack, 3, animation_type_partial, [0, 1]);
 					
-				},
-				function (n){
-				
-					screen_shake(5, 20, 0.05); 
-				
-				},
+				}, NULLFUNC,
 				function (n){
 					if sign(mousex - x) != sign(movvec.x) and movvec.length() > 4 {
 						dir = sign(mousex - x);

@@ -26,7 +26,7 @@
   "origin": 4,
   "parent": {
     "name": "Collisions",
-    "path": "folders/Environment & Visuals/Collisions.yy",
+    "path": "folders/Game Logic/Collisions.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {

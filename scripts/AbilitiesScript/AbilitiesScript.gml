@@ -215,12 +215,14 @@ function Ability(acooldown, atype, atype_data, acast_fake, acast_func, acast_vis
 		
 		if charges == init_charges charge_time = init_charge_time;
 		
-		cast_time = max(cast_time - global.dt/60, 0);
-		if cast_time > 0 iscasting = true else iscasting = false;
+		cast_time = max(cast_time - dtime/60, 0);
+		if cast_time > 0 iscasting = true else {
+			iscasting = false;
+		}
 		
 		if iscasting casting_func();
 		
-		c += global.dt;
+		c += dtime;
 		active_blend = dtlerp(active_blend, active, 0.2);
 		cooldown_blend = dtlerp(cooldown_blend, cooldown>0, 0.2);
 	

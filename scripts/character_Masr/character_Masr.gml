@@ -34,27 +34,28 @@ function character_Masr(){
 		attach: [],
 		abilities: {
 	
-			basic_attack: new Ability([.1, .1], ability_type.onetime, {}, NULLFUNC, function(n){
+			basic_attack: new Ability([.1, .1], ability_type.onetime, {}, NULLFUNC, NULLFUNC, function(n){
 			
 				if (n == 0) {
 			
-					 __Masr_basicAttackAnim()
+					__Masr_basicAttackAnim()
 					 
 				} else if (n == 1) {
 				
 					__Masr_alternativeBasicAttackAnim();
 				
 				}
+
 				
-			}, NULLFUNC, function() {
+			}, function() {
 				dir = sign(mousex - x);
 			}, 1/1.2, ability_unavailable, 0),
 		
-			ability1: new Ability([0.3], ability_type.onetime, {}, NULLFUNC, function(){
+			ability1: new Ability([0.3], ability_type.onetime, {}, NULLFUNC, NULLFUNC, function(){
 			
 				play_animation(char.anims.ability1_swing, 2.5, animation_type_full, true)
 			
-			}, NULLFUNC, function(){
+			}, function(){
 			
 				dir = sign(mousex - x);
 			
@@ -83,7 +84,12 @@ function character_Masr(){
 			
 				play_animation(char.anims.ultimate, 0.15, animation_type_full, true);
 			
-			}, NULLFUNC, 0, ability_unavailable, 0),
+			}, function(){
+			
+				movvec.x *= 0.1;
+				movvec.y *= 0.1;
+			
+			}, 1/0.15, ability_unavailable, 0, true, true),
 	
 		}
 

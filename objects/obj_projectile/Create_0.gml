@@ -36,7 +36,7 @@ lastUpdated = current_time;
 
 check = function(){
 		
-	return collision_line(x, y, x+lengthdir_x(spd, dir)*global.dt, y+lengthdir_y(spd, dir)*global.dt, obj_solid, false, true);
+	return collision_line(x, y, x+lengthdir_x(spd, dir)*global.dt, y+lengthdir_y(spd, dir)*global.dt, obj_impenetrable, false, true);
 		
 }
 	

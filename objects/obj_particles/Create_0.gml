@@ -15,4 +15,6 @@ part_system_automatic_update(global.partSystem, false);
 
 part_system_automatic_update(global.partSystemBehind, false);
 
+setupParticles();
+
 lastTime = 0;

@@ -1,5 +1,7 @@
 // @description Insert description here
-// You can write your code in this editor 
+// You can write your code in this editor
+
+playerSurf = -1;
 
 invisible = false;
 invisible_blend = 1;
@@ -8,8 +10,8 @@ free_blend = 0;
 sortedframe = [];
 rotation_offset = 0;
 length_before_dash = 0;
+cdir = 1;
 
-show_debug_overlay(true);
 
 viewmat = matrix_build_lookat(0, 0, 0, 0, 0, 0, 0, 1, 0);
 projmat = matrix_build_projection_perspective_fov(90, 16/9, 3, 8000);
@@ -35,7 +37,6 @@ input_ultimate = get_input(input.keyboard, ord("X"));
 
 rec_mx = 0;
 rec_my = 0;
-
 
 state = PLAYER_STATE.FREE;
 
@@ -69,13 +70,6 @@ health_red_go = 0;
 effects_str = "";
 
 hitind = 1;
-
-function hit(){
-
-	hitind = 1;
-	screen_shake(10, 100, 0.05);
-
-}
 
 castedAbility = 0;
 

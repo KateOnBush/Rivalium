@@ -21,7 +21,9 @@ hitind = dtlerp(hitind, 0, 0.05);
 ultimatecharge_blend = dtlerp(ultimatecharge_blend, ultimatecharge/ultimatechargemax, 0.08);
 invisible_blend = dtlerp(invisible_blend, invisible ? 0.2 : 1, 0.1);
 
-playerUpdateServer();
+if keyboard_check_released(vk_enter) {
+	playerDeath();
+}
 
 switch(state){
 
@@ -75,19 +77,24 @@ switch(state){
 		
 	}
 	
+	
 }
 
 playerPostState();
 
-playerCalculateFrame(rotation_offset);
+playerProcessAbilities();
 
 //ppfx_id.SetEffectParameter(FX_EFFECT.MOTION_BLUR, PP_MOTION_BLUR_ANGLE, movvec.dir());
 //ppfx_id.SetEffectParameter(FX_EFFECT.MOTION_BLUR, PP_MOTION_BLUR_RADIUS, dash_blend * 0.2);
 
 playerProcessEffects();
 
-playerProcessAnimations();
+if state != PLAYER_STATE.DEAD {
+	playerProcessAnimations();
+}
 
-playerProcessAbilities();
+playerCalculateFrame(rotation_offset);
+
+playerUpdateServer();
 
 playerProcessCamera();

@@ -8,15 +8,21 @@ function playerProcessAbilities(){
 		base = char.base;
 	}
 
-	char.abilities.basic_attack.step();
-	char.abilities.ability1.step();
-	char.abilities.ability2.step();
-	char.abilities.ultimate.step();
+	playerStepAbilities();
 
 	casting = 
 	(char.abilities.basic_attack.iscasting && char.abilities.basic_attack.cast_block) || 
 	(char.abilities.ability1.iscasting && char.abilities.ability1.cast_block) || 
 	(char.abilities.ability2.iscasting && char.abilities.ability2.cast_block) || 
 	(char.abilities.ultimate.iscasting && char.abilities.ultimate.cast_block);
+
+}
+
+function playerStepAbilities() {
+
+	char.abilities.basic_attack.step();
+	char.abilities.ability1.step();
+	char.abilities.ability2.step();
+	char.abilities.ultimate.step();
 
 }

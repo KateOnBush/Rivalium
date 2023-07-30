@@ -11,8 +11,8 @@
   "managed": true,
   "overriddenProperties": [],
   "parent": {
-    "name": "Environment & Visuals",
-    "path": "folders/Environment & Visuals.yy",
+    "name": "Particle System",
+    "path": "folders/Environment & Visuals/Particle System.yy",
   },
   "parentObjectId": null,
   "persistent": false,

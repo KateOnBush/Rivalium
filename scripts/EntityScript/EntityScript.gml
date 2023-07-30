@@ -27,9 +27,9 @@ function entity_create(entity, owner, ID, x, y, mx, my, hp, armor, life, entityP
 
 }
 
-function entity_create_solid_component(x, y, entity){
+function entity_create_solid_component(x, y, entity, obj = obj_obstacle_entity){
 
-	var o = instance_create_depth(x, y, entity.depth, obj_obstacle_entity);
+	var o = instance_create_depth(x, y, entity.depth, obj);
 	
 	o.componentTo = entity;
 	

@@ -1,8 +1,17 @@
 // @description Insert description here
 // You can write your code in this editor
 
+state = PLAYER_STATE.FREE;
+invisible = false;
+invisible_blend = 0;
+sortedframe = [];
+rotation_offset = 0;
+free_blend = 1;
+
 ux = 0;
 uy = 0;
+
+playerSurf = -1;
 
 characters = setupCharacterData();
 
@@ -74,6 +83,8 @@ dash_cooldown = 0;
 wall_slide = 0;
 
 wall_blend = 0;
+
+cdir = 1;
 
 double_jump_boost = false;
 slope_angle = 0;

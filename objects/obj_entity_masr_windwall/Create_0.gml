@@ -29,6 +29,6 @@ part_type_life(trail, 30, 30)
 part_type_orientation(trail, 0, 360, 0, 0, 0);
 
 
-wallobj = entity_create_solid_component(x, y, self);
+wallobj = entity_create_solid_component(x, y, self, obj_obstacle_entity_imp);
 
 event_inherited()

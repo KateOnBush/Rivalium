@@ -1,4 +1,6 @@
 function playerFreeMovement(){
+	
+	if casting return;
 		
 	if (on_ground and !slide) {
 		
@@ -38,7 +40,7 @@ function playerFreeMovement(){
 	
 	}
 	
-	if (k_right || k_left) and movvec.length()>0.01 dir = sign(movvec.x);
+	if ((k_right || k_left) and movvec.length()>0.01) or slide dir = sign(movvec.x);
 	if (dir==0) dir = 1;
 	
 	if k_grapple && !on_ground {

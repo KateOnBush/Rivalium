@@ -16,13 +16,13 @@ function playerDashMovement(){
 
 	if movvec.length() < 0.1 or dash == 0 {
 		state = PLAYER_STATE.FREE;
-		var ll = length_before_dash, dd = movvec.dir();
+		var ll = min(length_before_dash, dash_target.length()), dd = movvec.dir();
 		movvec.x = lengthdir_x(ll, dd);
 		movvec.y = lengthdir_y(ll, dd);
 	}
 	movvec.x = dtlerp(movvec.x, dash_target.x, 0.2);
 	movvec.y = dtlerp(movvec.y, dash_target.y, 0.2);
 	dir = sign(movvec.x);
-	dash = max(dash-dtime/60,0);
+	dash = max(dash - dtime/60,0);
 	dash_cooldown = 60;
 }

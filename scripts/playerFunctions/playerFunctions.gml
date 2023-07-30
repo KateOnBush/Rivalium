@@ -51,12 +51,6 @@ function step_animation(){
 
 }
 
-function hit(){
-
-	hitind = 1;
-
-}
-
 function setup_character(n){
 	
 	character_id = n;

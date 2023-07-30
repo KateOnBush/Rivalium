@@ -9,7 +9,7 @@
   "overriddenProperties": [],
   "parent": {
     "name": "Collisions",
-    "path": "folders/Environment & Visuals/Collisions.yy",
+    "path": "folders/Game Logic/Collisions.yy",
   },
   "parentObjectId": {
     "name": "obj_solid",

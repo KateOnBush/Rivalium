@@ -45,11 +45,11 @@ function easeInSixth(x){
 }
 
 
-function is_between(argument0, argument1, argument2, argument3) {
+function is_between(m, a, M, equals) {
 
-	if argument3 and (argument1 == argument0 or argument1 == argument2) return true;
+	if equals && (m == a or M == a) return true;
 
-	if argument1 > argument0 and argument1 < argument2 return true;
+	if a > m and a < M return true;
 
 	return false
 

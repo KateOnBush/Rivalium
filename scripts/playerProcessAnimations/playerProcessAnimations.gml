@@ -63,7 +63,7 @@ animation_playing_blend = dtlerp(animation_playing_blend, animation_playing, ani
 dash_blend = dtlerp(dash_blend, dash>0 ? 1 : 0, 0.2);
 
 if state == PLAYER_STATE.FREE {
-	free_blend = dtlerp(free_blend, 1, 0.01);
+	free_blend = dtlerp(free_blend, 1, 0.2);
 } else free_blend = 0;
 
 switch(state){

@@ -7,6 +7,7 @@ function playerCalculateFrame(rotoff){
 	}
 
 	if sort sortedframe = array_bubble_sort(sortedframe, bone_depth_sorting);
+	cdir = dir;
 
 	for(var e = array_length(sortedframe)-1; e >= 0; e--){
 
@@ -31,7 +32,7 @@ function playerCalculateFrame(rotoff){
 		var __dir = point_direction(0, 0, _xx, _yy),
 			__dist = point_distance(0, 0, _xx, _yy);
 			
-		_xx = lengthdir_x(__dist, __dir + rotoff) * dir + currentframe[_last-3];
+		_xx = lengthdir_x(__dist, __dir + rotoff) * cdir + currentframe[_last-3];
 		_yy = lengthdir_y(__dist, __dir + rotoff) + currentframe[_last-2];
 	
 		pos[i] = [_xx, _yy, rotation + coords[2] + rotoff];

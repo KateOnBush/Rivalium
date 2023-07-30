@@ -47,7 +47,7 @@ function playerFreeCollision(){
 	
 	if place_meeting(x, y, obj_solid){
 	
-		var s = 32;
+		var s = 128;
 		for(var i = 1; i <= s; i++){
 		
 			if !place_meeting(x + i, y, obj_solid) { x+=i; break; }

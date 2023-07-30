@@ -31,22 +31,27 @@ if col and spd > 0{
 			network_send_raw(obj_network.server, dataBuffer, global.dataSize)
 			
 			on_hit(pl);
-			pl.hit();
+			with (pl) { 
+				playerHit();
+			}
 		
 		}
 	
 		var n = 0;
-		if !pl while(!place_meeting(px+lengthdir_x(n,dir), py+lengthdir_y(n,dir), obj_solid) and n<spd){
+		if !pl while(!place_meeting(px+lengthdir_x(n,dir), py+lengthdir_y(n,dir), obj_impenetrable) and n<spd){
 			n++;
 		}
 		
-		var collidedBlock = instance_place(px+lengthdir_x(n+1,dir), py+lengthdir_y(n+1,dir), obj_solid);
+		var collidedBlock = instance_place(px+lengthdir_x(n+1,dir), py+lengthdir_y(n+1,dir), obj_impenetrable);
 		
 		if !bounce and !pl{
 		
-			if collidedBlock && collidedBlock.object_index == obj_obstacle_entity {
 			
-				collidedBlock.componentTo.damage(damage);
+		
+			if collidedBlock {
+			
+				var e = collidedBlock.object_index;
+				if (e == obj_obstacle_entity || e == obj_obstacle_entity_imp) collidedBlock.componentTo.damage(damage);
 			
 			}
 		
@@ -61,7 +66,7 @@ if col and spd > 0{
 			orientation = angle_difference(orientation, floor(orientation/90)*90);
 			
 			var s = 0;
-			while(place_meeting(px+lengthdir_x(s,dir + 180), py+lengthdir_y(s,dir + 180), obj_solid)){
+			while(place_meeting(px+lengthdir_x(s,dir + 180), py+lengthdir_y(s,dir + 180), obj_impenetrable)){
 				s+=dtime;
 			}
 			px += lengthdir_x(s, dir + 180);
@@ -71,7 +76,7 @@ if col and spd > 0{
 			var o = dir + 180;
 			for(var i = 0; i < array_length(ar); i++){
 				var cDir = ar[i];
-				if place_meeting(px+lengthdir_x(2, cDir), py+lengthdir_y(2, cDir), obj_solid){
+				if place_meeting(px+lengthdir_x(2, cDir), py+lengthdir_y(2, cDir), obj_impenetrable){
 					o = cDir;
 					break;
 				}
