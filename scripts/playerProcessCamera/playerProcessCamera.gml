@@ -38,7 +38,7 @@ function playerProcessCamera(){
 
 	} 
 
-	var dir_camera = false;
+	var dir_camera = true;
 
 	camera.x = dtlerp(camera.x, x+windx+speedyx+ssx+(dir_camera ? movvec.x*10 : 0), 0.1);
 	camera.y = dtlerp(camera.y, y+windy+speedyy+ssy+(dir_camera ? movvec.y*10 : 0), 0.1);

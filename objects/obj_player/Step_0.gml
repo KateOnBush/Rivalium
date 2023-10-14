@@ -120,10 +120,14 @@ playerProcessCamera();
 
 var new_run_dust = (run_ani * 2) mod 1;
 if movvec.length() > 8 && on_ground && (new_run_dust < run_dust)  {
-	part_particles_create(global.partSystem, x, y + 32, gParts.dust, 3 + irandom(3));
+	part_particles_create(global.partSystem, x, y + 28, gParts.dustRun, 3 + irandom(3));
 }
 run_dust = (run_ani * 2) mod 1;
 
-if (wasOnGround ^ on_ground) {
-	part_particles_create(global.partSystem, x, y + 32, gParts.dust, initialVelocity + irandom(initialVelocity));
+if (!wasOnGround and on_ground) {
+	part_particles_create(global.partSystem, x, y + 28, gParts.dustGround, round(initialVelocity/3));
+}
+
+if (slide > 0 and on_ground and isFpsFrame and movvec.length() > 8) {
+	part_particles_create(global.partSystem, x, y + 28, gParts.dustRun, irandom(2));
 }

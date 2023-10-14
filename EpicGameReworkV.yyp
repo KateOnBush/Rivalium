@@ -509,8 +509,8 @@
     {"roomId":{"name":"roomInit","path":"rooms/roomInit/roomInit.yy",},},
     {"roomId":{"name":"roomLogin","path":"rooms/roomLogin/roomLogin.yy",},},
     {"roomId":{"name":"roomMainProfile","path":"rooms/roomMainProfile/roomMainProfile.yy",},},
-    {"roomId":{"name":"roomAnimator","path":"rooms/roomAnimator/roomAnimator.yy",},},
     {"roomId":{"name":"roomGame","path":"rooms/roomGame/roomGame.yy",},},
+    {"roomId":{"name":"roomAnimator","path":"rooms/roomAnimator/roomAnimator.yy",},},
   ],
   "templateType": null,
   "TextureGroups": [

@@ -16,7 +16,8 @@ function setupParticles() {
 
 		blood: part_type_create(),
 		death: part_type_create(),
-		dust: part_type_create()
+		dustRun: part_type_create(),
+		dustGround: part_type_create()
 
 	};
 	
@@ -40,14 +41,24 @@ function setupParticles() {
 	part_type_color2(setup, c_black, c_ltgrey);
 	part_type_life(setup, 60, 100);
 	
-	setup = gParts.dust;
+	setup = gParts.dustRun;
 	part_type_sprite(setup, sDustParticle, false, false, true);
-	part_type_speed(setup, 4, 5, -0.02, 0);
+	part_type_speed(setup, 4, 5, -0.3, 0);
 	part_type_orientation(setup, 0, 360 , 0, 0 , 0);
 	part_type_direction(setup, 30, 150, 0, 0.4);
-	part_type_size(setup, 0.5, 0.75, -0.04, 0);
+	part_type_size(setup, 0.5, 0.65, -0.03, 0);
+	part_type_alpha3(setup, 0.9, 0.7, 0);
+	part_type_life(setup, 150, 200);
+	
+	setup = gParts.dustGround;
+	part_type_sprite(setup, sDustParticle, false, false, true);
+	part_type_speed(setup, 7, 8, -0.5, 0);
+	part_type_orientation(setup, 0, 360 , 0, 0 , 0);
+	part_type_direction(setup, 0, 180, 0, 0.4);
+	part_type_size(setup, 0.6, 0.75, -0.03, 0);
 	part_type_alpha3(setup, 1, 0.8, 0);
 	part_type_life(setup, 150, 200);
+	
 	
 
 }

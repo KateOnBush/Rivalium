@@ -4,7 +4,7 @@ function playerFreeMovement(){
 		
 	if (on_ground and !slide) {
 		
-		if k_slide {
+		if k_slide and movvec.length() > 10 {
 			slide = 1;
 		}
 	
@@ -21,7 +21,7 @@ function playerFreeMovement(){
 		movvec.x = lengthdir_x(l,_dir);
 		movvec.y = lengthdir_y(l,_dir);
 		
-		if k_slide_release {
+		if k_slide_release or movvec.length() < 5 {
 			slide = 0;	
 		}
 		
