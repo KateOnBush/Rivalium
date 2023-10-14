@@ -1,5 +1,8 @@
 playerInputs()
 
+var wasOnGround = on_ground,
+	initialVelocity = movvec.length();
+
 health_blend = dtlerp(health_blend, playerhealth/playerhealthmax, 0.5);
 
 if healthbefore != playerhealth {
@@ -102,6 +105,7 @@ ppfx_id.SetEffectParameter(FX_EFFECT.SHOCKWAVES, PP_SHOCKWAVES_AMOUNT, invisible
 
 ppfx_id.SetEffectParameter(FX_EFFECT.SPEEDLINES, PP_SPEEDLINES_CONTRAST, lerp(0.35, 0.55, min(abs(movvec.length() / 40), 1)));
 
+
 playerProcessEffects();
 
 if state != PlayerState.DEAD {
@@ -113,3 +117,13 @@ playerCalculateFrame(rotation_offset);
 playerUpdateServer();
 
 playerProcessCamera();
+
+var new_run_dust = (run_ani * 2) mod 1;
+if movvec.length() > 8 && on_ground && (new_run_dust < run_dust)  {
+	part_particles_create(global.partSystem, x, y + 32, gParts.dust, 3 + irandom(3));
+}
+run_dust = (run_ani * 2) mod 1;
+
+if (wasOnGround ^ on_ground) {
+	part_particles_create(global.partSystem, x, y + 32, gParts.dust, initialVelocity + irandom(initialVelocity));
+}

@@ -222,6 +222,8 @@ col2 = make_color_hsv(h+5,s*2/3,v+2);
 col3 = make_color_hsv(h+10,s*1/3,v+5);
 
 run = 0
+run_ani = 0;
+run_dust = 0;
 
 pos = [];
 

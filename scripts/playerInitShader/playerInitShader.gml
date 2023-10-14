@@ -8,7 +8,7 @@ function playerInitShader(){
 
 	// Create profile with all effects
 	var effects = [
-		new FX_Bloom(true, 4, 0.83, 2.66, c_white),
+		new FX_Bloom(true, 4, 0.88, 2.66, c_white),
 		//new FX_SunShafts(true, [0.8, 0.19], 0.8, 10, 1.13, 1, 0.25, true, 1, 1, 0.03, 0.50, undefined, false),
 		new FX_Shake(true, 0, 0),
 		new FX_SpeedLines(true, 0, 12.3, 1, 3, 0.2, 1.69, 0.7),

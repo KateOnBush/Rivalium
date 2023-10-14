@@ -32,6 +32,8 @@ run = clamp(run,0,1)
 
 ani = ani + spdboost*global.dt/60;
 
+run_ani = ani*(1.35*spd/25) mod 1;
+
 if !on_ground {
 	
 	jump_blend = dtlerp(jump_blend,1,0.1)
@@ -77,7 +79,7 @@ switch(state){
 			currentframe = animation_get_frame(char.anims.animation_idle, ani*0.4 mod 1);
 		} else currentframe = animation_blend(currentframe, animation_get_frame(char.anims.animation_idle, ani*0.4 mod 1), free_blend);
 
-		if run > 0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_run,ani*(1.35*spd/25) mod 1), run * free_blend);
+		if run > 0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_run, run_ani), run * free_blend);
 		if jump_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_jump,jump_prog),jump_blend * free_blend);
 		if jump_fast_prog*jump_blend>0.01 currentframe = animation_blend(currentframe,animation_get_frame(char.anims.animation_jump_fast,jump_prog),jump_fast_prog * jump_blend * free_blend);
 		if animation_playing_blend > 0.01 and !animation_played_priority step_animation();
