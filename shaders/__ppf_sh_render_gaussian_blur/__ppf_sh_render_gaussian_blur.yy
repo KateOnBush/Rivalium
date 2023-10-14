@@ -4,7 +4,7 @@
   "name": "__ppf_sh_render_gaussian_blur",
   "parent": {
     "name": "Render",
-    "path": "folders/Post-Processing FX/Shaders/Render.yy",
+    "path": "folders/Extensions/PostProcessingFX/Shaders/Render.yy",
   },
   "type": 1,
 }

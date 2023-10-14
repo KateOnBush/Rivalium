@@ -26,7 +26,7 @@ function character_Masr(){
 	return {
 
 		name: "Masr",
-		speed: 32,
+		speed: 24,
 		id: 4,
 		base: base_character(4),
 		sprite: base_character_masr,

@@ -89,7 +89,7 @@ function Ability(acooldown, atype, atype_data, acast_fake, acast_func, acast_vis
 	
 	}
 	
-	static requestCast = function(n = 0){
+	static requestCast = function(n = 0, obj){
 	
 		if cooldown > 0 return false;
 		if active && type == ability_type.active return false;
@@ -104,7 +104,7 @@ function Ability(acooldown, atype, atype_data, acast_fake, acast_func, acast_vis
 			
 			var buff = buffer_create(global.dataSize, buffer_fixed, 1);
 			buffer_seek(buff, buffer_seek_start, 0);
-			buffer_write(buff, buffer_u8, SERVER_REQUEST.ABILITY_CAST);
+			buffer_write(buff, buffer_u8, ServerRequest.ABILITY_CAST);
 			buffer_write(buff, buffer_u8, cb);
 			buffer_write(buff, buffer_u8, n);
 				

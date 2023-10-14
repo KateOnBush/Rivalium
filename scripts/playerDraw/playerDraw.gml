@@ -9,15 +9,7 @@ function playerDraw(color, borderX){
 
 	var xx = 128, yy = 128;
 
-	for(var e = array_length(sortedframe) - 1; e >= 0;e--){
-
-		var i = sortedframe[e];
-
-		var scale = currentframe[i][1];
-	
-		draw_sprite_ext(sprite,i, xx+pos[i][0], yy+pos[i][1], cdir, scale, pos[i][2]*cdir,c_white, 1)
-
-	}
+	playerDrawSimple(xx, yy, 1);
 
 	/*for(var o = 0; o < array_length(char.attach); o++){
 

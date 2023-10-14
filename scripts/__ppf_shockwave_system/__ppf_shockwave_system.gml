@@ -9,16 +9,18 @@
 /// @desc Create shockwaves system id to be used by the other functions.
 /// @returns {Struct}
 function PPFX_ShockwaveRenderer() constructor {
-	__ppf_trace("Shockwaves renderer created. From: " + object_get_name(other.object_index));
+	__ppf_trace("Shockwaves renderer created. From: " + string(instance_exists(other) ? object_get_name(other.object_index) : instanceof(other)), 3);
 	
 	__surf = -1;
 	__shockwave_object_list = [];
+	__destroyed = false;
 	
 	#region Public Methods
 	
 	/// @desc Destroy shockwave system, freeing it from memory.
 	static Destroy = function() {
 		__ppf_surface_delete(__surf);
+		__destroyed = true;
 	}
 	
 	/// @func AddObject(object)
@@ -57,11 +59,12 @@ function PPFX_ShockwaveRenderer() constructor {
 	/// @func Render(pp_index, camera)
 	/// @desc Renderize shockwave surface. Please note that this will not draw the surface, only generate the content.
 	/// Basically this function will call the Draw Event of the objects in the array and draw them on the surface.
-	/// This surface will be sent to the post-processing system automatically.
+	/// This surface will be sent to the post-processing system automatically, for it to draw the shockwaves.
 	/// @param {Struct} pp_index The returned variable by "new PPFX_System()".
 	/// @param {Id.Camera} camera Your current active camera id. You can use view_camera[0].
 	static Render = function(pp_index, camera) {
 		// Feather disable GM1044
+		if (__destroyed) exit;
 		__ppf_exception(!ppfx_system_exists(pp_index), "Post-processing system does not exist.");
 		
 		var _cam = camera,
@@ -73,8 +76,8 @@ function PPFX_ShockwaveRenderer() constructor {
 			var _old_blendmode = gpu_get_blendmode(),
 			_old_texfilter = gpu_get_tex_filter();
 			
-			
-			if !surface_exists(__surf) {
+
+			if (!surface_exists(__surf)) {
 				__surf = surface_create(_ww, _hh, global.__ppf_main_texture_format);
 				// send "normal map" texture to ppfx (you only need to reference it once - when the surface is created, for example)
 				pp_index.SetEffectParameter(FX_EFFECT.SHOCKWAVES, PP_SHOCKWAVES_TEXTURE, surface_get_texture(__surf));
@@ -113,24 +116,14 @@ function PPFX_ShockwaveRenderer() constructor {
 /// @param {Asset.GMAnimCurve} curve The animation curve to be used by shockwave object.
 /// @returns {Id.Instance} Instance id.
 function shockwave_instance_create(x, y, layer_id, index=0, scale=1, speedd=1, object=__obj_ppf_shockwave, curve=__ac_ppf_shockwave) {
-	if (os_browser == browser_not_a_browser) {
-		var _inst = instance_create_layer(x, y, layer_id, object, {
-			visible : false,
-			index : index,
-			scale : scale,
-			spd : speedd,
-			curve : curve
-		});
-		return _inst;
-	} else {
-		var _inst = instance_create_layer(x, y, layer_id, object); 
-		_inst.visible = false;
-		_inst.index = index;
-		_inst.scale = scale;
-		_inst.spd = speedd;
-		_inst.curve = curve;
-		return _inst;
-	}
+	var _inst = instance_create_layer(x, y, layer_id, object, {
+		visible : false,
+		index : index,
+		scale : scale,
+		spd : speedd,
+		curve : curve
+	});
+	return _inst;
 }
 
 /// @desc Check if shockwave renderer exists

@@ -4,7 +4,7 @@
   "name": "__ppf_sh_ds_box4",
   "parent": {
     "name": "Downsampling",
-    "path": "folders/Post-Processing FX/Shaders/Downsampling.yy",
+    "path": "folders/Extensions/PostProcessingFX/Shaders/Downsampling.yy",
   },
   "type": 1,
 }

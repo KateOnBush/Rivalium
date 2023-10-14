@@ -37,7 +37,7 @@ function playerGrappledMovement(){
 		
 		if !on_ground and movvec.length()>8 perform_flip(false, _e/360)
 		
-		state = PLAYER_STATE.FREE;
+		state = PlayerState.FREE;
 		
 		grapple_cooldown = 20;
 	

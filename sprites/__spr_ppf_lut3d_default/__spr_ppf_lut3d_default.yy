@@ -26,7 +26,7 @@
   "origin": 0,
   "parent": {
     "name": "3D",
-    "path": "folders/Post-Processing FX/Assets/Sprites/LUT/3D.yy",
+    "path": "folders/Extensions/PostProcessingFX/Assets/Sprites/LUT/3D.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {

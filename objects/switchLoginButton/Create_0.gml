@@ -6,7 +6,7 @@ event_inherited();
 
 global.loginSide = true;
 
-text = "CREATE AN ACCOUNT"
+text = ""
 state = buttonState.ON;
 
 onClick = function() {

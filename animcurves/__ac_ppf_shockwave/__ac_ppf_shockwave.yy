@@ -15,6 +15,6 @@
   "function": 2,
   "parent": {
     "name": "Anim Curves",
-    "path": "folders/Post-Processing FX/Assets/Anim Curves.yy",
+    "path": "folders/Extensions/PostProcessingFX/Assets/Anim Curves.yy",
   },
 }

@@ -7,6 +7,7 @@ gpu_set_alphatestref(2);
 gpu_set_alphatestenable(true);
 gpu_set_texrepeat(true);
 gpu_set_cullmode(cull_noculling)
+gpu_set_texfilter(false);
 
 vertex_format_begin();
 

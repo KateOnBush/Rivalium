@@ -7,7 +7,7 @@ var ww = display_get_gui_width(),
 draw_set_color(c_black)
 draw_set_valign(fa_bottom)
 draw_set_halign(fa_left)
-draw_set_alpha(.8)
+draw_set_alpha(.6);
 
 var VERSION = GAMEVERSION.major + "."
 			  + GAMEVERSION.minor + "."
@@ -15,17 +15,17 @@ var VERSION = GAMEVERSION.major + "."
 			  + GAMEVERSION.bugfix;
 
 var STATUS = [
-	"Disconnected from server",
-	"Connecting to server",
-	"Connected to server",
-	"Error occured"
+	"Disconnected",
+	"Connecting",
+	"Connected",
+	"Error"
 ]
 
 draw_set_font(secondaryFont);
-draw_text_transformed(8, hh - 8, $"Client Version: {VERSION} | Status: {STATUS[ClientStatus.connection]}", 0.6, 0.6, 0);
+draw_text_transformed(4, hh - 4, $"Client Version: {VERSION} | Status: {STATUS[ClientStatus.connection]} | FPS: {fps}", 0.4, 0.4, 0);
 draw_set_alpha(1);
 
-
-
-
-
+draw_set_color(c_black)
+draw_set_alpha(.8);
+draw_rectangle(0, 0, ww-1, hh-1, true);
+draw_set_alpha(1);

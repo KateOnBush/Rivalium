@@ -6,6 +6,6 @@
   "isDnD": false,
   "parent": {
     "name": "Penguin",
-    "path": "folders/Penguin.yy",
+    "path": "folders/Extensions/Penguin.yy",
   },
 }

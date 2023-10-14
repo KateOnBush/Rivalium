@@ -14,7 +14,27 @@ if (global.lasttime >= 16000) {
 } else global.__fpsframe = false;
 
 if keyboard_check_released(vk_f1) global.debugmode = !global.debugmode;
+if keyboard_check_released(ord("F")) queue_kinded_message("foundMatch", true);
 
 processEvents();
 
+for(var i = 0; i < array_length(EventWaitQueue); i++){
+	
+	var queued = EventWaitQueue[i];
+	
+	if current_time - queued.time > EventTimeoutTime * 1000 {
+		queued.timeout();
+		array_delete(EventWaitQueue, i, 1);	
+	}
+	
+}
+
 if (keyboard_check(vk_control) && keyboard_check_released(ord("R"))) game_restart();
+
+//display queued messages
+
+if !isMessageOpen && array_length(MessageQueue) {
+
+	display_next_message();
+
+}

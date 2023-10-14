@@ -7,11 +7,13 @@ invisible = false;
 invisible_blend = 1;
 free_blend = 0;
 
+timeText = "";
+
 sortedframe = [];
 rotation_offset = 0;
 length_before_dash = 0;
 cdir = 1;
-
+preroundBlend = 1;
 
 viewmat = matrix_build_lookat(0, 0, 0, 0, 0, 0, 0, 1, 0);
 projmat = matrix_build_projection_perspective_fov(90, 16/9, 3, 8000);
@@ -38,15 +40,20 @@ input_ultimate = get_input(input.keyboard, ord("X"));
 rec_mx = 0;
 rec_my = 0;
 
-state = PLAYER_STATE.FREE;
+state = PlayerState.FREE;
 
 slide_side = 1;
 
-
-
-characters = setupCharacterData();
+invisible_blend_eff = 0;
 
 character_id = 1;
+
+char = Characters[character_id-1]();
+spd = char.speed;
+sprite = char.sprite
+offset = [sprite_get_xoffset(sprite),sprite_get_yoffset(sprite)]
+currentframe = animation_get_frame(char.anims.animation_idle, 0);
+base = char.base;
 
 function bone_depth_sorting(bone1, bone2){
 
@@ -109,6 +116,10 @@ camera = {
 
 }
 
+GUIText = "";
+GUITextDisplay = "";
+GUITextBlend = 0;
+
 ultimate_zoom = {
 
 	amount: 0,
@@ -158,8 +169,6 @@ ultimatecharge_blend = 0;
 
 health_blend = 0;
 health_blend_red = 0;
-
-char = characters[character_id-1];
 
 filters = [];
 

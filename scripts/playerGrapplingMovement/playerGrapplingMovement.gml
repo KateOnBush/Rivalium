@@ -1,6 +1,6 @@
 function playerGrapplingMovement(){
 	
-	if !k_grapple state = PLAYER_STATE.FREE;
+	if !k_grapple state = PlayerState.FREE;
 
 	grappling_len += 25*global.dt;
 	var d = point_direction(x,y-16,grappling_coords_init[0],grappling_coords_init[1]);
@@ -36,7 +36,7 @@ function playerGrapplingMovement(){
 	
 			var buff = buffer_create(global.dataSize, buffer_fixed, 1);
 			buffer_seek(buff, buffer_seek_start, 0);
-			buffer_write(buff, buffer_u8, SERVER_REQUEST.GRAPPLING_POSITION);
+			buffer_write(buff, buffer_u8, ServerRequest.GRAPPLING_POSITION);
 			buffer_write(buff, buffer_s32, round(grappling_coords[0]*100))
 			buffer_write(buff, buffer_s32, round(grappling_coords[1]*100))
 			buffer_write(buff, buffer_u8, 1);
@@ -46,14 +46,14 @@ function playerGrapplingMovement(){
 	
 		}
 		
-		state = PLAYER_STATE.GRAPPLED;
+		state = PlayerState.GRAPPLED;
 		
 	}
 	
 	if grappling_len > point_distance(x,y-16,grappling_coords_init[0],grappling_coords_init[1]) or on_ground {
 	
 		grapple_cooldown = 20;
-		state = PLAYER_STATE.FREE
+		state = PlayerState.FREE
 	
 	}
 

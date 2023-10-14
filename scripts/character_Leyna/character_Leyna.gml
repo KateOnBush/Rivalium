@@ -32,7 +32,7 @@ function character_Lenya(){
 	return {
 
 		name: "Lenya",
-		speed: 29,
+		speed: 21.5,
 		id: 3,
 		base: base_character(3),
 		sprite: base_character_lenya,

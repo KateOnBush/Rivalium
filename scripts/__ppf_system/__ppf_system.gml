@@ -4,7 +4,7 @@
 /// @desc Create post-processing system instance. The PPFX system essentially contains the effects renderer. It works both for full screen and for layers.
 /// @returns {struct} Post-Processing system id.
 function PPFX_System() constructor {
-	__ppf_trace("System created. From: " + object_get_name(other.object_index));
+	__ppf_trace("System created. From: " + string(instance_exists(other) ? object_get_name(other.object_index) : instanceof(other)), 3);
 	
 	// Base
 	__stack_surface = array_create(17, -1);
@@ -33,7 +33,7 @@ function PPFX_System() constructor {
 	__gaussian_blur_ping_surface = -1;
 	__gaussian_blur_pong_surface = -1;
 	__gaussian_blur_downscale = 0;
-	__slow_motion_buffer_a_surf = -1;
+	__slow_motion_surf = array_create(3, -1);
 	
 	// Confs
 	__is_draw_enabled = true;
@@ -58,10 +58,10 @@ function PPFX_System() constructor {
 		"border",
 		"hq4x",
 		"fxaa",
-		"sunshafts",
 		"bloom",
-		"depth_of_field",
 		"slow_motion",
+		"sunshafts",
+		"depth_of_field",
 		"motion_blur",
 		"radial_blur",
 		"lut",
@@ -142,16 +142,16 @@ function PPFX_System() constructor {
 		fxaa : {
 			enabledd : false,
 		},
-		sunshafts : {
-			enabledd : false,
-		},
 		bloom : {
 			enabledd : false,
 		},
-		depth_of_field : {
+		slow_motion : {
 			enabledd : false,
 		},
-		slow_motion : {
+		sunshafts : {
+			enabledd : false,
+		},
+		depth_of_field : {
 			enabledd : false,
 		},
 		motion_blur : {
@@ -264,10 +264,10 @@ function PPFX_System() constructor {
 		__ppf_surface_delete_array(__bloom_surface);
 		__ppf_surface_delete_array(__dof_surface);
 		__ppf_surface_delete_array(__kawase_blur_surface);
+		__ppf_surface_delete_array(__slow_motion_surf);
 		__ppf_surface_delete(__sunshaft_surf);
 		__ppf_surface_delete(__gaussian_blur_ping_surface);
 		__ppf_surface_delete(__gaussian_blur_pong_surface);
-		__ppf_surface_delete(__slow_motion_buffer_a_surf);
 	}
 	
 	#endregion
@@ -278,7 +278,7 @@ function PPFX_System() constructor {
 	/// @desc Destroy post-processing system.
 	/// @returns {undefined}
 	static Destroy = function() {
-		__ppf_trace("System deleted. From: " + object_get_name(other.object_index));
+		__ppf_trace("System deleted. From: " + string(instance_exists(other) ? object_get_name(other.object_index) : instanceof(other)), 3);
 		__Cleanup();
 		__destroyed = true;
 	}
@@ -430,7 +430,7 @@ function PPFX_System() constructor {
 		if (__current_profile != profile_id.__id) {
 			__ppf_struct_copy(__pp_cfg_default, __fx_cfg);
 			__ppf_struct_copy(profile_id.__settings, __fx_cfg);
-			__ppf_trace("Profile loaded: " + string(profile_id.__profile_name));
+			__ppf_trace("Profile loaded: " + string(profile_id.__profile_name), 3);
 			__current_profile = profile_id.__id;
 		}
 	}
@@ -440,7 +440,7 @@ function PPFX_System() constructor {
 	static ProfileUnload = function() {
 		if (__current_profile != noone) {
 			__ppf_struct_copy(__pp_cfg_default, __fx_cfg);
-			__ppf_trace("Profile unloaded. From: " + string(object_get_name(other.object_index)));
+			__ppf_trace("Profile unloaded. From: " + string(instance_exists(other) ? object_get_name(other.object_index) : instanceof(other)), 3);
 			__current_profile = noone;
 		}
 	}
@@ -485,6 +485,22 @@ function PPFX_System() constructor {
 		return __global_intensity;
 	}
 	
+	/// @func DisableAllEffects()
+	/// @desc This function disables all system effects immediately.
+	/// @returns {Undefined}
+	static DisableAllEffects = function() {
+		try {
+			var _array = variable_struct_get_names(__fx_cfg);
+			var isize = array_length(_array), i = isize-1;
+			repeat(isize) {
+				__fx_cfg[$ __effects_names[i]].enabledd = false;
+				--i;
+			}
+		} catch(error) {
+			show_message("This feature does not work on the platform due to a runtime bug.\n" + string(error.message));
+		}
+	}
+	
 	#endregion
 	
 	#region Render
@@ -523,11 +539,11 @@ function PPFX_System() constructor {
 		// Feather disable GM1044
 		if (__destroyed) exit;
 		__ppf_exception(surface == application_surface && event_number != ev_draw_post && event_number != ev_gui_begin, "Failed to draw using application_surface.\nIt can only be drawn in the Post-Draw or Draw GUI Begin event.");
-		__ppf_exception(__layered && (event_number == ev_draw_post || event_number == ev_gui_begin), "You must not draw the system manually if it is already being applied to a Layer Renderer.");
+		__ppf_exception(__layered && (event_number == ev_draw_post || event_number == ev_gui_begin), "You must not draw the system manually if it is already being applied to a LayerRenderer.");
 		
 		if (!surface_exists(surface)) {
 			if (__source_surf_exists) {
-				__ppf_trace("WARNING: trying to draw post-processing using non-existent surface.");
+				__ppf_trace("WARNING: trying to draw post-processing using non-existent surface.", 2);
 				__source_surf_exists = false;
 			}
 			exit;
@@ -570,8 +586,8 @@ function PPFX_System() constructor {
 				__render_old_res = __render_res;
 			}
 			
-			// persistent = stack is executed directly;
-			// note: effects are checked individually yet
+			// Persistent = Stack is executed directly;
+			// note: effects are checked individually, yet.
 			
 			__stack_index = 0;
 			//__stack_surface[0] = surface;
@@ -610,16 +626,20 @@ function PPFX_System() constructor {
 					}
 					// > effect: zoom
 					if (__fx_cfg.zoom.enabledd) {
-						shader_set_uniform_f(__PPF_SU.zoom.amount, __fx_cfg.zoom.amount);
-						shader_set_uniform_f(__PPF_SU.zoom.range, __fx_cfg.zoom.range);
-						shader_set_uniform_f_array(__PPF_SU.zoom.center, __fx_cfg.zoom.center);
+						_uniform = __PPF_SU.zoom;
+						_effect = __fx_cfg.zoom;
+						shader_set_uniform_f(_uniform.amount, _effect.amount);
+						shader_set_uniform_f(_uniform.range, _effect.range);
+						shader_set_uniform_f_array(_uniform.center, _effect.center);
 					}
 					// > effect: shake
 					if (__fx_cfg.shake.enabledd) {
-						shader_set_uniform_f(__PPF_SU.shake.speedd, __fx_cfg.shake.speedd);
-						shader_set_uniform_f(__PPF_SU.shake.magnitude, __fx_cfg.shake.magnitude);
-						shader_set_uniform_f(__PPF_SU.shake.hspeedd, __fx_cfg.shake.hspeedd);
-						shader_set_uniform_f(__PPF_SU.shake.vspeedd, __fx_cfg.shake.vspeedd);
+						_uniform = __PPF_SU.shake;
+						_effect = __fx_cfg.shake;
+						shader_set_uniform_f(_uniform.speedd, _effect.speedd);
+						shader_set_uniform_f(_uniform.magnitude, _effect.magnitude);
+						shader_set_uniform_f(_uniform.hspeedd, _effect.hspeedd);
+						shader_set_uniform_f(_uniform.vspeedd, _effect.vspeedd);
 					}
 					// > effect: lens_distortion
 					if (__fx_cfg.lens_distortion.enabledd) {
@@ -627,57 +647,73 @@ function PPFX_System() constructor {
 					}
 					// > effect: pixelize
 					if (__fx_cfg.pixelize.enabledd) {
-						shader_set_uniform_f(__PPF_SU.pixelize.amount, __fx_cfg.pixelize.amount);
-						shader_set_uniform_f(__PPF_SU.pixelize.squares_max, __fx_cfg.pixelize.squares_max);
-						shader_set_uniform_f(__PPF_SU.pixelize.steps, __fx_cfg.pixelize.steps);
+						_uniform = __PPF_SU.pixelize;
+						_effect = __fx_cfg.pixelize;
+						shader_set_uniform_f(_uniform.amount, _effect.amount);
+						shader_set_uniform_f(_uniform.squares_max, _effect.squares_max);
+						shader_set_uniform_f(_uniform.steps, _effect.steps);
 					}
 					// > effect: swirl
 					if (__fx_cfg.swirl.enabledd) {
-						shader_set_uniform_f(__PPF_SU.swirl.angle, __fx_cfg.swirl.angle);
-						shader_set_uniform_f(__PPF_SU.swirl.radius, __fx_cfg.swirl.radius);
-						shader_set_uniform_f_array(__PPF_SU.swirl.center, __fx_cfg.swirl.center);
+						_uniform = __PPF_SU.swirl;
+						_effect = __fx_cfg.swirl;
+						shader_set_uniform_f(_uniform.angle, _effect.angle);
+						shader_set_uniform_f(_uniform.radius, _effect.radius);
+						shader_set_uniform_f_array(_uniform.center, _effect.center);
 					}
 					// > effect: panorama
 					if (__fx_cfg.panorama.enabledd) {
-						shader_set_uniform_f(__PPF_SU.panorama.depth_x, __fx_cfg.panorama.depth_x);
-						shader_set_uniform_f(__PPF_SU.panorama.depth_y, __fx_cfg.panorama.depth_y);
+						_uniform = __PPF_SU.panorama;
+						_effect = __fx_cfg.panorama;
+						shader_set_uniform_f(_uniform.depth_x, _effect.depth_x);
+						shader_set_uniform_f(_uniform.depth_y, _effect.depth_y);
 					}
 					// > effect: sine_wave
 					if (__fx_cfg.sine_wave.enabledd) {
-						shader_set_uniform_f_array(__PPF_SU.sine_wave.frequency, __fx_cfg.sine_wave.frequency);
-						shader_set_uniform_f_array(__PPF_SU.sine_wave.amplitude, __fx_cfg.sine_wave.amplitude);
-						shader_set_uniform_f(__PPF_SU.sine_wave.speedd, __fx_cfg.sine_wave.speedd);
-						shader_set_uniform_f_array(__PPF_SU.sine_wave.offset, __fx_cfg.sine_wave.offset);
+						_uniform = __PPF_SU.sine_wave;
+						_effect = __fx_cfg.sine_wave;
+						shader_set_uniform_f_array(_uniform.frequency, _effect.frequency);
+						shader_set_uniform_f_array(_uniform.amplitude, _effect.amplitude);
+						shader_set_uniform_f(_uniform.speedd, _effect.speedd);
+						shader_set_uniform_f_array(_uniform.offset, _effect.offset);
 					}
 					// > effect: glitch
 					if (__fx_cfg.glitch.enabledd) {
-						shader_set_uniform_f(__PPF_SU.glitch.speedd, __fx_cfg.glitch.speedd);
-						shader_set_uniform_f(__PPF_SU.glitch.block_size, __fx_cfg.glitch.block_size);
-						shader_set_uniform_f(__PPF_SU.glitch.interval, __fx_cfg.glitch.interval);
-						shader_set_uniform_f(__PPF_SU.glitch.intensity, __fx_cfg.glitch.intensity);
-						shader_set_uniform_f(__PPF_SU.glitch.peak_amplitude1, __fx_cfg.glitch.peak_amplitude1);
-						shader_set_uniform_f(__PPF_SU.glitch.peak_amplitude2, __fx_cfg.glitch.peak_amplitude2);
+						_uniform = __PPF_SU.glitch;
+						_effect = __fx_cfg.glitch;
+						shader_set_uniform_f(_uniform.speedd, _effect.speedd);
+						shader_set_uniform_f(_uniform.block_size, _effect.block_size);
+						shader_set_uniform_f(_uniform.interval, _effect.interval);
+						shader_set_uniform_f(_uniform.intensity, _effect.intensity);
+						shader_set_uniform_f(_uniform.peak_amplitude1, _effect.peak_amplitude1);
+						shader_set_uniform_f(_uniform.peak_amplitude2, _effect.peak_amplitude2);
 					}
 					// > effect: shockwaves
 					if (__fx_cfg.shockwaves.enabledd) {
-						shader_set_uniform_f(__PPF_SU.shockwaves.amount, __fx_cfg.shockwaves.amount);
-						shader_set_uniform_f(__PPF_SU.shockwaves.aberration, __fx_cfg.shockwaves.aberration);
-						texture_set_stage(__PPF_SU.shockwaves.texture, __fx_cfg.shockwaves.texture);
-						texture_set_stage(__PPF_SU.shockwaves.prisma_lut_tex, __fx_cfg.shockwaves.prisma_lut_tex);
+						_uniform = __PPF_SU.shockwaves;
+						_effect = __fx_cfg.shockwaves;
+						shader_set_uniform_f(_uniform.amount, _effect.amount);
+						shader_set_uniform_f(_uniform.aberration, _effect.aberration);
+						texture_set_stage(_uniform.texture, _effect.texture);
+						texture_set_stage(_uniform.prisma_lut_tex, _effect.prisma_lut_tex);
 					}
 					// > effect: displacemap
 					if (__fx_cfg.displacemap.enabledd) {
-						shader_set_uniform_f(__PPF_SU.displacemap.amount, __fx_cfg.displacemap.amount);
-						shader_set_uniform_f(__PPF_SU.displacemap.zoom, __fx_cfg.displacemap.zoom);
-						shader_set_uniform_f(__PPF_SU.displacemap.angle, __fx_cfg.displacemap.angle);
-						shader_set_uniform_f(__PPF_SU.displacemap.speedd, __fx_cfg.displacemap.speedd);
-						texture_set_stage(__PPF_SU.displacemap.texture, __fx_cfg.displacemap.texture);
-						shader_set_uniform_f_array(__PPF_SU.displacemap.offset, __fx_cfg.displacemap.offset);
+						_uniform = __PPF_SU.displacemap;
+						_effect = __fx_cfg.displacemap;
+						shader_set_uniform_f(_uniform.amount, _effect.amount);
+						shader_set_uniform_f(_uniform.zoom, _effect.zoom);
+						shader_set_uniform_f(_uniform.angle, _effect.angle);
+						shader_set_uniform_f(_uniform.speedd, _effect.speedd);
+						texture_set_stage(_uniform.texture, _effect.texture);
+						shader_set_uniform_f_array(_uniform.offset, _effect.offset);
 					}
 					// > effect: white_balance
 					if (__fx_cfg.white_balance.enabledd) {
-						shader_set_uniform_f(__PPF_SU.white_balance.temperature, __fx_cfg.white_balance.temperature);
-						shader_set_uniform_f(__PPF_SU.white_balance.tint, __fx_cfg.white_balance.tint);
+						_uniform = __PPF_SU.white_balance;
+						_effect = __fx_cfg.white_balance;
+						shader_set_uniform_f(_uniform.temperature, _effect.temperature);
+						shader_set_uniform_f(_uniform.tint, _effect.tint);
 					}
 					draw_surface_stretched(surface, 0, 0, screen_width, screen_height);
 					shader_reset();
@@ -690,16 +726,16 @@ function PPFX_System() constructor {
 			
 			#region Stack 1 - HQ4x
 			_effect = __fx_cfg.hq4x;
-			_uniform = __PPF_SU.hq4x;
-			
-			if (__fx_cfg.hq4x.enabledd) {
+			if (_effect.enabledd) {
+				_uniform = __PPF_SU.hq4x;
+				
+				// sets
+				var _ds = round(clamp(_effect.downscale, 2, 8));
+				
 				__stack_index++;
 				if !surface_exists(__stack_surface[__stack_index]) {
 					__stack_surface[__stack_index] = surface_create(screen_width, screen_height, __surface_tex_format);
 				}
-				// sets
-				var _ds = round(clamp(_effect.downscale, 2, 8));
-				
 				surface_set_target(__stack_surface[__stack_index]) {
 					draw_clear_alpha(c_black, 0);
 					gpu_set_blendmode_ext(bm_one, bm_inv_src_alpha);
@@ -718,8 +754,8 @@ function PPFX_System() constructor {
 			#endregion
 			
 			#region Stack 2 - Fxaa
-			if (__fx_cfg.fxaa.enabledd) {
-				_effect = __fx_cfg.fxaa;
+			_effect = __fx_cfg.fxaa;
+			if (_effect.enabledd && _effect.strength > 0) {
 				_uniform = __PPF_SU.fxaa;
 				
 				__stack_index++;
@@ -743,8 +779,8 @@ function PPFX_System() constructor {
 			#endregion
 			
 			#region Stack 3 - Bloom
-			if (__fx_cfg.bloom.enabledd) {
-				_effect = __fx_cfg.bloom;
+			_effect = __fx_cfg.bloom;
+			if (_effect.enabledd && _effect.intensity > 0) {
 				_uniform = __PPF_SU.bloom;
 				
 				// sets
@@ -758,9 +794,7 @@ function PPFX_System() constructor {
 					__bloom_downscale = _ds;
 				}
 				
-				gpu_set_tex_filter(true);
-				
-				// > pre filter
+				// pre filter (surface_blit)
 				var _source = __stack_surface[__stack_index];
 				if !surface_exists(__bloom_surface[0]) {
 					__bloom_surface[0] = surface_create(_ww, _hh, __surface_tex_format);
@@ -768,6 +802,7 @@ function PPFX_System() constructor {
 				var _current_destination = __bloom_surface[0];
 				
 				// blit
+				gpu_set_tex_filter(true);
 				surface_set_target(_current_destination);
 					shader_set(__PPF_SH_BLOOM_PRE_FILTER);
 					shader_set_uniform_f(_uniform.pre_filter_res, _ww, _hh);
@@ -779,8 +814,7 @@ function PPFX_System() constructor {
 				
 				var _current_source = _current_destination;
 				
-				
-				// downsampling
+				// downsampling (surface_blit)
 				var i = 1; // there is already a texture in slot 0
 				repeat(_iterations) {
 					_ww /= 2;
@@ -793,35 +827,28 @@ function PPFX_System() constructor {
 						__bloom_surface[i] = surface_create(_ww, _hh, __surface_tex_format);
 					}
 					_current_destination = __bloom_surface[i];
-					
-					// blit
-					surface_set_target(_current_destination);
-						shader_set(__PPF_SH_DS_BOX13);
-						shader_set_uniform_f(__PPF_SU.downsample_box13_res, _ww, _hh);
-						draw_surface_stretched(_current_source, 0, 0, surface_get_width(_current_destination), surface_get_height(_current_destination));
-						shader_reset();
-					surface_reset_target();
-					
+						surface_set_target(_current_destination);
+							shader_set(__PPF_SH_DS_BOX13);
+							shader_set_uniform_f(__PPF_SU.downsample_box13_res, _ww, _hh);
+							draw_surface_stretched(_current_source, 0, 0, _ww, _hh);
+							shader_reset();
+						surface_reset_target();
 					_current_source = _current_destination;
 					++i;
 				}
 				
-				
-				// upsampling
+				// upsampling (surface_blit)
 				gpu_set_blendmode(bm_one);
 				for(i -= 2; i >= 0; i--) { // 7, 6, 5, 4, 3, 2, 1, 0
 					_current_destination = __bloom_surface[i];
-					
-					// blit
-					_ww = surface_get_width(_current_destination);
-					_hh = surface_get_height(_current_destination);
-					surface_set_target(_current_destination);
-						shader_set(__PPF_SH_US_TENT9);
-						shader_set_uniform_f(__PPF_SU.upsample_tent_res, _ww, _hh);
-						draw_surface_stretched(_current_source, 0, 0, _ww, _hh);
-						shader_reset();
-					surface_reset_target();
-					
+						_ww = surface_get_width(_current_destination);
+						_hh = surface_get_height(_current_destination);
+						surface_set_target(_current_destination);
+							shader_set(__PPF_SH_US_TENT9);
+							shader_set_uniform_f(__PPF_SU.upsample_tent_res, _ww, _hh);
+							draw_surface_stretched(_current_source, 0, 0, _ww, _hh);
+							shader_reset();
+						surface_reset_target();
 					_current_source = _current_destination;
 				}
 				gpu_set_blendmode(bm_normal);
@@ -859,15 +886,81 @@ function PPFX_System() constructor {
 			}
 			#endregion
 			
-			#region Stack 4 - Sunshafts
-			if (__fx_cfg.sunshafts.enabledd) {
-				_effect = __fx_cfg.sunshafts;
+			#region Stack 4 - Slow Motion
+			_effect = __fx_cfg.slow_motion;
+			if (_effect.enabledd && _effect.intensity > 0) {
+				_uniform = __PPF_SU.slow_motion;
+				var _source = __stack_surface[__stack_index];
+				
+				// set source (from threshold or previous stack)
+				if (_effect.threshold > 0) {
+					_source = __slow_motion_surf[0];
+					// threshold (surface_blit)
+					if (!surface_exists(__slow_motion_surf[0])) {
+						__slow_motion_surf[0] = surface_create(screen_width, screen_height, __surface_tex_format);
+					}
+					surface_set_target(__slow_motion_surf[0]); // destination
+						shader_set(__PPF_SH_SLOWMO_PRE_FILTER);
+						shader_set_uniform_f(_uniform.pre_filter_threshold, _effect.threshold);
+						shader_set_uniform_f(_uniform.pre_filter_force, _effect.force);
+						draw_surface_stretched(__stack_surface[0], 0, 0, screen_width, screen_height); // source
+						shader_reset();
+					surface_reset_target();
+				}
+				
+				// buffer a (surface_blit)
+				if (!surface_exists(__slow_motion_surf[1])) {
+					__slow_motion_surf[1] = surface_create(screen_width, screen_height, __surface_tex_format);
+				}
+				surface_set_target(__slow_motion_surf[1]);
+					if (surface_exists(_source)) draw_surface_ext(_source, 0, 0, 1, 1, 0, c_white, 1-clamp(_effect.intensity, 0, 0.9));
+				surface_reset_target();
+				
+				// intensity (surface_blit)
+				if (!surface_exists(__slow_motion_surf[2])) {
+					__slow_motion_surf[2] = surface_create(screen_width, screen_height, __surface_tex_format);
+				}
+				surface_set_target(__slow_motion_surf[2]);
+					draw_clear_alpha(c_black, 0);
+					var _iterations = max(1, _effect.iterations);
+					repeat(_iterations) {
+						draw_surface_stretched(__slow_motion_surf[1], 0, 0, screen_width, screen_height);
+					}
+				surface_reset_target();
+				
+				// render slow motion
+				__stack_index++;
+				if !surface_exists(__stack_surface[__stack_index]) {
+					__stack_surface[__stack_index] = surface_create(screen_width, screen_height, __surface_tex_format);
+				}
+				surface_set_target(__stack_surface[__stack_index]) {
+					draw_clear_alpha(c_black, 0);
+					gpu_set_blendmode_ext(bm_one, bm_inv_src_alpha);
+					
+					shader_set(__PPF_SH_SLOWMO);
+					shader_set_uniform_f(_uniform.resolution, screen_width, screen_height);
+					shader_set_uniform_f(_uniform.threshold, _effect.threshold);
+					shader_set_uniform_f(_uniform.debug, _effect.debug);
+					texture_set_stage(_uniform.slowmo_tex, surface_get_texture(__slow_motion_surf[2]));
+					draw_surface_stretched(__stack_surface[__stack_index-1], 0, 0, screen_width, screen_height);
+					shader_reset();
+					
+					gpu_set_blendmode(bm_normal);
+					surface_reset_target();
+				}
+			}
+			#endregion
+			
+			#region Stack 5 - Sunshafts
+			_effect = __fx_cfg.sunshafts;
+			if (_effect.enabledd && _effect.intensity > 0 && _effect.scattering > 0) {
 				_uniform = __PPF_SU.sunshafts;
 				
 				// NOTE: this effect is not affected by Bloom.
 				// sets
 				gpu_set_blendmode_ext(bm_one, bm_inv_src_alpha);
-				var _ds = clamp(__fx_cfg.sunshafts.downscale, 0.1, 1),
+				var _source = __stack_surface[0], // get base surface, to be used by sunshafts
+				_ds = clamp(__fx_cfg.sunshafts.downscale, 0.1, 1),
 				_ww = screen_width*_ds, _hh = screen_height*_ds;
 				
 				if (__sunshaft_downscale != _ds) {
@@ -875,7 +968,6 @@ function PPFX_System() constructor {
 					__sunshaft_downscale = _ds;
 				}
 				
-				var _source = __stack_surface[0]; // get base surface, to be used by sunshafts
 				if !surface_exists(__sunshaft_surf) {
 					__sunshaft_surf = surface_create(_ww, _hh, __surface_tex_format);
 				}
@@ -920,70 +1012,81 @@ function PPFX_System() constructor {
 			}
 			#endregion
 			
-			#region Stack 5 - Depth of Field
-			if (__fx_cfg.depth_of_field.enabledd) {
-				_effect = __fx_cfg.depth_of_field;
+			#region Stack 6 - Depth of Field
+			_effect = __fx_cfg.depth_of_field;
+			if (_effect.enabledd && _effect.radius > 0) {
 				_uniform = __PPF_SU.depth_of_field;
 				
 				// sets
-				var _source = __stack_surface[__stack_index];
-				var _cur_aa_filter = gpu_get_tex_filter();
-				gpu_set_tex_filter(false);
-				
-				var _ds = clamp(_effect.downscale, 0.1, 1);
+				var _source = __stack_surface[__stack_index],
+				_cur_aa_filter = gpu_get_tex_filter(),
+				_ds = clamp(_effect.downscale, 0.1, 1);
 				
 				if (__dof_downscale != _ds) {
 					__ppf_surface_delete_array(__dof_surface);
 					__dof_downscale = _ds;
 				}
 				
-				// coc
+				// coc (surface_blit)
+				gpu_set_tex_filter(false);
 				var _ww = screen_width, _hh = screen_height;
-				if !surface_exists(__dof_surface[0]) __dof_surface[0] = surface_create(_ww, _hh, surface_rgba8unorm); 
-				__ppf_surface_blit(_source, __dof_surface[0], __PPF_PASS_DOF_COC, {
-					lens_distortion_enable : __fx_cfg.lens_distortion.enabledd,
-					lens_distortion_amount : __fx_cfg.lens_distortion.enabledd ? __fx_cfg.lens_distortion.amount : 0,
-					radius : _effect.radius,
-					focus_distance : _effect.focus_distance,
-					focus_range : _effect.focus_range,
-					use_zdepth : _effect.use_zdepth,
-					zdepth_tex : _effect.zdepth_tex,
-				});
-				gpu_set_tex_filter(true);
+				if (!surface_exists(__dof_surface[0])) __dof_surface[0] = surface_create(_ww, _hh, surface_rgba8unorm); 
+				surface_set_target(__dof_surface[0]); // destination
+					shader_set(__PPF_SH_DOF_COC);
+					shader_set_uniform_f(_uniform._coc_lens_distortion_enable, __fx_cfg.lens_distortion.enabledd); // [d]
+					shader_set_uniform_f(__PPF_SU.lens_distortion.amount_d, __fx_cfg.lens_distortion.enabledd ? __fx_cfg.lens_distortion.amount : 0);
+					shader_set_uniform_f(_uniform.coc_bokeh_radius, _effect.radius);
+					shader_set_uniform_f(_uniform.coc_focus_distance, _effect.focus_distance);
+					shader_set_uniform_f(_uniform.coc_focus_range, _effect.focus_range);
+					shader_set_uniform_f(_uniform.coc_use_zdepth, _effect.use_zdepth);
+					texture_set_stage(_uniform.coc_zdepth_tex, _effect.zdepth_tex);
+					draw_surface_stretched(_source, 0, 0, _ww, _hh); // source
+					shader_reset();
+				surface_reset_target();
 				
-				gpu_set_blendmode_ext(bm_one, bm_inv_src_alpha);
 				// pre filter
+				gpu_set_tex_filter(true);
+				gpu_set_blendmode_ext(bm_one, bm_inv_src_alpha);
 				_ww = screen_width*_ds; _hh = screen_height*_ds; // half res
-				if !surface_exists(__dof_surface[1]) __dof_surface[1] = surface_create(_ww, _hh, surface_rgba8unorm);
-				__ppf_surface_blit_alpha(_source, __dof_surface[1], __PPF_PASS_DS_BOX13, {
-					ww : _ww,
-					hh : _hh,
-				});
+				if (!surface_exists(__dof_surface[1])) __dof_surface[1] = surface_create(_ww, _hh, surface_rgba8unorm);
+				surface_set_target(__dof_surface[1]);
+					shader_set(__PPF_SH_DS_BOX13);
+					draw_clear_alpha(c_black, 0);
+					shader_set_uniform_f(__PPF_SU.downsample_box13_res, _ww, _hh);
+					draw_surface_stretched(_source, 0, 0, _ww, _hh);
+					shader_reset();
+				surface_reset_target();
 				
-				// bokeh
-				if !surface_exists(__dof_surface[2]) __dof_surface[2] = surface_create(_ww, _hh, surface_rgba8unorm);
-				__ppf_surface_blit_alpha(__dof_surface[1], __dof_surface[2], __PPF_PASS_DOF_BOKEH, {
-					ww : _ww,
-					hh : _hh,
-					time : __time,
-					global_intensity : __global_intensity,
-					radius : _effect.radius,
-					intensity : _effect.intensity,
-					shaped : _effect.shaped,
-					blades_aperture : _effect.blades_aperture,
-					blades_angle : _effect.blades_angle,
-					debug : _effect.debug,
-					coc_tex : surface_get_texture(__dof_surface[0]),
-				});
+				// bokeh (surface_blit)
+				if (!surface_exists(__dof_surface[2])) __dof_surface[2] = surface_create(_ww, _hh, surface_rgba8unorm);
+				surface_set_target(__dof_surface[2]); // destination
+					draw_clear_alpha(c_black, 0);
+					shader_set(__PPF_SH_DOF_BOKEH);
+					shader_set_uniform_f(_uniform.bokeh_resolution, _ww, _hh);
+					shader_set_uniform_f(_uniform.bokeh_time_n_intensity, __time, __global_intensity);
+					shader_set_uniform_f(_uniform.bokeh_radius, _effect.radius);
+					shader_set_uniform_f(_uniform.bokeh_intensity,  _effect.intensity);
+					shader_set_uniform_f(_uniform.bokeh_shaped, _effect.shaped);
+					shader_set_uniform_f(_uniform.bokeh_blades_aperture, _effect.blades_aperture);
+					shader_set_uniform_f(_uniform.bokeh_blades_angle, _effect.blades_angle);
+					shader_set_uniform_f(_uniform.bokeh_debug, _effect.debug);
+					texture_set_stage(_uniform.bokeh_coc_tex, surface_get_texture(__dof_surface[0]));
+					draw_surface_stretched(__dof_surface[1], 0, 0, _ww, _hh); // source
+					shader_reset();
+				surface_reset_target();
 				
-				// post filter
+				// post filter (surface_blit)
 				//_ww /= 2; _hh /= 2;
-				if !surface_exists(__dof_surface[3]) __dof_surface[3] = surface_create(_ww, _hh, surface_rgba8unorm);
-				__ppf_surface_blit_alpha(__dof_surface[2], __dof_surface[3], __PPF_PASS_US_TENT9, {
-					ww : _ww,
-					hh : _hh,
-				});
+				if (!surface_exists(__dof_surface[3])) __dof_surface[3] = surface_create(_ww, _hh, surface_rgba8unorm);
+				surface_set_target(__dof_surface[3]); // destination
+					draw_clear_alpha(c_black, 0);
+					shader_set(__PPF_SH_US_TENT9);
+					shader_set_uniform_f(__PPF_SU.upsample_tent_res, _ww, _hh);
+					draw_surface_stretched(__dof_surface[2], 0, 0, _ww, _hh); // source
+					shader_reset();
+				surface_reset_target();
 				
+				// render
 				__stack_index++;
 				if !surface_exists(__stack_surface[__stack_index]) {
 					__stack_surface[__stack_index] = surface_create(screen_width, screen_height, __surface_tex_format);
@@ -1005,37 +1108,11 @@ function PPFX_System() constructor {
 			}
 			#endregion
 			
-			#region Stack 6 - Slow Motion
-			if (__fx_cfg.slow_motion.enabledd) {
-				__stack_index++;
-				if !surface_exists(__stack_surface[__stack_index]) {
-					__stack_surface[__stack_index] = surface_create(screen_width, screen_height, __surface_tex_format);
-				}
-				if !surface_exists(__slow_motion_buffer_a_surf) {
-					__slow_motion_buffer_a_surf = surface_create(screen_width, screen_height, __surface_tex_format);
-				}
-				
-				// buffer a
-				surface_set_target(__slow_motion_buffer_a_surf);
-				draw_surface_ext(__stack_surface[__stack_index-1], 0, 0, 1, 1, 0, c_white, 1-clamp(__fx_cfg.slow_motion.intensity, 0, 0.9));
-				surface_reset_target();
-				
-				// draw from buffer a
-				surface_set_target(__stack_surface[__stack_index]) {
-					draw_surface_stretched(__stack_surface[__stack_index-1], 0, 0, screen_width, screen_height);
-					var _iterations = max(1, __fx_cfg.slow_motion.iterations);
-					repeat(_iterations) {
-						draw_surface_stretched(__slow_motion_buffer_a_surf, 0, 0, screen_width, screen_height);
-					}
-					surface_reset_target();
-				}
-			}
-			#endregion
-			
 			#region Stack 7 - Motion Blur
-			if (__fx_cfg.motion_blur.enabledd) {
-				_effect = __fx_cfg.motion_blur;
+			_effect = __fx_cfg.motion_blur;
+			if (_effect.enabledd && (_effect.radius > 0 || !__ppf_is_undefined(_effect.overlay_texture))) {
 				_uniform = __PPF_SU.motion_blur;
+				_using_overlay_texture = !__ppf_is_undefined(_effect.overlay_texture);
 				
 				__stack_index++;
 				if !surface_exists(__stack_surface[__stack_index]) {
@@ -1053,7 +1130,9 @@ function PPFX_System() constructor {
 					shader_set_uniform_f(_uniform.mask_power, _effect.mask_power);
 					shader_set_uniform_f(_uniform.mask_scale, _effect.mask_scale);
 					shader_set_uniform_f(_uniform.mask_smoothness, _effect.mask_smoothness);
-					texture_set_stage(_uniform.overlay_texture, _effect.overlay_texture);
+					shader_set_uniform_f(_uniform.using_overlay_texture, _using_overlay_texture);
+					if (_using_overlay_texture) texture_set_stage(_uniform.overlay_texture, _effect.overlay_texture);
+					
 					draw_surface_stretched(__stack_surface[__stack_index-1], 0, 0, screen_width, screen_height);
 					shader_reset();
 					
@@ -1065,9 +1144,9 @@ function PPFX_System() constructor {
 			
 			#region Stack 8 - Radial Blur
 			_effect = __fx_cfg.radial_blur;
-			_uniform = __PPF_SU.radial_blur;
-			
-			if (__fx_cfg.radial_blur.enabledd) {
+			if (_effect.enabledd && _effect.radius > 0) {
+				_uniform = __PPF_SU.radial_blur;
+				
 				__stack_index++;
 				if !surface_exists(__stack_surface[__stack_index]) {
 					__stack_surface[__stack_index] = surface_create(screen_width, screen_height, __surface_tex_format);
@@ -1099,7 +1178,7 @@ function PPFX_System() constructor {
 				surface_set_target(__stack_surface[__stack_index]) {
 					draw_clear_alpha(c_black, 0);
 					gpu_set_blendmode_ext(bm_one, bm_inv_src_alpha);
-				
+					
 					shader_set(__PPF_SH_COLOR_GRADING);
 					shader_set_uniform_f(__PPF_SU.color_grading.pos_res, x, y, screen_width, screen_height);
 					shader_set_uniform_f(__PPF_SU.color_grading.u_time_n_intensity, __time, __global_intensity);
@@ -1121,17 +1200,19 @@ function PPFX_System() constructor {
 						__fx_cfg.tone_mapping.enabledd,
 						__fx_cfg.border.enabledd,
 					]);
-				
+					
 					// > [d] effect: lens_distortion
 					if (__fx_cfg.lens_distortion.enabledd) {
 						shader_set_uniform_f(__PPF_SU.lens_distortion.amount_c, __fx_cfg.lens_distortion.amount);
 					}
 					// > effect: lut
 					if (__fx_cfg.lut.enabledd) {
-						texture_set_stage(__PPF_SU.lut.tex_lookup, __fx_cfg.lut.texture);
-						shader_set_uniform_f(__PPF_SU.lut.intensity, __fx_cfg.lut.intensity);
-						shader_set_uniform_f_array(__PPF_SU.lut.size, __fx_cfg.lut.size);
-						shader_set_uniform_f(__PPF_SU.lut.squares, __fx_cfg.lut.squares);
+						_uniform = __PPF_SU.lut;
+						_effect = __fx_cfg.lut;
+						texture_set_stage(_uniform.tex_lookup, _effect.texture);
+						shader_set_uniform_f(_uniform.intensity, _effect.intensity);
+						shader_set_uniform_f_array(_uniform.size, _effect.size);
+						shader_set_uniform_f(_uniform.squares, _effect.squares);
 					}
 					// > effect: exposure
 					if (__fx_cfg.exposure.enabledd) {
@@ -1147,11 +1228,13 @@ function PPFX_System() constructor {
 					}
 					// > effect: shadow_midtone_highlight
 					if (__fx_cfg.shadow_midtone_highlight.enabledd) {
-						shader_set_uniform_f_array(__PPF_SU.shadow_midtone_highlight.shadow_color, __fx_cfg.shadow_midtone_highlight.shadow_color);
-						shader_set_uniform_f_array(__PPF_SU.shadow_midtone_highlight.midtone_color, __fx_cfg.shadow_midtone_highlight.midtone_color);
-						shader_set_uniform_f_array(__PPF_SU.shadow_midtone_highlight.highlight_color, __fx_cfg.shadow_midtone_highlight.highlight_color);
-						shader_set_uniform_f(__PPF_SU.shadow_midtone_highlight.shadow_range, __fx_cfg.shadow_midtone_highlight.shadow_range);
-						shader_set_uniform_f(__PPF_SU.shadow_midtone_highlight.highlight_range, __fx_cfg.shadow_midtone_highlight.highlight_range);
+						_uniform = __PPF_SU.shadow_midtone_highlight;
+						_effect = __fx_cfg.shadow_midtone_highlight;
+						shader_set_uniform_f_array(_uniform.shadow_color, _effect.shadow_color);
+						shader_set_uniform_f_array(_uniform.midtone_color, _effect.midtone_color);
+						shader_set_uniform_f_array(_uniform.highlight_color, _effect.highlight_color);
+						shader_set_uniform_f(_uniform.shadow_range, _effect.shadow_range);
+						shader_set_uniform_f(_uniform.highlight_range, _effect.highlight_range);
 					}
 					// > effect: saturation
 					if (__fx_cfg.saturation.enabledd) {
@@ -1167,8 +1250,10 @@ function PPFX_System() constructor {
 					}
 					// > effect: colorize
 					if (__fx_cfg.colorize.enabledd) {
-						shader_set_uniform_f(__PPF_SU.colorize.hsv, __fx_cfg.colorize.hue/255, __fx_cfg.colorize.saturation/255, __fx_cfg.colorize.value/255);
-						shader_set_uniform_f(__PPF_SU.colorize.intensity, __fx_cfg.colorize.intensity);
+						_uniform = __PPF_SU.colorize;
+						_effect = __fx_cfg.colorize;
+						shader_set_uniform_f(_uniform.hsv, _effect.hue/255, _effect.saturation/255, _effect.value/255);
+						shader_set_uniform_f(_uniform.intensity, _effect.intensity);
 					}
 					// > effect: posterization
 					if (__fx_cfg.posterization.enabledd) {
@@ -1180,15 +1265,19 @@ function PPFX_System() constructor {
 					}
 					// > effect: texture_overlay
 					if (__fx_cfg.texture_overlay.enabledd) {
-						shader_set_uniform_f(__PPF_SU.texture_overlay.intensity, __fx_cfg.texture_overlay.intensity);
-						shader_set_uniform_f(__PPF_SU.texture_overlay.zoom, __fx_cfg.texture_overlay.zoom);
-						texture_set_stage(__PPF_SU.texture_overlay.texture, __fx_cfg.texture_overlay.texture);
+						_uniform = __PPF_SU.texture_overlay;
+						_effect = __fx_cfg.texture_overlay;
+						shader_set_uniform_f(_uniform.intensity, _effect.intensity);
+						shader_set_uniform_f(_uniform.zoom, _effect.zoom);
+						texture_set_stage(_uniform.texture, _effect.texture);
 					}
 					// > effect: lift_gamma_gain
 					if (__fx_cfg.lift_gamma_gain.enabledd) {
-						shader_set_uniform_f_array(__PPF_SU.lift_gamma_gain.lift, __fx_cfg.lift_gamma_gain.lift);
-						shader_set_uniform_f_array(__PPF_SU.lift_gamma_gain.gamma, __fx_cfg.lift_gamma_gain.gamma);
-						shader_set_uniform_f_array(__PPF_SU.lift_gamma_gain.gain, __fx_cfg.lift_gamma_gain.gain);
+						_uniform = __PPF_SU.lift_gamma_gain;
+						_effect = __fx_cfg.lift_gamma_gain;
+						shader_set_uniform_f_array(_uniform.lift, _effect.lift);
+						shader_set_uniform_f_array(_uniform.gamma, _effect.gamma);
+						shader_set_uniform_f_array(_uniform.gain, _effect.gain);
 					}
 					// > effect: tone_mapping
 					if (__fx_cfg.tone_mapping.enabledd) {
@@ -1196,13 +1285,15 @@ function PPFX_System() constructor {
 					}
 					// > [d] effect: border
 					if (__fx_cfg.border.enabledd) {
-						shader_set_uniform_f(__PPF_SU.border.curvature_c, __fx_cfg.border.curvature);
-						shader_set_uniform_f(__PPF_SU.border.smooth_c, __fx_cfg.border.smooth);
-						shader_set_uniform_f_array(__PPF_SU.border.colorr_c, __fx_cfg.border.colorr);
+						_uniform = __PPF_SU.border;
+						_effect = __fx_cfg.border;
+						shader_set_uniform_f(_uniform.curvature_c, _effect.curvature);
+						shader_set_uniform_f(_uniform.smooth_c, _effect.smooth);
+						shader_set_uniform_f_array(_uniform.colorr_c, _effect.colorr);
 					}
 					draw_surface_stretched(__stack_surface[__stack_index-1], 0, 0, screen_width, screen_height);
 					shader_reset();
-				
+					
 					gpu_set_blendmode(bm_normal);
 					surface_reset_target();
 				}
@@ -1211,9 +1302,9 @@ function PPFX_System() constructor {
 			
 			#region Stack 10 - Palette Swap
 			_effect = __fx_cfg.palette_swap;
-			_uniform = __PPF_SU.palette_swap;
-			
 			if (_effect.enabledd) {
+				_uniform = __PPF_SU.palette_swap;
+				
 				__stack_index++;
 				var _cur_aa_filter = gpu_get_tex_filter();
 				gpu_set_tex_filter_ext(__PPF_SU.palette_swap.texture, !_effect.limit_colors);
@@ -1242,14 +1333,14 @@ function PPFX_System() constructor {
 			#endregion
 			
 			#region Stack 11 - Kawase Blur
-			if (__fx_cfg.kawase_blur.enabledd) {
-				_effect = __fx_cfg.kawase_blur;
+			_effect = __fx_cfg.kawase_blur;
+			if (_effect.enabledd && _effect.amount > 0) {
 				_uniform = __PPF_SU.kawase_blur;
 				
 				// sets
 				var _ds = _effect.downscale,
 				_amount = _effect.amount,
-				_iterations = clamp(__fx_cfg.kawase_blur.iterations * _amount, 1, 8),
+				_iterations = clamp(_effect.iterations * _amount, 1, 8),
 				_ww = screen_width, _hh = screen_height,
 				
 				_source = __stack_surface[__stack_index],
@@ -1328,7 +1419,10 @@ function PPFX_System() constructor {
 			#endregion
 			
 			#region Stack 12 - Gaussian Blur
-			if (__fx_cfg.gaussian_blur.enabledd) {
+			_effect = __fx_cfg.gaussian_blur;
+			if (_effect.enabledd && _effect.amount > 0) {
+				_uniform = __PPF_SU.gaussian_blur;
+				
 				var _source = __stack_surface[__stack_index],
 				_ds = clamp(__fx_cfg.gaussian_blur.downscale, 0.1, 1),
 				_ww = screen_width*_ds, _hh = screen_height*_ds,
@@ -1348,9 +1442,9 @@ function PPFX_System() constructor {
 				
 				gpu_set_blendmode_ext(bm_one, bm_inv_src_alpha);
 				shader_set(__PPF_SH_GAUSSIAN_BLUR);
-				shader_set_uniform_f(__PPF_SU.gaussian_blur.resolution, _ww, _hh);
-				shader_set_uniform_f(__PPF_SU.gaussian_blur.u_time_n_intensity, __time, __global_intensity);
-				shader_set_uniform_f(__PPF_SU.gaussian_blur.amount, __fx_cfg.gaussian_blur.amount);
+				shader_set_uniform_f(_uniform.resolution, _ww, _hh);
+				shader_set_uniform_f(_uniform.u_time_n_intensity, __time, __global_intensity);
+				shader_set_uniform_f(_uniform.amount, _effect.amount);
 				
 				surface_set_target(__gaussian_blur_ping_surface);
 				draw_clear_alpha(c_black, 0);
@@ -1371,9 +1465,9 @@ function PPFX_System() constructor {
 					draw_clear_alpha(c_black, 0);
 					
 					shader_set(__PPF_SH_GNMSK);
-					shader_set_uniform_f(__PPF_SU.gnmask_power, __fx_cfg.gaussian_blur.mask_power);
-					shader_set_uniform_f(__PPF_SU.gnmask_scale, __fx_cfg.gaussian_blur.mask_scale);
-					shader_set_uniform_f(__PPF_SU.gnmask_smoothness, __fx_cfg.gaussian_blur.mask_smoothness);
+					shader_set_uniform_f(__PPF_SU.gnmask_power,_effect.mask_power);
+					shader_set_uniform_f(__PPF_SU.gnmask_scale,_effect.mask_scale);
+					shader_set_uniform_f(__PPF_SU.gnmask_smoothness, _effect.mask_smoothness);
 					texture_set_stage(__PPF_SU.gnmask_texture, surface_get_texture(__gaussian_blur_pong_surface));
 					draw_surface_stretched(__stack_surface[__stack_index-1], 0, 0, screen_width, screen_height);
 					shader_reset();
@@ -1432,7 +1526,10 @@ function PPFX_System() constructor {
 			#endregion
 			
 			#region Stack 14 - Chromatic Aberration
-			if (__fx_cfg.chromatic_aberration.enabledd) {
+			_effect = __fx_cfg.chromatic_aberration;
+			if (_effect.enabledd && _effect.intensity > 0) {
+				_uniform = __PPF_SU.chromatic_aberration;
+				
 				__stack_index++;
 				var _cur_aa_filter = gpu_get_tex_filter();
 				gpu_set_tex_filter_ext(__PPF_SU.chromatic_aberration.prisma_lut_tex, false);
@@ -1444,14 +1541,14 @@ function PPFX_System() constructor {
 					gpu_set_blendmode_ext(bm_one, bm_inv_src_alpha);
 					
 					shader_set(__PPF_SH_CHROMABER);
-					shader_set_uniform_f(__PPF_SU.chromatic_aberration.pos_res, x, y, screen_width, screen_height);
-					shader_set_uniform_f(__PPF_SU.chromatic_aberration.u_time_n_intensity, __time, __global_intensity);
-					shader_set_uniform_f(__PPF_SU.chromatic_aberration.angle, __fx_cfg.chromatic_aberration.angle);
-					shader_set_uniform_f(__PPF_SU.chromatic_aberration.intensity, __fx_cfg.chromatic_aberration.intensity);
-					shader_set_uniform_f(__PPF_SU.chromatic_aberration.only_outer, __fx_cfg.chromatic_aberration.only_outer);
-					shader_set_uniform_f(__PPF_SU.chromatic_aberration.center_radius, __fx_cfg.chromatic_aberration.center_radius);
-					shader_set_uniform_f(__PPF_SU.chromatic_aberration.blur_enable, __fx_cfg.chromatic_aberration.blur_enable);
-					texture_set_stage(__PPF_SU.chromatic_aberration.prisma_lut_tex, __fx_cfg.chromatic_aberration.prisma_lut_tex);
+					shader_set_uniform_f(_uniform.pos_res, x, y, screen_width, screen_height);
+					shader_set_uniform_f(_uniform.u_time_n_intensity, __time, __global_intensity);
+					shader_set_uniform_f(_uniform.angle, _effect.angle);
+					shader_set_uniform_f(_uniform.intensity, _effect.intensity);
+					shader_set_uniform_f(_uniform.only_outer, _effect.only_outer);
+					shader_set_uniform_f(_uniform.center_radius, _effect.center_radius);
+					shader_set_uniform_f(_uniform.blur_enable, _effect.blur_enable);
+					texture_set_stage(_uniform.prisma_lut_tex, _effect.prisma_lut_tex);
 					draw_surface_stretched(__stack_surface[__stack_index-1], 0, 0, screen_width, screen_height);
 					shader_reset();
 					
@@ -1471,7 +1568,7 @@ function PPFX_System() constructor {
 				surface_set_target(__stack_surface[__stack_index]) {
 					draw_clear_alpha(c_black, 0);
 					gpu_set_blendmode_ext(bm_one, bm_inv_src_alpha);
-				
+					
 					shader_set(__PPF_SH_FINAL);
 					shader_set_uniform_f(__PPF_SU.base_final.pos_res, x, y, screen_width, screen_height);
 					shader_set_uniform_f(__PPF_SU.base_final.u_time_n_intensity, __time, __global_intensity);
@@ -1490,104 +1587,122 @@ function PPFX_System() constructor {
 						__fx_cfg.channels.enabledd,
 						__fx_cfg.border.enabledd,
 					]);
-				
+					
 					// > [d] effect: lens_distortion
 					if (__fx_cfg.lens_distortion.enabledd) {
 						shader_set_uniform_f(__PPF_SU.lens_distortion.amount_f, __fx_cfg.lens_distortion.amount);
 					}
 					// > effect: mist
 					if (__fx_cfg.mist.enabledd) {
-						shader_set_uniform_f(__PPF_SU.mist.intensity, __fx_cfg.mist.intensity);
-						shader_set_uniform_f(__PPF_SU.mist.scale, __fx_cfg.mist.scale);
-						shader_set_uniform_f(__PPF_SU.mist.tiling, __fx_cfg.mist.tiling);
-						shader_set_uniform_f(__PPF_SU.mist.speedd, __fx_cfg.mist.speedd);
-						shader_set_uniform_f(__PPF_SU.mist.angle, __fx_cfg.mist.angle);
-						shader_set_uniform_f(__PPF_SU.mist.contrast, __fx_cfg.mist.contrast);
-						shader_set_uniform_f(__PPF_SU.mist.powerr, __fx_cfg.mist.powerr);
-						shader_set_uniform_f(__PPF_SU.mist.remap, __fx_cfg.mist.remap);
-						shader_set_uniform_f_array(__PPF_SU.mist.colorr, __fx_cfg.mist.colorr);
-						shader_set_uniform_f(__PPF_SU.mist.mix, __fx_cfg.mist.mix);
-						shader_set_uniform_f(__PPF_SU.mist.mix_threshold, __fx_cfg.mist.mix_threshold);
-						texture_set_stage(__PPF_SU.mist.noise_tex, __fx_cfg.mist.noise_tex);
-						gpu_set_tex_repeat_ext(__PPF_SU.mist.noise_tex, true);
-						shader_set_uniform_f_array(__PPF_SU.mist.offset, __fx_cfg.mist.offset);
-						shader_set_uniform_f(__PPF_SU.mist.fade_amount, __fx_cfg.mist.fade_amount);
-						shader_set_uniform_f(__PPF_SU.mist.fade_angle, __fx_cfg.mist.fade_angle);
+						_uniform = __PPF_SU.mist;
+						_effect = __fx_cfg.mist;
+						shader_set_uniform_f(_uniform.intensity, _effect.intensity);
+						shader_set_uniform_f(_uniform.scale, _effect.scale);
+						shader_set_uniform_f(_uniform.tiling,_effect.tiling);
+						shader_set_uniform_f(_uniform.speedd,_effect.speedd);
+						shader_set_uniform_f(_uniform.angle, _effect.angle);
+						shader_set_uniform_f(_uniform.contrast, _effect.contrast);
+						shader_set_uniform_f(_uniform.powerr, _effect.powerr);
+						shader_set_uniform_f(_uniform.remap, _effect.remap);
+						shader_set_uniform_f_array(_uniform.colorr, _effect.colorr);
+						shader_set_uniform_f(_uniform.mix, _effect.mix);
+						shader_set_uniform_f(_uniform.mix_threshold, _effect.mix_threshold);
+						texture_set_stage(_uniform.noise_tex, _effect.noise_tex);
+						gpu_set_tex_repeat_ext(_uniform.noise_tex, true);
+						shader_set_uniform_f_array(_uniform.offset, _effect.offset);
+						shader_set_uniform_f(_uniform.fade_amount, _effect.fade_amount);
+						shader_set_uniform_f(_uniform.fade_angle, _effect.fade_angle);
 					}
 					// > effect: speedlines
 					if (__fx_cfg.speedlines.enabledd) {
-						shader_set_uniform_f(__PPF_SU.speedlines.scale, __fx_cfg.speedlines.scale);
-						shader_set_uniform_f(__PPF_SU.speedlines.tiling, __fx_cfg.speedlines.tiling);
-						shader_set_uniform_f(__PPF_SU.speedlines.speedd, __fx_cfg.speedlines.speedd);
-						shader_set_uniform_f(__PPF_SU.speedlines.rot_speed, __fx_cfg.speedlines.rot_speed);
-						shader_set_uniform_f(__PPF_SU.speedlines.contrast, __fx_cfg.speedlines.contrast);
-						shader_set_uniform_f(__PPF_SU.speedlines.powerr, __fx_cfg.speedlines.powerr);
-						shader_set_uniform_f(__PPF_SU.speedlines.remap, __fx_cfg.speedlines.remap);
-						shader_set_uniform_f(__PPF_SU.speedlines.mask_power, __fx_cfg.speedlines.mask_power);
-						shader_set_uniform_f(__PPF_SU.speedlines.mask_scale, __fx_cfg.speedlines.mask_scale);
-						shader_set_uniform_f(__PPF_SU.speedlines.mask_smoothness, __fx_cfg.speedlines.mask_smoothness);
-						shader_set_uniform_f_array(__PPF_SU.speedlines.colorr, __fx_cfg.speedlines.colorr);
-						texture_set_stage(__PPF_SU.speedlines.noise_tex, __fx_cfg.speedlines.noise_tex);
-						gpu_set_tex_repeat_ext(__PPF_SU.speedlines.noise_tex, true);
+						_uniform = __PPF_SU.speedlines;
+						_effect = __fx_cfg.speedlines;
+						shader_set_uniform_f(_uniform.scale, _effect.scale);
+						shader_set_uniform_f(_uniform.tiling, _effect.tiling);
+						shader_set_uniform_f(_uniform.speedd, _effect.speedd);
+						shader_set_uniform_f(_uniform.rot_speed, _effect.rot_speed);
+						shader_set_uniform_f(_uniform.contrast, _effect.contrast);
+						shader_set_uniform_f(_uniform.powerr, _effect.powerr);
+						shader_set_uniform_f(_uniform.remap, _effect.remap);
+						shader_set_uniform_f(_uniform.mask_power, _effect.mask_power);
+						shader_set_uniform_f(_uniform.mask_scale, _effect.mask_scale);
+						shader_set_uniform_f(_uniform.mask_smoothness, _effect.mask_smoothness);
+						shader_set_uniform_f_array(_uniform.colorr, _effect.colorr);
+						texture_set_stage(_uniform.noise_tex, _effect.noise_tex);
+						gpu_set_tex_repeat_ext(_uniform.noise_tex, true);
 					}
 					// > effect: dithering
 					if (__fx_cfg.dithering.enabledd) {
 						//gpu_set_tex_filter_ext(__PPF_SU.dithering.bayer_texture, false); // not working ???
-						texture_set_stage(__PPF_SU.dithering.bayer_texture, __fx_cfg.dithering.bayer_texture);
-						shader_set_uniform_f(__PPF_SU.dithering.threshold, __fx_cfg.dithering.threshold);
-						shader_set_uniform_f(__PPF_SU.dithering.strength, __fx_cfg.dithering.strength);
-						shader_set_uniform_f(__PPF_SU.dithering.mode, __fx_cfg.dithering.mode);
-						shader_set_uniform_f(__PPF_SU.dithering.scale, __fx_cfg.dithering.scale);
-						shader_set_uniform_f(__PPF_SU.dithering.bayer_size, __fx_cfg.dithering.bayer_size);
+						_uniform = __PPF_SU.dithering;
+						_effect = __fx_cfg.dithering;
+						texture_set_stage(_uniform.bayer_texture, _effect.bayer_texture);
+						shader_set_uniform_f(_uniform.threshold, _effect.threshold);
+						shader_set_uniform_f(_uniform.strength, _effect.strength);
+						shader_set_uniform_f(_uniform.mode, _effect.mode);
+						shader_set_uniform_f(_uniform.scale, _effect.scale);
+						shader_set_uniform_f(_uniform.bayer_size, _effect.bayer_size);
 					}
 					// > effect: noise_grain
 					if (__fx_cfg.noise_grain.enabledd) {
-						shader_set_uniform_f(__PPF_SU.noise_grain.intensity, __fx_cfg.noise_grain.intensity);
-						shader_set_uniform_f(__PPF_SU.noise_grain.luminosity, __fx_cfg.noise_grain.luminosity);
-						shader_set_uniform_f(__PPF_SU.noise_grain.scale, __fx_cfg.noise_grain.scale);
-						shader_set_uniform_f(__PPF_SU.noise_grain.speedd, __fx_cfg.noise_grain.speedd);
-						shader_set_uniform_f(__PPF_SU.noise_grain.mix, __fx_cfg.noise_grain.mix);
-						texture_set_stage(__PPF_SU.noise_grain.noise_tex, __fx_cfg.noise_grain.noise_tex);
-						gpu_set_tex_repeat_ext(__PPF_SU.noise_grain.noise_tex, true);
+						_uniform = __PPF_SU.noise_grain;
+						_effect = __fx_cfg.noise_grain;
+						shader_set_uniform_f(_uniform.intensity, _effect.intensity);
+						shader_set_uniform_f(_uniform.luminosity, _effect.luminosity);
+						shader_set_uniform_f(_uniform.scale, _effect.scale);
+						shader_set_uniform_f(_uniform.speedd, _effect.speedd);
+						shader_set_uniform_f(_uniform.mix, _effect.mix);
+						texture_set_stage(_uniform.noise_tex, _effect.noise_tex);
+						gpu_set_tex_repeat_ext(_uniform.noise_tex, true);
 					}
 					// > effect: vignette
 					if (__fx_cfg.vignette.enabledd) {
-						shader_set_uniform_f(__PPF_SU.vignette.intensity, __fx_cfg.vignette.intensity);
-						shader_set_uniform_f(__PPF_SU.vignette.curvature, __fx_cfg.vignette.curvature);
-						shader_set_uniform_f(__PPF_SU.vignette.inner, __fx_cfg.vignette.inner);
-						shader_set_uniform_f(__PPF_SU.vignette.outer, __fx_cfg.vignette.outer);
-						shader_set_uniform_f_array(__PPF_SU.vignette.colorr, __fx_cfg.vignette.colorr);
-						shader_set_uniform_f_array(__PPF_SU.vignette.center, __fx_cfg.vignette.center);
-						shader_set_uniform_f(__PPF_SU.vignette.rounded, __fx_cfg.vignette.rounded);
-						shader_set_uniform_f(__PPF_SU.vignette.linear, __fx_cfg.vignette.linear);
+						_uniform = __PPF_SU.vignette;
+						_effect = __fx_cfg.vignette;
+						shader_set_uniform_f(_uniform.intensity, _effect.intensity);
+						shader_set_uniform_f(_uniform.curvature, _effect.curvature);
+						shader_set_uniform_f(_uniform.inner, _effect.inner);
+						shader_set_uniform_f(_uniform.outer, _effect.outer);
+						shader_set_uniform_f_array(_uniform.colorr, _effect.colorr);
+						shader_set_uniform_f_array(_uniform.center, _effect.center);
+						shader_set_uniform_f(_uniform.rounded, _effect.rounded);
+						shader_set_uniform_f(_uniform.linear, _effect.linear);
 					}
 					// > effect: nes_fade
 					if (__fx_cfg.nes_fade.enabledd) {
-						shader_set_uniform_f(__PPF_SU.nes_fade.amount, __fx_cfg.nes_fade.amount);
-						shader_set_uniform_f(__PPF_SU.nes_fade.levels, __fx_cfg.nes_fade.levels);
+						_uniform = __PPF_SU.nes_fade;
+						_effect = __fx_cfg.nes_fade;
+						shader_set_uniform_f(_uniform.amount, _effect.amount);
+						shader_set_uniform_f(_uniform.levels, _effect.levels);
 					}
 					// > effect: scanlines
 					if (__fx_cfg.scanlines.enabledd) {
-						shader_set_uniform_f(__PPF_SU.scanlines.intensity, __fx_cfg.scanlines.intensity);
-						shader_set_uniform_f(__PPF_SU.scanlines.speedd, __fx_cfg.scanlines.speedd);
-						shader_set_uniform_f(__PPF_SU.scanlines.amount, __fx_cfg.scanlines.amount);
-						shader_set_uniform_f_array(__PPF_SU.scanlines.colorr, __fx_cfg.scanlines.colorr);
-						shader_set_uniform_f(__PPF_SU.scanlines.mask_power, __fx_cfg.scanlines.mask_power);
-						shader_set_uniform_f(__PPF_SU.scanlines.mask_scale, __fx_cfg.scanlines.mask_scale);
-						shader_set_uniform_f(__PPF_SU.scanlines.mask_smoothness, __fx_cfg.scanlines.mask_smoothness);
+						_uniform = __PPF_SU.scanlines;
+						_effect = __fx_cfg.scanlines;
+						shader_set_uniform_f(_uniform.intensity, _effect.intensity);
+						shader_set_uniform_f(_uniform.speedd, _effect.speedd);
+						shader_set_uniform_f(_uniform.amount, _effect.amount);
+						shader_set_uniform_f_array(_uniform.colorr, _effect.colorr);
+						shader_set_uniform_f(_uniform.mask_power, _effect.mask_power);
+						shader_set_uniform_f(_uniform.mask_scale, _effect.mask_scale);
+						shader_set_uniform_f(_uniform.mask_smoothness, _effect.mask_smoothness);
 					}
 					// > effect: fade
 					if (__fx_cfg.fade.enabledd) {
-						shader_set_uniform_f(__PPF_SU.fade.amount, __fx_cfg.fade.amount);
-						shader_set_uniform_f_array(__PPF_SU.fade.colorr, __fx_cfg.fade.colorr);
+						_uniform = __PPF_SU.fade;
+						_effect = __fx_cfg.fade;
+						shader_set_uniform_f(_uniform.amount, _effect.amount);
+						shader_set_uniform_f_array(_uniform.colorr, _effect.colorr);
 					}
 					// > effect: cinema_bars
 					if (__fx_cfg.cinema_bars.enabledd) {
-						shader_set_uniform_f(__PPF_SU.cinema_bars.amount, __fx_cfg.cinema_bars.amount);
-						shader_set_uniform_f_array(__PPF_SU.cinema_bars.colorr, __fx_cfg.cinema_bars.colorr);
-						shader_set_uniform_f(__PPF_SU.cinema_bars.vertical_enable, __fx_cfg.cinema_bars.vertical_enable);
-						shader_set_uniform_f(__PPF_SU.cinema_bars.horizontal_enable, __fx_cfg.cinema_bars.horizontal_enable);
-						shader_set_uniform_f(__PPF_SU.cinema_bars.is_fixed, __fx_cfg.cinema_bars.is_fixed);
+						_uniform = __PPF_SU.cinema_bars;
+						_effect = __fx_cfg.cinema_bars;
+						shader_set_uniform_f(_uniform.amount, _effect.amount);
+						shader_set_uniform_f_array(_uniform.colorr, _effect.colorr);
+						shader_set_uniform_f(_uniform.vertical_enable, _effect.vertical_enable);
+						shader_set_uniform_f(_uniform.horizontal_enable, _effect.horizontal_enable);
+						shader_set_uniform_f(_uniform.is_fixed, _effect.is_fixed);
 					}
 					// > effect: color_blindness
 					if (__fx_cfg.color_blindness.enabledd) {
@@ -1595,13 +1710,16 @@ function PPFX_System() constructor {
 					}
 					// > effect: channels
 					if (__fx_cfg.channels.enabledd) {
-						shader_set_uniform_f(__PPF_SU.channels.rgb, __fx_cfg.channels.red, __fx_cfg.channels.green, __fx_cfg.channels.blue);
+						_effect = __fx_cfg.channels;
+						shader_set_uniform_f(__PPF_SU.channels.rgb, _effect.red, _effect.green, _effect.blue);
 					}
 					// > [d] effect: border
 					if (__fx_cfg.border.enabledd) {
-						shader_set_uniform_f(__PPF_SU.border.curvature_f, __fx_cfg.border.curvature);
-						shader_set_uniform_f(__PPF_SU.border.smooth_f, __fx_cfg.border.smooth);
-						shader_set_uniform_f_array(__PPF_SU.border.colorr_f, __fx_cfg.border.colorr);
+						_uniform = __PPF_SU.border;
+						_effect = __fx_cfg.border;
+						shader_set_uniform_f(_uniform.curvature_f, _effect.curvature);
+						shader_set_uniform_f(_uniform.smooth_f, _effect.smooth);
+						shader_set_uniform_f_array(_uniform.colorr_f, _effect.colorr);
 					}
 					draw_surface_stretched(__stack_surface[__stack_index-1], 0, 0, screen_width, screen_height);
 					shader_reset();

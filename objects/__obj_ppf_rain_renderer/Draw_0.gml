@@ -1,15 +1,16 @@
 
+// Feather ignore all
+
 //draw_set_color(c_white);
 //draw_sprite_tiled(Sprite75, 0, (cam_x+cam_w/2)*0.2, 0+current_time*0.1);
-
 
 // recursive rain
 gpu_set_tex_filter(true);
 
-if !surface_exists(rain_surface_a) {
+if (!surface_exists(rain_surface_a)) {
 	rain_surface_a = surface_create(width, height, surface_rgba16float);
 }
-if !surface_exists(rain_surface_b) {
+if (!surface_exists(rain_surface_b)) {
 	rain_surface_b = surface_create(width, height, surface_rgba16float);
 }
 

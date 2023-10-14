@@ -26,7 +26,7 @@
   "origin": 0,
   "parent": {
     "name": "Overlay Textures",
-    "path": "folders/Post-Processing FX/Assets/Sprites/Overlay Textures.yy",
+    "path": "folders/Extensions/PostProcessingFX/Assets/Sprites/Overlay Textures.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {

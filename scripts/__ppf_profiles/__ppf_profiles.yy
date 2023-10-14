@@ -6,6 +6,6 @@
   "isDnD": false,
   "parent": {
     "name": "Core",
-    "path": "folders/Post-Processing FX/Core.yy",
+    "path": "folders/Extensions/PostProcessingFX/Core.yy",
   },
 }

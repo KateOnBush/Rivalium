@@ -26,7 +26,7 @@
   "origin": 0,
   "parent": {
     "name": "Lens Dirt",
-    "path": "folders/Post-Processing FX/Assets/Sprites/Lens Dirt.yy",
+    "path": "folders/Extensions/PostProcessingFX/Assets/Sprites/Lens Dirt.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {

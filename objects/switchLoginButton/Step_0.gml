@@ -5,3 +5,9 @@
 event_inherited();
 
 text = global.loginSide ? "CREATE AN ACCOUNT" : "ALREADY HAVE AN ACCOUNT";
+
+if loginButton.state != buttonState.ON or signupButton.state != buttonState.ON {
+	state = buttonState.UNAVAILABLE;	
+} else {
+	state = buttonState.ON;	
+}

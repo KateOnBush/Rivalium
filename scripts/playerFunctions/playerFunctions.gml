@@ -8,7 +8,7 @@ function perform_flip(_forward, _start){
 	
 		var buff = buffer_create(global.dataSize, buffer_fixed, 1);
 		buffer_seek(buff, buffer_seek_start, 0);
-		buffer_write(buff, buffer_u8, SERVER_REQUEST.FLIP);
+		buffer_write(buff, buffer_u8, ServerRequest.FLIP);
 		buffer_write(buff, buffer_u8, _forward);
 		buffer_write(buff, buffer_u8, round(_start*100))
 		network_send_raw(obj_network.server, buff, buffer_get_size(buff));
@@ -54,7 +54,7 @@ function step_animation(){
 function setup_character(n){
 	
 	character_id = n;
-	char = characters[character_id-1];
+	char = Characters[character_id]();
 	spd = char.speed;
 	sprite = char.sprite
 	offset = [sprite_get_xoffset(sprite),sprite_get_yoffset(sprite)]

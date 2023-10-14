@@ -5,7 +5,7 @@
   "isCompatibility": false,
   "isDnD": false,
   "parent": {
-    "name": "Networking",
-    "path": "folders/Game Client/Networking.yy",
+    "name": "Client",
+    "path": "folders/Networking/Client.yy",
   },
 }

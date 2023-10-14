@@ -46,6 +46,9 @@ float brightness(vec3 col) {
 
 // standard box filtering
 vec4 sample_box4_antiflicker(sampler2D tex, vec2 uv, float delta) {
+	//vec2 texel = v_TexelSize;
+	//float angle = radians(45.0);
+	//texel *= mat2(cos(angle), -sin(angle), sin(angle), cos(angle));
 	vec4 d = v_TexelSize.xyxy * vec2(-delta, delta).xxyy;
 	
 	vec4 s1 = texture2D(tex, uv + d.xy);

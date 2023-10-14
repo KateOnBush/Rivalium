@@ -3,8 +3,8 @@
   "resourceVersion": "1.0",
   "name": "Shader1",
   "parent": {
-    "name": "Networking",
-    "path": "folders/Networking.yy",
+    "name": "In-Game",
+    "path": "folders/Networking/In-Game.yy",
   },
   "type": 1,
 }

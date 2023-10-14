@@ -49,7 +49,7 @@
   "origin": 4,
   "parent": {
     "name": "Misc",
-    "path": "folders/Post-Processing FX/Assets/Sprites/Misc.yy",
+    "path": "folders/Extensions/PostProcessingFX/Assets/Sprites/Misc.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {

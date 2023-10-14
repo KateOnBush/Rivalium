@@ -50,7 +50,7 @@ function entity_update_request(entity_instance){
 	var buffer = buffer_create(global.dataSize, buffer_fixed, 1);
 	buffer_seek(buffer, buffer_seek_start, 0);
 	
-	buffer_write(buffer, buffer_u8, SERVER_REQUEST.ENTITY_UPDATE);
+	buffer_write(buffer, buffer_u8, ServerRequest.ENTITY_UPDATE);
 	buffer_write(buffer, buffer_u16, o.ID);
 	buffer_write(buffer, buffer_s32, round(_x * 100));
 	buffer_write(buffer, buffer_s32, round(_y * 100));

@@ -4,6 +4,6 @@
   "name": "PPFX_License",
   "parent": {
     "name": "License",
-    "path": "folders/Post-Processing FX/License.yy",
+    "path": "folders/Extensions/PostProcessingFX/License.yy",
   },
 }

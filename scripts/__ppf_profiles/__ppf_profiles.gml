@@ -11,6 +11,7 @@
 /// @param {Array} effects_array Array with all effects structs.
 /// @returns {Struct} Profile struct.
 function PPFX_Profile(name, effects_array) constructor {
+	__ppf_trace("Profile created. From: " + string(instance_exists(other) ? object_get_name(other.object_index) : instanceof(other)), 3);
 	__ppf_exception(!is_string(name), "Invalid profile name.");
 	__ppf_exception(!is_array(effects_array), "Parameter is not an array containing effects.");
 	
@@ -19,9 +20,10 @@ function PPFX_Profile(name, effects_array) constructor {
 	__id = sha1_string_utf8(get_timer()+random(10000));
 	__effects_array = effects_array;
 	
-	var i = 0, isize = array_length(effects_array);
+	var i = 0, isize = array_length(effects_array), _name;
 	repeat(isize) {
-		__settings[$ effects_array[i].effect_name] = effects_array[i].sets;
+		_name = effects_array[i].effect_name;
+		__settings[$ _name] = effects_array[i].sets;
 		++i;
 	}
 	
@@ -48,7 +50,7 @@ function PPFX_Profile(name, effects_array) constructor {
 	/// @param {Bool} enabled_only Defines if will export only enabled effects.
 	/// @returns {string} Description
 	static Stringify = function(round_numbers=false, enabled_only=false) {
-		__ppf_trace("Parsing " + "\"" + __profile_name + "\"" + " Profile. WARNING: The returned string will contain undefined textures.");
+		__ppf_trace("Parsing " + "\"" + __profile_name + "\"" + " Profile. WARNING: The returned string will contain undefined textures.", 2);
 		
 		// methods
 		static __parseEffect = function(constructor_name="", array, round_numb=false, delimiter=", ") {
@@ -70,11 +72,11 @@ function PPFX_Profile(name, effects_array) constructor {
 					// vec2
 					if (array_length(_val) < 3) _val = "[" + string(_val[0]) + ", " + string(_val[1]) + "]";
 					// color (try)
-					if (array_length(_val) > 2) _val = make_color_rgb(_val[0]*255, _val[1]*255, _val[2]*255);
+					if (array_length(_val) > 2) _val = "make_color_rgb(" + string(_val[0]*255) + ", " + string(_val[1]*255) + ", " + string(_val[2]*255) + ")"  ;
 				}
 				// real
 				if (is_real(_val)) {
-					if (_val < 0.01) _val = 0; else
+					if (_val < 0.0001) _val = 0; else
 					// round number
 					if (round_numb && _val > 1) _val = round(_val);
 				}
@@ -160,7 +162,7 @@ function PPFX_Profile(name, effects_array) constructor {
 			_final_text += "]);"
 		}
 		catch(error) {
-			__ppf_trace("Error parsing " + "\"" + __profile_name + "\"" + " profile.\n> " + error.message);
+			__ppf_trace("Error parsing " + "\"" + __profile_name + "\"" + " profile.\n> " + error.message, 1);
 			return undefined;
 		}
 		

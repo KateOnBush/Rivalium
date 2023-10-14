@@ -1,6 +1,6 @@
 function playerDash(direc, time, mult = 1){
 
-	state = PLAYER_STATE.DASHING;
+	state = PlayerState.DASHING;
 	length_before_dash = movvec.length();
 	dash_target = new Vector2(
 		lengthdir_x(5, direc),
@@ -15,7 +15,7 @@ function playerDash(direc, time, mult = 1){
 function playerDashMovement(){
 
 	if movvec.length() < 0.1 or dash == 0 {
-		state = PLAYER_STATE.FREE;
+		state = PlayerState.FREE;
 		var ll = min(length_before_dash, dash_target.length()), dd = movvec.dir();
 		movvec.x = lengthdir_x(ll, dd);
 		movvec.y = lengthdir_y(ll, dd);

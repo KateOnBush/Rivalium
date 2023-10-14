@@ -1,6 +1,3 @@
-
-
-
 playerInputs()
 
 health_blend = dtlerp(health_blend, playerhealth/playerhealthmax, 0.5);
@@ -20,14 +17,24 @@ hitind = dtlerp(hitind, 0, 0.05);
 
 ultimatecharge_blend = dtlerp(ultimatecharge_blend, ultimatecharge/ultimatechargemax, 0.08);
 invisible_blend = dtlerp(invisible_blend, invisible ? 0.2 : 1, 0.1);
+invisible_blend_eff = dtlerp(invisible_blend_eff, invisible, 0.05);
 
 if keyboard_check_released(vk_enter) {
 	playerDeath();
 }
 
+if obj_gameplay.currentState == GameState.PREROUND or obj_gameplay.currentState == GameState.STARTING {
+	state = PlayerState.BLOCKED;
+	preroundBlend = dtlerp(preroundBlend, 1, 0.1);
+	timeText = string(obj_gameplay.startingIn);
+} else {
+	preroundBlend = dtlerp(preroundBlend, 0, 0.1);
+	timeText = "BATTLE!";
+}
+
 switch(state){
 
-	case PLAYER_STATE.FREE: {
+	case PlayerState.FREE: {
 	
 		playerGravity();
 		playerFreeMovement();
@@ -37,7 +44,7 @@ switch(state){
 	
 	}
 	
-	case PLAYER_STATE.WALL_SLIDING: {
+	case PlayerState.WALL_SLIDING: {
 	
 		playerWallSlideMovement();
 		playerGravity(0.1);
@@ -45,7 +52,7 @@ switch(state){
 	
 	}
 	
-	case PLAYER_STATE.GRAPPLE_THROW: {
+	case PlayerState.GRAPPLE_THROW: {
 	
 		playerGravity()
 		playerGrapplingMovement();
@@ -54,7 +61,7 @@ switch(state){
 	
 	}
 	
-	case PLAYER_STATE.GRAPPLED: {
+	case PlayerState.GRAPPLED: {
 	
 		playerGrappledMovement();
 		playerCollision();
@@ -62,7 +69,7 @@ switch(state){
 		
 	}
 	
-	case PLAYER_STATE.DASHING: {
+	case PlayerState.DASHING: {
 	
 		playerDashMovement();
 		playerCollision();
@@ -70,7 +77,7 @@ switch(state){
 	
 	}
 	
-	case PLAYER_STATE.GROUNDED: {
+	case PlayerState.GROUNDED: {
 		
 		playerGroundedMovement();
 		break;
@@ -84,12 +91,20 @@ playerPostState();
 
 playerProcessAbilities();
 
-//ppfx_id.SetEffectParameter(FX_EFFECT.MOTION_BLUR, PP_MOTION_BLUR_ANGLE, movvec.dir());
-//ppfx_id.SetEffectParameter(FX_EFFECT.MOTION_BLUR, PP_MOTION_BLUR_RADIUS, dash_blend * 0.2);
+ppfx_id.SetEffectParameter(FX_EFFECT.MOTION_BLUR, PP_MOTION_BLUR_ANGLE, movvec.dir());
+ppfx_id.SetEffectParameter(FX_EFFECT.MOTION_BLUR, PP_MOTION_BLUR_RADIUS, dash_blend * 0.18);
+
+//invisible effect
+ppfx_id.SetEffectParameter(FX_EFFECT.CHROMATIC_ABERRATION, PP_CHROMABER_INTENSITY, invisible_blend_eff * 22);
+ppfx_id.SetEffectParameter(FX_EFFECT.VIGNETTE, PP_VIGNETTE_INTENSITY, invisible_blend_eff * 0.6);
+ppfx_id.SetEffectParameter(FX_EFFECT.LENS_DISTORTION, PP_LENS_DISTORTION_AMOUNT, invisible_blend_eff * -0.28);
+ppfx_id.SetEffectParameter(FX_EFFECT.SHOCKWAVES, PP_SHOCKWAVES_AMOUNT, invisible_blend_eff * 0.75);
+
+ppfx_id.SetEffectParameter(FX_EFFECT.SPEEDLINES, PP_SPEEDLINES_CONTRAST, lerp(0.35, 0.55, min(abs(movvec.length() / 40), 1)));
 
 playerProcessEffects();
 
-if state != PLAYER_STATE.DEAD {
+if state != PlayerState.DEAD {
 	playerProcessAnimations();
 }
 

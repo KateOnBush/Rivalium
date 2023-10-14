@@ -5,7 +5,7 @@
   "isCompatibility": false,
   "isDnD": false,
   "parent": {
-    "name": "Post-Processing FX",
-    "path": "folders/Post-Processing FX.yy",
+    "name": "PostProcessingFX",
+    "path": "folders/Extensions/PostProcessingFX.yy",
   },
 }

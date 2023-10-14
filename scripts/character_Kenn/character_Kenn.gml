@@ -5,7 +5,7 @@ function character_Kenn(){
 	return {
 
 		name: "Kenn",
-		speed: 28,
+		speed: 23,
 		id: 1,
 		base: base_character(1),
 		sprite: base_character_kenn,
@@ -18,7 +18,7 @@ function character_Kenn(){
 	
 			basic_attack: new Ability([0.3, 2], ability_type.onetime, {},
 		
-				function (n){
+				function (n) {
 			
 					var _heal = char.abilities.ability1.active ? 15 : 0;
 					var proj = char.abilities.ultimate.active ? obj_projectile_kenn_dagger_transformed : obj_projectile_kenn_dagger;
@@ -67,7 +67,7 @@ function character_Kenn(){
 		
 				}}, NULLFUNC, function(){
 			
-					screen_shake(10, 50, 2.5);
+					screen_shake(2, 10, 3);
 					camera_ultimate_zoom(0.7, 5, easeInOutBack, 0.5, easeInOutBack, 0.5);
 		
 				}, function(){

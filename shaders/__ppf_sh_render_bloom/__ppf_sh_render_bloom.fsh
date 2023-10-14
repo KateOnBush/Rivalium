@@ -7,7 +7,6 @@ Website: https://foxyofjungle.itch.io/ | Discord: FoxyOfJungle#0167
 -------------------------------------------------------------------*/
 
 varying vec2 v_vTexcoord;
-varying vec4 v_vColour;
 varying vec2 v_TexelSize;
 varying vec2 v_Res;
 

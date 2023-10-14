@@ -45,7 +45,7 @@ function playerFreeMovement(){
 	
 	if k_grapple && !on_ground {
 		
-		state = PLAYER_STATE.GRAPPLE_THROW;
+		state = PlayerState.GRAPPLE_THROW;
 
 		grappling_coords_init = [mousex, mousey]
 	
@@ -53,7 +53,7 @@ function playerFreeMovement(){
 	
 			var buff = buffer_create(global.dataSize, buffer_fixed, 1);
 			buffer_seek(buff, buffer_seek_start, 0);
-			buffer_write(buff, buffer_u8, SERVER_REQUEST.GRAPPLING_POSITION);
+			buffer_write(buff, buffer_u8, ServerRequest.GRAPPLING_POSITION);
 			buffer_write(buff, buffer_s32, round(mousex*100))
 			buffer_write(buff, buffer_s32, round(mousey*100))
 			buffer_write(buff, buffer_u8, 0);

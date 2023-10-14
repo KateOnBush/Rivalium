@@ -40,9 +40,9 @@ function make_color_rgb_hdr_ppfx(red, green, blue, intensity) {
 /// @ignore
 /// @func __ppf_trace(text)
 /// @param {String} text
-function __ppf_trace(text) {
+function __ppf_trace(text, level=1) {
 	gml_pragma("forceinline");
-	if (PPFX_CFG_TRACE_ENABLE) show_debug_message("# PPFX >> " + string(text));
+	if (level <= PPFX_CFG_TRACE_LEVEL) show_debug_message("# PPFX >> " + string(text));
 }
 
 /// @ignore
@@ -69,91 +69,6 @@ function __ppf_struct_copy(src, dest) {
 			--i;
 		}
 	}
-}
-
-
-/// @ignore
-#macro __PPF_PASS_BLOOM_PREFILTER 0
-#macro __PPF_PASS_DS_BOX4 1
-#macro __PPF_PASS_DS_BOX13 2
-#macro __PPF_PASS_US_TENT9 3
-
-#macro __PPF_PASS_DOF_COC 4
-#macro __PPF_PASS_DOF_BOKEH 5
-global.__ppf_sample_passes = [
-	// BLOOM pre filter box down 4 pass
-	function(data) {
-		gml_pragma("forceinline");
-		shader_set(__PPF_SH_BLOOM_PRE_FILTER);
-		shader_set_uniform_f(__PPF_SU.bloom.pre_filter_res, data.ww, data.hh);
-		shader_set_uniform_f(__PPF_SU.bloom.pre_filter_threshold, data.threshold);
-		shader_set_uniform_f(__PPF_SU.bloom.pre_filter_intensity, data.intensity);
-	},
-	// box down 4 pass
-	function(data) {
-		gml_pragma("forceinline");
-		shader_set(__PPF_SH_DS_BOX4);
-		shader_set_uniform_f(__PPF_SU.downsample_box4_res, data.ww, data.hh);
-	},
-	// box down 13 pass
-	function(data) {
-		gml_pragma("forceinline");
-		shader_set(__PPF_SH_DS_BOX13);
-		shader_set_uniform_f(__PPF_SU.downsample_box13_res, data.ww, data.hh);
-	},
-	// tent up 9 pass
-	function(data) {
-		gml_pragma("forceinline");
-		shader_set(__PPF_SH_US_TENT9);
-		shader_set_uniform_f(__PPF_SU.upsample_tent_res, data.ww, data.hh);
-	},
-	
-	// DOF coc
-	function(data) {
-		gml_pragma("forceinline");
-		shader_set(__PPF_SH_DOF_COC);
-		shader_set_uniform_f(__PPF_SU.depth_of_field._coc_lens_distortion_enable, data.lens_distortion_enable); // [d]
-		shader_set_uniform_f(__PPF_SU.lens_distortion.amount_d, data.lens_distortion_amount);
-		shader_set_uniform_f(__PPF_SU.depth_of_field.coc_bokeh_radius, data.radius);
-		shader_set_uniform_f(__PPF_SU.depth_of_field.coc_focus_distance, data.focus_distance);
-		shader_set_uniform_f(__PPF_SU.depth_of_field.coc_focus_range, data.focus_range);
-		shader_set_uniform_f(__PPF_SU.depth_of_field.coc_use_zdepth, data.use_zdepth);
-		texture_set_stage(__PPF_SU.depth_of_field.coc_zdepth_tex, data.zdepth_tex);
-	},
-	// DOF bokeh
-	function(data) {
-		gml_pragma("forceinline");
-		shader_set(__PPF_SH_DOF_BOKEH);
-		shader_set_uniform_f(__PPF_SU.depth_of_field.bokeh_resolution, data.ww, data.hh);
-		shader_set_uniform_f(__PPF_SU.depth_of_field.bokeh_time_n_intensity, data.time, data.global_intensity);
-		shader_set_uniform_f(__PPF_SU.depth_of_field.bokeh_radius, data.radius);
-		shader_set_uniform_f(__PPF_SU.depth_of_field.bokeh_intensity,  data.intensity);
-		shader_set_uniform_f(__PPF_SU.depth_of_field.bokeh_shaped, data.shaped);
-		shader_set_uniform_f(__PPF_SU.depth_of_field.bokeh_blades_aperture, data.blades_aperture);
-		shader_set_uniform_f(__PPF_SU.depth_of_field.bokeh_blades_angle, data.blades_angle);
-		shader_set_uniform_f(__PPF_SU.depth_of_field.bokeh_debug, data.debug);
-		texture_set_stage(__PPF_SU.depth_of_field.bokeh_coc_tex, data.coc_tex);
-	},
-]
-/// @ignore
-function __ppf_surface_blit(source, dest, pass, pass_json_data) {
-	gml_pragma("forceinline");
-	surface_set_target(dest);
-	global.__ppf_sample_passes[pass](pass_json_data);
-	draw_surface_stretched(source, 0, 0, surface_get_width(dest), surface_get_height(dest));
-	shader_reset();
-	surface_reset_target();
-}
-
-/// @ignore
-function __ppf_surface_blit_alpha(source, dest, pass, pass_json_data) {
-	gml_pragma("forceinline");
-	surface_set_target(dest);
-	draw_clear_alpha(c_black, 0);
-	global.__ppf_sample_passes[pass](pass_json_data);
-	draw_surface_stretched(source, 0, 0, surface_get_width(dest), surface_get_height(dest));
-	shader_reset();
-	surface_reset_target();
 }
 
 /// @ignore

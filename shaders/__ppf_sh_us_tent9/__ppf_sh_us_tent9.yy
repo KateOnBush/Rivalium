@@ -4,7 +4,7 @@
   "name": "__ppf_sh_us_tent9",
   "parent": {
     "name": "Upsampling",
-    "path": "folders/Post-Processing FX/Shaders/Upsampling.yy",
+    "path": "folders/Extensions/PostProcessingFX/Shaders/Upsampling.yy",
   },
   "type": 1,
 }

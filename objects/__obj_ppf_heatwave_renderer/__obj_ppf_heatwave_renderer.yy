@@ -9,7 +9,7 @@
   "overriddenProperties": [],
   "parent": {
     "name": "Displacemap",
-    "path": "folders/Post-Processing FX/Assets/Objects/Displacemap.yy",
+    "path": "folders/Extensions/PostProcessingFX/Assets/Objects/Displacemap.yy",
   },
   "parentObjectId": null,
   "persistent": false,

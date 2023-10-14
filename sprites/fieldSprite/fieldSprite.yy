@@ -2,9 +2,9 @@
   "resourceType": "GMSprite",
   "resourceVersion": "1.0",
   "name": "fieldSprite",
-  "bbox_bottom": 63,
+  "bbox_bottom": 127,
   "bbox_left": 0,
-  "bbox_right": 63,
+  "bbox_right": 127,
   "bbox_top": 0,
   "bboxMode": 0,
   "collisionKind": 1,
@@ -13,11 +13,11 @@
   "edgeFiltering": false,
   "For3D": false,
   "frames": [
-    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"c064d1ab-107f-49fc-8438-942919191a13",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"7d2a96c9-44e3-4cd9-a86a-ca31b5ab0126",},
   ],
   "gridX": 0,
   "gridY": 0,
-  "height": 64,
+  "height": 128,
   "HTile": false,
   "layers": [
     {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"7ae4f115-c2fe-43ec-b882-c3c36bbb6143","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
@@ -25,7 +25,7 @@
   "nineSlice": {
     "resourceType": "GMNineSliceData",
     "resourceVersion": "1.0",
-    "bottom": 2,
+    "bottom": 10,
     "enabled": true,
     "guideColour": [
       4294902015,
@@ -35,8 +35,8 @@
     ],
     "highlightColour": 1728023040,
     "highlightStyle": 0,
-    "left": 2,
-    "right": 9,
+    "left": 10,
+    "right": 10,
     "tileMode": [
       0,
       0,
@@ -44,12 +44,12 @@
       0,
       0,
     ],
-    "top": 9,
+    "top": 10,
   },
   "origin": 0,
   "parent": {
-    "name": "Game Client",
-    "path": "folders/Game Client.yy",
+    "name": "Sprites",
+    "path": "folders/Game Client/Components/Sprites.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {
@@ -77,7 +77,7 @@
     "timeUnits": 1,
     "tracks": [
       {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"c064d1ab-107f-49fc-8438-942919191a13","path":"sprites/fieldSprite/fieldSprite.yy",},},},"Disabled":false,"id":"7a83f80b-3a91-4b58-80b3-fd0ee0022f05","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"7d2a96c9-44e3-4cd9-a86a-ca31b5ab0126","path":"sprites/fieldSprite/fieldSprite.yy",},},},"Disabled":false,"id":"25491084-1590-4559-847b-70b7a94fac91","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
           ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange": null,
@@ -93,5 +93,5 @@
   },
   "type": 0,
   "VTile": false,
-  "width": 64,
+  "width": 128,
 }

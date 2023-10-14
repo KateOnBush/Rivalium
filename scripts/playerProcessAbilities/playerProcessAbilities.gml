@@ -1,6 +1,7 @@
 function playerProcessAbilities(){
 
 	if (array_length(base) != array_length(char.base)) {
+		char = Characters[character_id-1];
 		spd = char.speed;
 		sprite = char.sprite
 		offset = [sprite_get_xoffset(sprite),sprite_get_yoffset(sprite)]

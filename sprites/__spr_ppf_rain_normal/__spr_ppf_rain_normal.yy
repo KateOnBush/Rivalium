@@ -27,7 +27,7 @@
   "origin": 9,
   "parent": {
     "name": "Normal Map",
-    "path": "folders/Post-Processing FX/Assets/Sprites/Normal Map.yy",
+    "path": "folders/Extensions/PostProcessingFX/Assets/Sprites/Normal Map.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {

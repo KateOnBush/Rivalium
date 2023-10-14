@@ -1,9 +1,14 @@
 /// @description Insert description here
 // You can write your code in this editor
 
+event_inherited();
+
 content = "";
 displayText = "";
-password = false;
+password = false
+
+placeholder = "";
+placeholderBlend = 0;
 
 selected = false;
 selectedBlend = 0;
@@ -12,12 +17,6 @@ baseSize = .85;
 size = 1;
 
 totalSize = baseSize;
-
-enum InputState {
-	NORMAL,
-	CORRECT,
-	INCORRECT
-}
 
 backspaceHoldTime = 0;
 backspaceThreshold = 0.6;
@@ -41,8 +40,13 @@ pChar = "*";
 textOffset = 0;
 
 state = InputState.NORMAL; //0 = normal, 1 = correct, 2 = incorrect
+stateTimer = 0;
+stateThreshold = 1.6;
 correctBlend = 0;
 incorrectBlend = 0;
+
+finalXOff = 0;
+shakeTheta = 0;
 
 image_speed = 0;
 
@@ -50,7 +54,7 @@ displaySurface = -1;
 
 mouseIsInside = false;
 
-definitionScale = 1.5;
+definitionScale = 3;
 
 nine = 8;
 ww = sprite_width - nine*2;

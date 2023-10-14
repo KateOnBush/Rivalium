@@ -26,7 +26,7 @@
   "origin": 0,
   "parent": {
     "name": "Palettes",
-    "path": "folders/Post-Processing FX/Assets/Sprites/Palettes.yy",
+    "path": "folders/Extensions/PostProcessingFX/Assets/Sprites/Palettes.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {

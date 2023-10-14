@@ -26,7 +26,7 @@
   "origin": 0,
   "parent": {
     "name": "Dithering",
-    "path": "folders/Post-Processing FX/Assets/Sprites/Dithering.yy",
+    "path": "folders/Extensions/PostProcessingFX/Assets/Sprites/Dithering.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {

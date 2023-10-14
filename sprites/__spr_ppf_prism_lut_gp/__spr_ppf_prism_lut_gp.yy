@@ -26,7 +26,7 @@
   "origin": 0,
   "parent": {
     "name": "Chromatic Aberration",
-    "path": "folders/Post-Processing FX/Assets/Sprites/LUT/Chromatic Aberration.yy",
+    "path": "folders/Extensions/PostProcessingFX/Assets/Sprites/LUT/Chromatic Aberration.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {

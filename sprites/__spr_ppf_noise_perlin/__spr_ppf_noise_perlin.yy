@@ -26,7 +26,7 @@
   "origin": 0,
   "parent": {
     "name": "Noise",
-    "path": "folders/Post-Processing FX/Assets/Sprites/Noise.yy",
+    "path": "folders/Extensions/PostProcessingFX/Assets/Sprites/Noise.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {

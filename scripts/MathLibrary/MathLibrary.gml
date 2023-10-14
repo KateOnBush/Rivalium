@@ -169,3 +169,20 @@ function array_bubble_sort(arr, predicateFn) {
   
 	return arr;
 }
+
+function fibonnacciSequence(n) {
+	return (n == 1 or n == 0 ? 1 : fibonnacciSequence(n - 1) + fibonnacciSequence(n - 2));	
+}
+
+function struct_get_key_failsafe(struct, keylist){
+
+	var keyarr = string_split(keylist, ".", true);
+	var select = struct;
+	var i = 0;
+	while(is_struct(select) && i < array_length(keyarr)) {
+		select = select[$ keyarr[i]];
+		i++;
+	}
+	return array_length(keyarr) == i ? select : undefined;
+
+}

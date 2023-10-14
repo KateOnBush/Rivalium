@@ -9,6 +9,8 @@
 /// This function also allows to only render the content of a layer to a surface, without Post-Processing.
 /// @returns {Struct}
 function PPFX_LayerRenderer() constructor {
+	__ppf_trace("Layer Renderer created. From: " + string(instance_exists(other) ? object_get_name(other.object_index) : instanceof(other)), 3);
+	
 	__room_size_based = false;
 	__top_layer = -1;
 	__bottom_layer = -1;
@@ -35,9 +37,18 @@ function PPFX_LayerRenderer() constructor {
 	/// @returns {undefined}
 	static Destroy = function() {
 		__ppf_surface_delete(__surf);
-		__destroyed = true;
 		layer_script_begin(__bottom_layer, -1);
 		layer_script_end(__top_layer, -1);
+		__destroyed = true;
+	}
+	
+	/// @func Clean()
+	/// @desc Clean LayerRenderer, without destroying it.
+	/// Useful for when toggling rendering and want to make sure existing surfaces are destroyed.
+	/// NOTE: It doesn't remove the effects or disable rendering completely. If you want to destroy, use .Destroy() method.
+	/// @returns {undefined}
+	static Clean = function() {
+		__ppf_surface_delete(__surf);
 	}
 	
 	/// @desc Toggle whether layer renderer can render on layer.
@@ -46,7 +57,7 @@ function PPFX_LayerRenderer() constructor {
 	/// @returns {undefined}
 	static SetRenderEnable = function(enable=-1) {
 		if (enable == -1) {
-			__is_render_enable = !__is_render_enabled;
+			__is_render_enabled = !__is_render_enabled;
 		} else {
 			__is_render_enabled = enable;
 		}
@@ -63,7 +74,7 @@ function PPFX_LayerRenderer() constructor {
 	static SetRange = function(top_layer_id, bottom_layer_id) {
 		__ppf_exception(!layer_exists(top_layer_id) || !layer_exists(bottom_layer_id), "One of the layers does not exist in the current room.");
 		if (layer_get_depth(top_layer_id) > layer_get_depth(bottom_layer_id)) {
-			__ppf_trace("WARNING: Inverted layer range order. Failed to render on layers: " + layer_get_name(top_layer_id) + ", " + layer_get_name(bottom_layer_id));
+			__ppf_trace("WARNING: Inverted layer range order. Failed to render on layers: " + layer_get_name(top_layer_id) + ", " + layer_get_name(bottom_layer_id), 2);
 		}
 		__ppf_surface_delete(__surf);
 		layer_script_begin(__bottom_layer, -1);
@@ -97,7 +108,7 @@ function PPFX_LayerRenderer() constructor {
 	/// @func IsRenderEnabled()
 	/// @desc This functions checks if the rendering of effects in the layer is enabled.
 	static IsRenderEnabled = function() {
-		return __is_render_enable;
+		return __is_render_enabled;
 	}
 	
 	
@@ -114,17 +125,17 @@ function PPFX_LayerRenderer() constructor {
 	/// @param {Struct} pp_index The returned variable by ppfx_create(). You can use -1, noone or undefined, to not use a post-processing system, this way you can render the layer content on the surface only.
 	/// @param {Id.Layer} top_layer_id The top layer, in the room editor
 	/// @param {Id.Layer} bottom_layer_id The bottom layer, in the room editor
-	/// @param {Bool} draw_layer If false, the surface with layer contents will not draw. The layer contents will still be rendered to the surface.
+	/// @param {Bool} draw_layer If false, the surface (with layer contents) will not draw. The layer contents will still be rendered to the surface.
 	/// @returns {Undefined}
 	static Apply = function(pp_index, top_layer_id, bottom_layer_id, draw_layer=true) {
 		// Feather disable GM1044
+		__ppf_trace("Layer rendering from: " + layer_get_name(top_layer_id) + " to: " + layer_get_name(bottom_layer_id), 3);
 		__ppf_exception(!layer_exists(top_layer_id) || !layer_exists(bottom_layer_id), "One of the layers does not exist in the current room.");
 		__ppf_exception(layer_get_depth(top_layer_id) > layer_get_depth(bottom_layer_id), "Inverted layer range order. Failed to render on layers: " + layer_get_name(top_layer_id) + ", " + layer_get_name(bottom_layer_id));
-		if (event_type != ev_create && event_type != ev_other) __ppf_trace("WARNING: You are calling <LayerRenderer>.Apply() in the wrong event.");
+		if (event_type != ev_create && event_type != ev_other) __ppf_trace("WARNING: You are calling <LayerRenderer>.Apply() in the wrong event.", 2);
 		
 		// run once
 		__use_ppfx = !__ppf_is_undefined(pp_index);
-		//__ppf_exception(__use_ppfx && !ppfx_exists(pp_index), "Post-processing system does not exist.");
 		if (__use_ppfx) {
 			pp_index.SetDrawEnable(draw_layer);
 			pp_index.__layered = true;
@@ -132,6 +143,7 @@ function PPFX_LayerRenderer() constructor {
 		__top_layer = top_layer_id;
 		__bottom_layer = bottom_layer_id;
 		__ppf_index = pp_index;
+		
 		// run every step
 		__top_method = function() {
 			if (!__is_render_enabled) exit;

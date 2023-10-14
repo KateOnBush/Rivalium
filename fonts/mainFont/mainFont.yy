@@ -120,8 +120,8 @@
   "lineHeight": 27,
   "maintainGms1Font": false,
   "parent": {
-    "name": "Game Client",
-    "path": "folders/Game Client.yy",
+    "name": "Fonts",
+    "path": "folders/Environment & Visuals/Fonts.yy",
   },
   "pointRounding": 0,
   "ranges": [

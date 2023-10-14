@@ -5,15 +5,6 @@ health_blend = dtlerp(health_blend, playerhealth/playerhealthmax, 0.5);
 health_blend_red = dtlerp(health_blend_red, health_blend, 0.04);
 ultimatecharge_blend = dtlerp(ultimatecharge_blend, ultimatecharge/ultimatechargemax, 0.08);
 
-char = characters[character_id-1];
-if (array_length(base) != array_length(char.base)) {
-	spd = char.speed;
-	sprite = char.sprite
-	offset = [sprite_get_xoffset(sprite),sprite_get_yoffset(sprite)]
-	currentframe = animation_get_frame(char.anims.animation_idle, 0);
-	base = char.base;
-}
-
 hitind = dtlerp(hitind, 0, 0.05);
 invisible_blend = dtlerp(invisible_blend, 1 - invisible, 0.1);
 
@@ -25,13 +16,13 @@ MOVEMENT
 
 switch(state) {
 
-	case PLAYER_STATE.FREE: {
+	case PlayerState.FREE: {
 		
 		grappling_len = 0;
 		break;
 	}
 	
-	case PLAYER_STATE.GRAPPLE_THROW: {
+	case PlayerState.GRAPPLE_THROW: {
 	
 		grappling_len += 25 * dtime;
 		var d = point_direction(x,y-16,grappling_coords_init[0],grappling_coords_init[1]);
@@ -48,7 +39,7 @@ switch(state) {
 	
 	}
 	
-	case PLAYER_STATE.GRAPPLED: {
+	case PlayerState.GRAPPLED: {
 	
 		grappling_coords[0] = grappling_coords_init[0];
 		grappling_coords[1] = grappling_coords_init[1];
@@ -63,7 +54,7 @@ if current_time - updated >= 18 {
 	move_and_collide(movvec.x * dtime, movvec.y * dtime, obj_solid);
 	playerOtherGravity();
 	
-	if current_time - updated >= 400 state = PLAYER_STATE.FREE;
+	if current_time - updated >= 400 state = PlayerState.FREE;
 
 } else {
 

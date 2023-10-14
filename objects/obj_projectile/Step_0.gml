@@ -19,15 +19,17 @@ if col and spd > 0{
 	
 	}
 	
-	if check() or pl{
+	if check() or pl {
 	
 		if pl {
 		
 			buffer_seek(dataBuffer, buffer_seek_start, 0);
-			buffer_write(dataBuffer, buffer_u8, SERVER_REQUEST.PLAYER_PROJECTILE_HIT);
+			buffer_write(dataBuffer, buffer_u8, ServerRequest.PLAYER_PROJECTILE_HIT);
 			buffer_write(dataBuffer, buffer_u16, real(ID))
 			buffer_write(dataBuffer, buffer_u32, id)
 			buffer_write(dataBuffer, buffer_u16, real(pl.ID))
+			buffer_write(dataBuffer, buffer_s32, round(px * 100));
+			buffer_write(dataBuffer, buffer_s32, round(py * 100));
 			network_send_raw(obj_network.server, dataBuffer, global.dataSize)
 			
 			on_hit(pl);
@@ -96,7 +98,7 @@ if col and spd > 0{
 			//show_debug_message("Sending {0}, x: {1} y: {2}, mx: {3} my: {4}", ID, px, py, lengthdir_x(spd, dir), lengthdir_y(spd, dir));
 		
 			buffer_seek(dataBuffer, buffer_seek_start, 0);
-			buffer_write(dataBuffer, buffer_u8, SERVER_REQUEST.PROJECTILE_UPDATE);
+			buffer_write(dataBuffer, buffer_u8, ServerRequest.PROJECTILE_UPDATE);
 			buffer_write(dataBuffer, buffer_u16, real(ID));
 			buffer_write(dataBuffer, buffer_s32, round(px*100));
 			buffer_write(dataBuffer, buffer_s32, round(py*100));

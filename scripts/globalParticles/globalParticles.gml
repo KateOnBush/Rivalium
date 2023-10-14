@@ -21,7 +21,7 @@ function setupParticles() {
 	
 	setup = gParts.blood;
 
-	part_type_speed(setup, 2, 3.5, 0, 0)
+	part_type_speed(setup, 3.5, 4.5, 0, 0)
 	part_type_direction(setup, -20, 200, 0, 0)
 	part_type_orientation(setup, 0,0, 0, 0, true);
 	part_type_sprite(setup, sBloodParticle, 0, 0, 0);

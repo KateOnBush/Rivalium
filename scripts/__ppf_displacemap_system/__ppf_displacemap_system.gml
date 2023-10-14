@@ -9,16 +9,18 @@
 /// @desc Create displacemap system id to be used by the other functions.
 /// @returns {Struct}
 function PPFX_DisplaceMapRenderer() constructor {
-	__ppf_trace("Displacemap renderer created. From: " + object_get_name(other.object_index));
+	__ppf_trace("Displacemap renderer created. From: " + string(instance_exists(other) ? object_get_name(other.object_index) : instanceof(other)), 3);
 	
 	__surf = -1;
 	__displace_renderer_list = [];
+	__destroyed = false;
 	
 	#region Public Methods
 	
 	/// @desc Destroy displacemap system, freeing it from memory.
 	static Destroy = function() {
 		__ppf_surface_delete(__surf);
+		__destroyed = true;
 	}
 	
 	/// @func AddObject(object)
@@ -62,6 +64,7 @@ function PPFX_DisplaceMapRenderer() constructor {
 	/// @param {Id.Camera} camera Your current active camera id. You can use view_camera[0].
 	static Render = function(pp_index, camera) {
 		// Feather disable GM1044
+		if (__destroyed) exit;
 		__ppf_exception(!ppfx_system_exists(pp_index), "Post-processing system does not exist.");
 		
 		var _cam = camera,
@@ -78,7 +81,7 @@ function PPFX_DisplaceMapRenderer() constructor {
 			_old_tex_filter = gpu_get_tex_filter(),
 			_old_tex_repeat = gpu_get_tex_repeat();
 			
-			if !surface_exists(__surf) {
+			if (!surface_exists(__surf)) {
 				__surf = surface_create(_ww, _hh, global.__ppf_main_texture_format);
 				// send "normal map" texture to ppfx (you only need to reference it once - when the surface is created, for example)
 				pp_index.SetEffectParameter(FX_EFFECT.DISPLACEMAP, PP_DISPLACEMAP_TEXTURE, surface_get_texture(__surf));

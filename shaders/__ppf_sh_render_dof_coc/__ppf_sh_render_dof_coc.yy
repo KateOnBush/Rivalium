@@ -4,7 +4,7 @@
   "name": "__ppf_sh_render_dof_coc",
   "parent": {
     "name": "Render",
-    "path": "folders/Post-Processing FX/Shaders/Render.yy",
+    "path": "folders/Extensions/PostProcessingFX/Shaders/Render.yy",
   },
   "type": 1,
 }

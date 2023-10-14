@@ -4,7 +4,7 @@
   "name": "loadingSymbol",
   "bbox_bottom": 52,
   "bbox_left": 0,
-  "bbox_right": 36,
+  "bbox_right": 32,
   "bbox_top": 0,
   "bboxMode": 0,
   "collisionKind": 1,
@@ -25,8 +25,8 @@
   "nineSlice": null,
   "origin": 4,
   "parent": {
-    "name": "Game Client",
-    "path": "folders/Game Client.yy",
+    "name": "Icons",
+    "path": "folders/Game Client/Icons.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {

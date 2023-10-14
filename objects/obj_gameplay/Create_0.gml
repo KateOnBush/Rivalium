@@ -9,6 +9,11 @@ background_vbuffs = [];
 
 map = MAPS[0];
 
+currentState = GameState.STARTING;
+currentRound = 1;
+startingIn = 0;
+
+
 for(var i = 0; i < array_length(map.backgrounds); i++){
 
 	var _back = map.backgrounds[i];

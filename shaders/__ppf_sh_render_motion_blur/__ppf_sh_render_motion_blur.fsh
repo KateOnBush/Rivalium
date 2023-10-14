@@ -23,6 +23,7 @@ uniform vec2 u_motion_blur_center;
 uniform float u_motion_blur_mask_power;
 uniform float u_motion_blur_mask_scale;
 uniform float u_motion_blur_mask_smoothness;
+uniform float u_motion_blur_using_overlay_texture;
 uniform sampler2D u_motion_blur_overlay_tex;
 
 // >> dependencies
@@ -62,7 +63,7 @@ vec4 motion_blur_fx(vec2 uv) {
 		blur += texture2D(gm_BaseTexture, uv + (percent * 2.0 - 1.0) * dist);
 	}
 	vec4 mblur = blur / ITERATIONS;
-	mblur = blend_b(mblur, texture2D(u_motion_blur_overlay_tex, uv));
+	if (u_motion_blur_using_overlay_texture > 0.5) mblur = blend_b(mblur, texture2D(u_motion_blur_overlay_tex, uv));
 	return mblur;
 }
 

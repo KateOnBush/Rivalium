@@ -1,6 +1,6 @@
 
-#macro PPFX_VERSION "v3.0"
-#macro PPFX_RELEASE_DATE "April, 1, 2023"
+#macro PPFX_VERSION "v3.1.1"
+#macro PPFX_RELEASE_DATE "May, 03, 2023"
 
 show_debug_message("Post-Processing FX " + PPFX_VERSION + " | " + "Copyright (C) 2023 FoxyOfJungle");
 
@@ -15,6 +15,8 @@ show_debug_message("Post-Processing FX " + PPFX_VERSION + " | " + "Copyright (C)
 #macro __PPF_SH_DOF_COC __ppf_sh_render_dof_coc
 #macro __PPF_SH_DOF_BOKEH __ppf_sh_render_dof_bokeh
 #macro __PPF_SH_DOF __ppf_sh_render_dof
+#macro __PPF_SH_SLOWMO_PRE_FILTER __ppf_sh_render_slowmo_pre_filter
+#macro __PPF_SH_SLOWMO __ppf_sh_render_slowmo
 #macro __PPF_SH_MOTION_BLUR __ppf_sh_render_motion_blur
 #macro __PPF_SH_RADIAL_BLUR __ppf_sh_render_radial_blur
 #macro __PPF_SH_COLOR_GRADING __ppf_sh_render_color_grading
@@ -66,8 +68,8 @@ if (PPFX_CFG_HARDWARE_CHECKING) {
 			default: _gpu = "Unknown Device."; break;
 		}
 		_is64 = "is64bit: " + string(_info[? "is64bit"]) + " | ";
-		var _trace = "\"Post-Processing FX\" will not work. Device not supported.\n\n" + _is64 + _gpu;
-		__ppf_trace(_trace);
+		var _trace = "\"Post-Processing FX\" will not work. Device does not support shaders.\n\n" + _is64 + _gpu;
+		__ppf_trace(_trace, 1);
 		show_message_async(_trace);
 	}
 }
@@ -82,7 +84,7 @@ if (PPFX_CFG_HDR_ENABLE) {
 			case PPF_HDR_TEX_FORMAT.RGBA32: _format = "RGBA32" break;
 			case PPF_HDR_TEX_FORMAT.RGBA16: _format = "RGBA16" break;
 		}
-		__ppf_trace("WARNING: HDR error: " + _format + " Texture format is not supported on current platform!\nUsing RGBA8 (default).");
+		__ppf_trace("Error: " + _format + " Texture format is not supported on current platform!\nUsing RGBA8 (default). HDR disabled.", 1);
 		global.__ppf_main_texture_format = global.__ppf_main_texture_format_base;
 	}
 }

@@ -5,7 +5,7 @@
   "isCompatibility": false,
   "isDnD": false,
   "parent": {
-    "name": "Networking",
-    "path": "folders/Networking.yy",
+    "name": "In-Game",
+    "path": "folders/Networking/In-Game.yy",
   },
 }

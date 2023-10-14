@@ -13,13 +13,14 @@ GAMEVERSION = {
 	bugfix: "0"
 }
 
-gpu_set_texfilter(true);
-
 depth = 10000;
 
 randomize();
 
-game_set_speed(99999, gamespeed_fps)
+game_set_speed(120, gamespeed_fps)
+//window_set_showborder(true);
+window_command_set_active(window_command_minimize, true);
+window_command_set_active(window_command_resize, false);
 
 global.gamespeed = 1;
 

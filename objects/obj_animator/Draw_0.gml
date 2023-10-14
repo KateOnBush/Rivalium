@@ -237,7 +237,7 @@ if changechar and !global.playing {
 	
 			var charid = presets[yes][0], baseid = presets[yes][1];
 	
-			var sex = setupCharacterData()[yes];
+			var sex = Characters[yes];
 			sprite = sex.sprite;
 			base = base_character(baseid) ?? empty_bone_base(sprite);
 			temporary_base = base_character(baseid) ?? empty_bone_base(sprite);

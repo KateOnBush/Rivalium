@@ -15,7 +15,7 @@ function playerFreeCollision(){
 		
 			wall_side = t;
 			movvec.y *= 0.05;
-			state = PLAYER_STATE.WALL_SLIDING;
+			state = PlayerState.WALL_SLIDING;
 		
 		}
 	

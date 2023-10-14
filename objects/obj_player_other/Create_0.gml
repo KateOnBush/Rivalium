@@ -1,7 +1,7 @@
 // @description Insert description here
 // You can write your code in this editor
 
-state = PLAYER_STATE.FREE;
+state = PlayerState.FREE;
 invisible = false;
 invisible_blend = 0;
 sortedframe = [];
@@ -12,10 +12,6 @@ ux = 0;
 uy = 0;
 
 playerSurf = -1;
-
-characters = setupCharacterData();
-
-character_id = 1;
 
 playerhealth = 100;
 playerhealthmax = 100;
@@ -34,7 +30,14 @@ playerEffects = [];
 
 updated = 0;
 
-char = characters[character_id-1];
+character_id = 1;
+
+char = Characters[character_id-1]();
+spd = char.speed;
+sprite = char.sprite
+offset = [sprite_get_xoffset(sprite),sprite_get_yoffset(sprite)]
+currentframe = animation_get_frame(char.anims.animation_idle, 0);
+base = char.base;
 
 _x = 0;
 _y = 0;

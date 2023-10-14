@@ -11,7 +11,7 @@
   "overriddenProperties": [],
   "parent": {
     "name": "Objects",
-    "path": "folders/Post-Processing FX/Assets/Objects.yy",
+    "path": "folders/Extensions/PostProcessingFX/Assets/Objects.yy",
   },
   "parentObjectId": null,
   "persistent": false,

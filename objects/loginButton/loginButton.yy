@@ -9,8 +9,8 @@
   "managed": true,
   "overriddenProperties": [],
   "parent": {
-    "name": "Login Page",
-    "path": "folders/Game Client/Pages/Login Page.yy",
+    "name": "login",
+    "path": "folders/Game Client/Pages/Login Page/login.yy",
   },
   "parentObjectId": {
     "name": "baseButton",

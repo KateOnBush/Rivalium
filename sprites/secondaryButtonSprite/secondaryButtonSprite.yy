@@ -49,8 +49,8 @@
   },
   "origin": 4,
   "parent": {
-    "name": "Game Client",
-    "path": "folders/Game Client.yy",
+    "name": "Sprites",
+    "path": "folders/Game Client/Components/Sprites.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {

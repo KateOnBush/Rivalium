@@ -4,7 +4,7 @@
 #macro PLAYER_VAULT_PIXEL 5
 #macro SLOPE_NOT_FORCED_INTERVAL 7
 
-enum PLAYER_STATE {
+enum PlayerState {
 
 	FREE,
 	DASHING,
@@ -12,7 +12,8 @@ enum PLAYER_STATE {
 	GRAPPLED,
 	WALL_SLIDING,
 	GROUNDED,
-	DEAD
+	DEAD,
+	BLOCKED,
 
 }
 

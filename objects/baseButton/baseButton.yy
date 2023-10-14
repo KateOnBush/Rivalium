@@ -10,10 +10,13 @@
   "managed": true,
   "overriddenProperties": [],
   "parent": {
-    "name": "Game Client",
-    "path": "folders/Game Client.yy",
+    "name": "Components",
+    "path": "folders/Game Client/Components.yy",
   },
-  "parentObjectId": null,
+  "parentObjectId": {
+    "name": "ClientUIElement",
+    "path": "objects/ClientUIElement/ClientUIElement.yy",
+  },
   "persistent": false,
   "physicsAngularDamping": 0.1,
   "physicsDensity": 0.5,

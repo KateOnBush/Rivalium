@@ -41,7 +41,7 @@ function character_Gramin(){
 	return {
 
 		name: "Gramin",
-		speed: 27,
+		speed: 20,
 		id: 2,
 		base: base_character(2),
 		sprite: base_character_gramin,

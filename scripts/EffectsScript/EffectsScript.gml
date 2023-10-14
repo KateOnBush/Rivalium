@@ -50,7 +50,7 @@ function explosion_hit(explosionID, playerID){
 	
 	var b = buffer_create(global.dataSize, buffer_fixed, 1);
 	buffer_seek(b, buffer_seek_start, 0);
-	buffer_write(b, buffer_u8, SERVER_REQUEST.PLAYER_EXPLOSION_HIT);
+	buffer_write(b, buffer_u8, ServerRequest.PLAYER_EXPLOSION_HIT);
 	buffer_write(b, buffer_u16, real(playerID));
 	buffer_write(b, buffer_u16, real(explosionID));
 	
