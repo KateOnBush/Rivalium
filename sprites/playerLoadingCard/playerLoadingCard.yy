@@ -26,7 +26,7 @@
   "origin": 4,
   "parent": {
     "name": "Loading Screen",
-    "path": "folders/Environment & Visuals/Loading Screen.yy",
+    "path": "folders/In-Game/Environment & Visuals/Loading Screen.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {

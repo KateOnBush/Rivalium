@@ -11,7 +11,7 @@
   "overriddenProperties": [],
   "parent": {
     "name": "Game Logic",
-    "path": "folders/Game Logic.yy",
+    "path": "folders/In-Game/Game Logic.yy",
   },
   "parentObjectId": null,
   "persistent": false,

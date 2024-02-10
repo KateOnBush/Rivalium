@@ -26,7 +26,7 @@
   "origin": 4,
   "parent": {
     "name": "Leyna",
-    "path": "folders/Characters/Leyna.yy",
+    "path": "folders/In-Game/Characters/Leyna.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {

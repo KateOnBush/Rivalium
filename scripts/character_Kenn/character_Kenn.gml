@@ -8,7 +8,7 @@ function character_Kenn(){
 		speed: 23,
 		id: 1,
 		base: base_character(1),
-		sprite: base_character_kenn,
+		sprite: base_character_kennidk,
 		anims: animations(1),
 		particles: {
 			boost: part_type_create()
@@ -48,7 +48,13 @@ function character_Kenn(){
 			ability1: new Ability(18, ability_type.active, {active_time: 12, active_func: function(){}, end_func: function(){}}, 
 			function(){}, function(){}, function(){}, function(){}, 0.2, kennability1, 0),
 		
-			ability2: new Ability(13, ability_type.active, {active_time: 8, active_func: function(){}, end_func: function(){
+			ability2: new Ability(13, ability_type.active, {active_time: 8, active_func: function(){
+			
+				if (isFpsFrame) {
+					if (random(1) > 0.8) part_particles_create(global.partSystem, x, y + 32, gParts.kennSpeedParticle, irandom(2));	
+				}
+				
+			}, end_func: function(){
 		
 					removeFilter(base_character_kenn_filter1);
 		

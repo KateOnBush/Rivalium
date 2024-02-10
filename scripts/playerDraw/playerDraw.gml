@@ -1,15 +1,8 @@
 function playerDraw(color, borderX){
 	
 	if invisible_blend < 0.01 return;
-	
-	if !surface_exists(playerSurf) playerSurf = surface_create(256, 256);
 
-	surface_set_target(playerSurf);
-	draw_clear_alpha(color, 0);
-
-	var xx = 128, yy = 128;
-
-	playerDrawSimple(xx, yy, 1);
+	playerDrawSimple(x, y, 1);
 
 	/*for(var o = 0; o < array_length(char.attach); o++){
 
@@ -34,35 +27,10 @@ function playerDraw(color, borderX){
 		for(var i = sprite_get_number(sprite)-1; i >= 0;i--){
 	
 			var scale = currentframe[i][1];
-			draw_sprite_ext(spr,i, xx+pos[i][0], yy+pos[i][1],cdir,scale,pos[i][2]*cdir, c_white, a)
+			draw_sprite_ext(spr,i, x+pos[i][0], y+pos[i][1],cdir,scale,pos[i][2]*cdir, c_white, a)
 	
 		}
 
 	}
-
-	surface_reset_target();
-
-	if borderX <= 0 {
-		
-		draw_surface_ext(playerSurf, x - xx, y - yy, 1, 1, 0, c_white, invisible_blend);
-		
-	} else {
-	
-		var texelW = texture_get_texel_width(surface_get_texture(playerSurf)),
-		texelH = texture_get_texel_height(surface_get_texture(playerSurf));
-		
-		var upixelW = shader_get_uniform(RedBorderEnemy, "pixelW"),
-			upixelH = shader_get_uniform(RedBorderEnemy, "pixelH");
-
-		shader_set(RedBorderEnemy);
-		shader_set_uniform_f(upixelW, texelW * borderX);
-		shader_set_uniform_f(upixelH, texelH * borderX);
-
-		draw_surface_ext(playerSurf, x - xx, y - yy, 1, 1, 0, c_white, invisible_blend);
-
-		shader_reset();
-
-	}
-	
 
 }

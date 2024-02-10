@@ -6,6 +6,6 @@
   "isDnD": false,
   "parent": {
     "name": "Particle System",
-    "path": "folders/Environment & Visuals/Particle System.yy",
+    "path": "folders/In-Game/Environment & Visuals/Particle System.yy",
   },
 }

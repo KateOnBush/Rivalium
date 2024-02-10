@@ -6,6 +6,6 @@
   "isDnD": false,
   "parent": {
     "name": "libraries",
-    "path": "folders/Game Logic/libraries.yy",
+    "path": "folders/In-Game/Game Logic/libraries.yy",
   },
 }

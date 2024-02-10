@@ -17,7 +17,9 @@ function setupParticles() {
 		blood: part_type_create(),
 		death: part_type_create(),
 		dustRun: part_type_create(),
-		dustGround: part_type_create()
+		dustGround: part_type_create(),
+
+		kennSpeedParticle: part_type_create(),
 
 	};
 	
@@ -59,6 +61,14 @@ function setupParticles() {
 	part_type_alpha3(setup, 1, 0.8, 0);
 	part_type_life(setup, 150, 200);
 	
+	setup = gParts.kennSpeedParticle;
+	part_type_sprite(setup, base_character_kenn_speed_particle, false, false, true);
+	part_type_speed(setup, 4, 6, -0.12, 0);
+	part_type_orientation(setup, 0, 360, 0, 0 , 0);
+	part_type_direction(setup, 70, 110, 0, 0.2);
+	part_type_size(setup, 1.2, 1.5, -0.01, 0);
+	part_type_alpha3(setup, 1, 0.8, 0.2);
+	part_type_life(setup, 200, 250);
 	
 
 }

@@ -26,7 +26,7 @@
   "origin": 0,
   "parent": {
     "name": "Environment & Visuals",
-    "path": "folders/Environment & Visuals.yy",
+    "path": "folders/In-Game/Environment & Visuals.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {

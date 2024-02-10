@@ -26,7 +26,7 @@
   "origin": 4,
   "parent": {
     "name": "Kenn",
-    "path": "folders/Characters/Kenn.yy",
+    "path": "folders/In-Game/Characters/Kenn.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {

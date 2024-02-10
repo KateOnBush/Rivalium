@@ -36,7 +36,7 @@
   "origin": 4,
   "parent": {
     "name": "Characters",
-    "path": "folders/Characters.yy",
+    "path": "folders/In-Game/Characters.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {

@@ -15,6 +15,6 @@ var pos = new Vector3(-16*image_xscale, -16*image_yscale, -z + dz);
 
 var pos2 = new Vector3(16*image_xscale, 16*image_yscale, z + dz);
 
-vertex_add_cube_repeated_tex(vbuff, pos, pos2, c_white, 80, 80);
+vertex_add_cube_repeated_tex(vbuff, pos, pos2, c_white, 160, 160);
 
 vertex_end(vbuff);

@@ -9,7 +9,7 @@
   "overriddenProperties": [],
   "parent": {
     "name": "Leyna",
-    "path": "folders/Characters/Leyna.yy",
+    "path": "folders/In-Game/Characters/Leyna.yy",
   },
   "parentObjectId": {
     "name": "obj_projectile_lenya_bullet_parent",

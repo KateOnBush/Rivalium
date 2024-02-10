@@ -26,7 +26,7 @@
   "origin": 4,
   "parent": {
     "name": "HUD",
-    "path": "folders/Environment & Visuals/HUD.yy",
+    "path": "folders/In-Game/Environment & Visuals/HUD.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {

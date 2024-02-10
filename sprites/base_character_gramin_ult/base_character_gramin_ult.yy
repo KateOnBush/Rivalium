@@ -37,7 +37,7 @@
   "origin": 4,
   "parent": {
     "name": "Default Skin",
-    "path": "folders/Characters/Gramin/Default Skin.yy",
+    "path": "folders/In-Game/Characters/Gramin/Default Skin.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {

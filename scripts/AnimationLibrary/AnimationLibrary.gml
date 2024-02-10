@@ -12,9 +12,13 @@ enum framestyle {
 
 }
 
-function empty_bone_base(i){
+function empty_bone_base(size){
 
-	return array_create(i, [0, 0, -1]);
+	var bone_base = array_create(size);
+	for(var index = 0; index < size; index++) {
+		bone_base[index] = [0, 0, -1];
+	}
+	return bone_base;
 
 }
 
@@ -26,7 +30,10 @@ function empty_bone(){
 
 function empty_frame(sprite){
 
-	var arr = array_create(sprite_get_number(sprite)+4,empty_bone()); //bones
+	var arr = array_create(sprite_get_number(sprite)+4); //bones
+	for(var i = 0; i < sprite_get_number(sprite); i++) {
+		arr[i] = empty_bone();
+	}
 	
 	arr[array_length(arr)-1] = 0; //xoffset
 	arr[array_length(arr)-2] = 0; //yoffset

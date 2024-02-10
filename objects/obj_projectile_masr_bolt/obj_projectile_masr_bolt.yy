@@ -10,7 +10,7 @@
   "overriddenProperties": [],
   "parent": {
     "name": "Masr",
-    "path": "folders/Characters/Masr.yy",
+    "path": "folders/In-Game/Characters/Masr.yy",
   },
   "parentObjectId": {
     "name": "obj_projectile",

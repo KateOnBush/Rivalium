@@ -19,7 +19,7 @@ function playerCheckCast(){
 
 	}
 
-	if keyboard_check_pressed(ord("A")){
+	if keyboard_check_pressed(ord("Q")){
 
 		castedAbility = 1;
 		char.abilities.ability1.requestCast(0, self)	

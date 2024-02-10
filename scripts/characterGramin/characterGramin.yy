@@ -6,6 +6,6 @@
   "isDnD": false,
   "parent": {
     "name": "Gramin",
-    "path": "folders/Characters/Gramin.yy",
+    "path": "folders/In-Game/Characters/Gramin.yy",
   },
 }

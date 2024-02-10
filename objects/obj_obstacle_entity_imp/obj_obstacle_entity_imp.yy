@@ -9,7 +9,7 @@
   "overriddenProperties": [],
   "parent": {
     "name": "Collisions",
-    "path": "folders/Game Logic/Collisions.yy",
+    "path": "folders/In-Game/Game Logic/Collisions.yy",
   },
   "parentObjectId": {
     "name": "obj_impenetrable",

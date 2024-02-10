@@ -18,7 +18,7 @@
   "exportToGame": true,
   "extensionVersion": "0.0.1",
   "files": [
-    {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","constants":[],"copyToTargets":-1,"filename":"ExecuteShellGM.dll","final":"","functions":[
+    {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"ExecuteShellGM.dll","constants":[],"copyToTargets":-1,"filename":"ExecuteShellGM.dll","final":"","functions":[
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"execute_shell","argCount":0,"args":[
             1,
           ],"documentation":"","externalName":"exec","help":"","hidden":false,"kind":1,"returnType":2,},

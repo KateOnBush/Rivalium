@@ -7,6 +7,8 @@ invisible = false;
 invisible_blend = 1;
 free_blend = 0;
 
+directional_camera = false;
+
 timeText = "";
 
 sortedframe = [];
@@ -22,9 +24,9 @@ playerInitShader();
 
 //INPUTS
 
-input_left = get_input(input.keyboard, ord("Q"));
+input_left = get_input(input.keyboard, ord("A"));
 input_right = get_input(input.keyboard, ord("D"));
-input_up = get_input(input.keyboard, ord("Z"));
+input_up = get_input(input.keyboard, ord("W"));
 input_down = get_input(input.keyboard, ord("S"));
 
 input_grapple = get_input(input.keyboard, vk_space);
@@ -33,7 +35,7 @@ input_dash = get_input(input.keyboard, vk_shift);
 input_basicAttack = get_input(input.mouse, mb_left);
 input_basicAttackAlternate = get_input(input.mouse, mb_right);
 
-input_ability1 = get_input(input.keyboard, ord("A"));
+input_ability1 = get_input(input.keyboard, ord("Q"));
 input_ability2 = get_input(input.keyboard, ord("E"));
 input_ultimate = get_input(input.keyboard, ord("X"));
 

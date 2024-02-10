@@ -26,7 +26,7 @@
   "origin": 9,
   "parent": {
     "name": "Particle Sprites",
-    "path": "folders/Environment & Visuals/Particle System/Particle Sprites.yy",
+    "path": "folders/In-Game/Environment & Visuals/Particle System/Particle Sprites.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {

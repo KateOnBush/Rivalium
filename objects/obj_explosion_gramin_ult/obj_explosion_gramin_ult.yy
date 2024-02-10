@@ -10,7 +10,7 @@
   "overriddenProperties": [],
   "parent": {
     "name": "Gramin",
-    "path": "folders/Characters/Gramin.yy",
+    "path": "folders/In-Game/Characters/Gramin.yy",
   },
   "parentObjectId": {
     "name": "obj_explosion",

@@ -37,7 +37,7 @@
   "origin": 4,
   "parent": {
     "name": "Masr",
-    "path": "folders/Characters/Masr.yy",
+    "path": "folders/In-Game/Characters/Masr.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {

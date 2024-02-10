@@ -4,7 +4,7 @@
   "name": "RedBorderEnemy",
   "parent": {
     "name": "Shaders",
-    "path": "folders/Environment & Visuals/Shaders.yy",
+    "path": "folders/In-Game/Environment & Visuals/Shaders.yy",
   },
   "type": 1,
 }

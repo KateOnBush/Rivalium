@@ -38,7 +38,8 @@ function playerProcessCamera(){
 
 	} 
 
-	var dir_camera = true;
+	var dir_camera = directional_camera;
+	if (keyboard_check_released(ord("H"))) directional_camera = !directional_camera;
 
 	camera.x = dtlerp(camera.x, x+windx+speedyx+ssx+(dir_camera ? movvec.x*10 : 0), 0.1);
 	camera.y = dtlerp(camera.y, y+windy+speedyy+ssy+(dir_camera ? movvec.y*10 : 0), 0.1);

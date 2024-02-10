@@ -6,6 +6,6 @@
   "isDnD": false,
   "parent": {
     "name": "Kenn",
-    "path": "folders/Characters/Kenn.yy",
+    "path": "folders/In-Game/Characters/Kenn.yy",
   },
 }

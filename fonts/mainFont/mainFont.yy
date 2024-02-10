@@ -121,7 +121,7 @@
   "maintainGms1Font": false,
   "parent": {
     "name": "Fonts",
-    "path": "folders/Environment & Visuals/Fonts.yy",
+    "path": "folders/In-Game/Environment & Visuals/Fonts.yy",
   },
   "pointRounding": 0,
   "ranges": [

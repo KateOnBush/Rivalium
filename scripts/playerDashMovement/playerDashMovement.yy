@@ -6,6 +6,6 @@
   "isDnD": false,
   "parent": {
     "name": "statemethods",
-    "path": "folders/Game Logic/scripts/player/statemethods.yy",
+    "path": "folders/In-Game/Game Logic/scripts/player/statemethods.yy",
   },
 }

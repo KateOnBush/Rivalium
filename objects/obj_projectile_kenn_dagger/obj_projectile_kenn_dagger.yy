@@ -10,7 +10,7 @@
   "overriddenProperties": [],
   "parent": {
     "name": "Default Skin",
-    "path": "folders/Characters/Kenn/Default Skin.yy",
+    "path": "folders/In-Game/Characters/Kenn/Default Skin.yy",
   },
   "parentObjectId": {
     "name": "obj_projectile",

@@ -2,7 +2,7 @@
   "resourceType": "GMSprite",
   "resourceVersion": "1.0",
   "name": "player_collision_mask",
-  "bbox_bottom": 70,
+  "bbox_bottom": 75,
   "bbox_left": 33,
   "bbox_right": 59,
   "bbox_top": 17,
@@ -49,7 +49,7 @@
   "origin": 4,
   "parent": {
     "name": "Collisions",
-    "path": "folders/Game Logic/Collisions.yy",
+    "path": "folders/In-Game/Game Logic/Collisions.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {

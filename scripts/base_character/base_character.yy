@@ -6,6 +6,6 @@
   "isDnD": false,
   "parent": {
     "name": "data",
-    "path": "folders/Game Logic/data.yy",
+    "path": "folders/In-Game/Game Logic/data.yy",
   },
 }

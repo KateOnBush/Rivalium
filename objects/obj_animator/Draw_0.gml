@@ -49,7 +49,7 @@ var midy = sprite_get_height(sprite)/2;
 
 var he = ["Lin.", "Quad.", "Back.", "Expo."];
 
-draw_set_font(font0)
+draw_set_font(font_game)
 
 //[ [ -10,-16,7 ],[ -10,-3,0 ],[ -6,8,8 ],[ -6,17,2 ],[ 2,8,8 ],[ 3,18,4 ],[ 2,-22,7 ],[ 1,-4,8 ],[ 0,5,-1 ],[ 8,-4,10 ],[ 7,-16,7 ] ]
 
@@ -237,7 +237,7 @@ if changechar and !global.playing {
 	
 			var charid = presets[yes][0], baseid = presets[yes][1];
 	
-			var sex = Characters[yes];
+			var sex = Characters[yes]();
 			sprite = sex.sprite;
 			base = base_character(baseid) ?? empty_bone_base(sprite);
 			temporary_base = base_character(baseid) ?? empty_bone_base(sprite);
@@ -688,6 +688,38 @@ if global.playing draw_sprite(animator_keyframes,2, tx - tw/2 + tw * animfr, ty)
 
 moveTemp = max(moveTemp - 1, 0);
 
+for(var j = 0; j < instance_number(clickable_bone); j++){
+
+	var c = instance_find(clickable_bone, j);
+	var bon = c.bonid;
+	
+	with(c) {
+		sprite_collision_mask(other.sprite, true, bboxmode_automatic, 0, 0, 96, 96, bboxkind_precise, 0)
+	}
+	
+	c.x = x + pos[bon][0] * SCALE;
+	c.y = y + pos[bon][1] * SCALE;
+	
+	c.image_angle = pos[bon][2];
+	c.sprite_index = sprite;
+	c.image_index = bon;
+	
+	
+	c.image_yscale = currentframe[bon][1] * SCALE;
+	c.image_xscale = currentframe[bon][5] * SCALE;
+	
+	if (collision_point(mouse_x, mouse_y, c, true, true)) {
+		global.hovered = bon;	
+	}
+
+}
+
+if global.hovered != -1 && mouse_check_button_pressed(mb_left){
+
+	global.selected_bone = global.hovered;
+	
+}
+
 
 if !global.playing and isInEditor and global.boneSetup == 0{
 	
@@ -850,12 +882,6 @@ if show_rig {
 	}
 }
 
-if global.hovered != -1 && mouse_check_button_pressed(mb_left){
-
-	global.selected_bone = global.hovered;
-	
-}
-
 var e = global.selected_bone;
 var fr = global.animation[global.selected_keyframe];
 
@@ -958,29 +984,3 @@ if instance_number(clickable_bone) != array_length(base) {
 
 }
 global.hovered = -1;
-
-for(var j = 0; j < instance_number(clickable_bone); j++){
-
-	var c = instance_find(clickable_bone, j);
-	var bon = c.bonid;
-	
-	with(c) {
-		sprite_collision_mask(other.sprite, true, bboxmode_automatic, 0, 0, 96, 96, bboxkind_precise, 0)
-	}
-	
-	c.x = x + pos[bon][0] * SCALE;
-	c.y = y + pos[bon][1] * SCALE;
-	
-	c.image_angle = pos[bon][2];
-	c.sprite_index = sprite;
-	c.image_index = bon;
-	
-	
-	c.image_yscale = currentframe[bon][1] * SCALE;
-	c.image_xscale = currentframe[bon][5] * SCALE;
-	
-	if (collision_point(mouse_x, mouse_y, c, true, true)) {
-		global.hovered = bon;	
-	}
-
-}

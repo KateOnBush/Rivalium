@@ -35,7 +35,7 @@
   "origin": 4,
   "parent": {
     "name": "Default Skin",
-    "path": "folders/Characters/Kenn/Default Skin.yy",
+    "path": "folders/In-Game/Characters/Kenn/Default Skin.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {
