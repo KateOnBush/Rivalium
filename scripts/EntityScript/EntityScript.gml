@@ -38,31 +38,20 @@ function entity_create_solid_component(x, y, entity, obj = obj_obstacle_entity){
 }
 
 function entity_update_request(entity_instance){
-
-	var _ind = array_find_by_value(global.entity_array, entity_instance.object_index)
-	if _ind == -1 return;
 	
 	var o = entity_instance;
 	
-	var _x = o.x, _y = o.y;
-	var entityParameters = o.parameters;
+	var updateEntity = new UReqEntityUpdate();
 	
-	var buffer = buffer_create(global.dataSize, buffer_fixed, 1);
-	buffer_seek(buffer, buffer_seek_start, 0);
+	updateEntity.entityId = o.ID;
+	updateEntity.x = o.x; updateEntity.y = o.y;
+	updateEntity.movX = o.mx; updateEntity.movY = o.my;
+	updateEntity.param1 = o.parameters[0];
+	updateEntity.param2 = o.parameters[1];
+	updateEntity.param3 = o.parameters[2];
+	updateEntity.param4 = o.parameters[3];
+	updateEntity.param5 = o.parameters[4];
 	
-	buffer_write(buffer, buffer_u8, ServerRequest.ENTITY_UPDATE);
-	buffer_write(buffer, buffer_u16, o.ID);
-	buffer_write(buffer, buffer_s32, round(_x * 100));
-	buffer_write(buffer, buffer_s32, round(_y * 100));
-	buffer_write(buffer, buffer_s32, round(o.mx * 100));
-	buffer_write(buffer, buffer_s32, round(o.my * 100));
-
-	for(var i = 0; i < array_length(entityParameters); i++){
-		buffer_write(buffer, buffer_s32, round(entityParameters[i]*100));
-	}
-	
-	network_send_raw(obj_network.server, buffer, global.dataSize);
-	
-	buffer_delete(buffer);
+	gameserver_send(updateEntity);
 	
 }

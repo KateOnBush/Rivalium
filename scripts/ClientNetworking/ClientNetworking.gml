@@ -8,7 +8,6 @@
 
 AccessToken = "";
 
-
 ClientStatus = {
 	connection: ConnectionStatus.DISCONNECTED,
 	authentication: AuthenticationStatus.UNAUTHORIZED

@@ -102,15 +102,11 @@ function Ability(acooldown, atype, atype_data, acast_fake, acast_func, acast_vis
 			
 			var cb = other.castedAbility;
 			
-			var buff = buffer_create(global.dataSize, buffer_fixed, 1);
-			buffer_seek(buff, buffer_seek_start, 0);
-			buffer_write(buff, buffer_u8, ServerRequest.ABILITY_CAST);
-			buffer_write(buff, buffer_u8, cb);
-			buffer_write(buff, buffer_u8, n);
-				
-			network_send_raw(obj_network.server, buff, global.dataSize);
-				
-			buffer_delete(buff);
+			var castRequest = new TReqAbilityCast();
+			castRequest.ability = cb;
+			castRequest.abilityN = n;
+			
+			gameserver_send(castRequest);
 			
 		}
 	

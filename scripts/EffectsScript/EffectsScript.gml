@@ -47,16 +47,5 @@ function explosion_hit(explosionID, playerID){
 	
 	if (playerID == 0 or playerID == global.playerid) obj_player.playerhealth -= damage;
 	else if (global.players[? playerID]) global.players[? playerID].playerhealth -= damage;
-	
-	var b = buffer_create(global.dataSize, buffer_fixed, 1);
-	buffer_seek(b, buffer_seek_start, 0);
-	buffer_write(b, buffer_u8, ServerRequest.PLAYER_EXPLOSION_HIT);
-	buffer_write(b, buffer_u16, real(playerID));
-	buffer_write(b, buffer_u16, real(explosionID));
-	
-	network_send_raw(obj_network.server, b, global.dataSize);
-	
-	buffer_delete(b);
-	
 
 }

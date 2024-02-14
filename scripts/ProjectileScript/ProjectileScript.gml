@@ -3,32 +3,32 @@
 
 global.projectiles_array = [
 
-obj_projectile_kenn_dagger,
-obj_projectile_kenn_dagger_transformed,
+	obj_projectile_kenn_dagger,
+	obj_projectile_kenn_dagger_transformed,
 
-obj_projectile_gramin_gun1bullet,
-obj_projectile_gramin_ult_bullet,
-obj_projectile_gramin_net,
-obj_projectile_gramin_ult_rocket,
-obj_projectile_gramin_ult_smalldebris,
+	obj_projectile_gramin_gun1bullet,
+	obj_projectile_gramin_ult_bullet,
+	obj_projectile_gramin_net,
+	obj_projectile_gramin_ult_rocket,
+	obj_projectile_gramin_ult_smalldebris,
 
-obj_projectile_lenya_blue_bullet,
-obj_projectile_lenya_red_bullet,
-obj_projectile_lenya_grenade,
+	obj_projectile_lenya_blue_bullet,
+	obj_projectile_lenya_red_bullet,
+	obj_projectile_lenya_grenade,
 
-obj_projectile_masr_bolt,
-obj_projectile_masr_bolt_powered
+	obj_projectile_masr_bolt,
+	obj_projectile_masr_bolt_powered
 
 ];
 
 global.explosions_array = [
 
-obj_explosion_gramin, 
-obj_explosion_gramin_ult, 
+	obj_explosion_gramin, 
+	obj_explosion_gramin_ult, 
 
-obj_explosion_lenya_grenade,
+	obj_explosion_lenya_grenade,
 
-obj_explosion_masr_bolt
+	obj_explosion_masr_bolt
 
 ];
 

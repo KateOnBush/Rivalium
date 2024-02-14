@@ -23,14 +23,14 @@ if col and spd > 0{
 	
 		if pl {
 		
-			buffer_seek(dataBuffer, buffer_seek_start, 0);
-			buffer_write(dataBuffer, buffer_u8, ServerRequest.PLAYER_PROJECTILE_HIT);
-			buffer_write(dataBuffer, buffer_u16, real(ID))
-			buffer_write(dataBuffer, buffer_u32, id)
-			buffer_write(dataBuffer, buffer_u16, real(pl.ID))
-			buffer_write(dataBuffer, buffer_s32, round(px * 100));
-			buffer_write(dataBuffer, buffer_s32, round(py * 100));
-			network_send_raw(obj_network.server, dataBuffer, global.dataSize)
+			var projectileHit = new TReqPlayerHit();
+			projectileHit.projectileId = ID;
+			projectileHit.objectId = id;
+			projectileHit.hitId = pl.ID;
+			projectileHit.x = px;
+			projectileHit.y = py;
+			
+			gameserver_send(projectileHit);
 			
 			on_hit(pl);
 			with (pl) { 
@@ -48,12 +48,10 @@ if col and spd > 0{
 		
 		if !bounce and !pl{
 		
-			
-		
 			if collidedBlock {
 			
 				var e = collidedBlock.object_index;
-				if (e == obj_obstacle_entity || e == obj_obstacle_entity_imp) collidedBlock.componentTo.damage(damage);
+				if (e == obj_obstacle_entity || e == obj_obstacle_entity_imp) collidedBlock.componentTo.damage(damage, ID);
 			
 			}
 		
@@ -95,17 +93,15 @@ if col and spd > 0{
 			
 			if !buffer_exists(dataBuffer) dataBuffer = buffer_create(global.dataSize, buffer_fixed, 1);
 		
-			//show_debug_message("Sending {0}, x: {1} y: {2}, mx: {3} my: {4}", ID, px, py, lengthdir_x(spd, dir), lengthdir_y(spd, dir));
-		
-			buffer_seek(dataBuffer, buffer_seek_start, 0);
-			buffer_write(dataBuffer, buffer_u8, ServerRequest.PROJECTILE_UPDATE);
-			buffer_write(dataBuffer, buffer_u16, real(ID));
-			buffer_write(dataBuffer, buffer_s32, round(px*100));
-			buffer_write(dataBuffer, buffer_s32, round(py*100));
-			buffer_write(dataBuffer, buffer_s32, round(lengthdir_x(spd, dir)*100));
-			buffer_write(dataBuffer, buffer_s32, round(lengthdir_y(spd, dir)*100));
-	
-			network_send_raw(obj_network.server, dataBuffer, global.dataSize);
+			var projectileUpdate = new UReqProjectileUpdate();
+			
+			projectileUpdate.projId = ID;
+			projectileUpdate.x = px;
+			projectileUpdate.y = py;
+			projectileUpdate.movX = lengthdir_x(spd, dir);
+			projectileUpdate.movY = lengthdir_y(spd, dir);
+			
+			gameserver_send(projectileUpdate);
 			
 		}
 		

@@ -18,21 +18,13 @@ solidComponent = undefined;
 
 parameters = array_create(entityParameterLimit, 0);
 
-damage = function(dmg){
+damage = function(damage, projectileId){
 
-	show_debug_message("Damaged me ("+string(ID)+") : " + string(dmg));
+	var entityHit = new TReqEntityHit();
+	entityHit.projectileId = projectileId;
+	entityHit.entityId = ID;
 
-	var buff = buffer_create(global.dataSize, buffer_fixed, 1);
-	
-	buffer_seek(buff, buffer_seek_start, 0);
-	
-	buffer_write(buff, buffer_u8, ServerRequest.ENTITY_HIT);
-	buffer_write(buff, buffer_u16, ID);
-	buffer_write(buff, buffer_u16, dmg);
-	
-	network_send_raw(obj_network.server, buff, global.dataSize);
-	
-	buffer_delete(buff);
+	gameserver_send(entityHit);
 
 }
 

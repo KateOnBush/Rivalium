@@ -2,21 +2,18 @@ function playerUpdateServer(){
 
 	if global.connected and isFpsFrame {
 
-		if (!buffer_exists(updateDataBuffer)) updateDataBuffer = buffer_create(global.dataSize, buffer_fixed, 1);
-
-		buffer_seek(updateDataBuffer, buffer_seek_start, 0);
-		buffer_write(updateDataBuffer, buffer_u8, ServerRequest.POSITION_UPDATE)
-		buffer_write(updateDataBuffer, buffer_s32, round(x*100))
-		buffer_write(updateDataBuffer, buffer_s32, round(y*100))
-		buffer_write(updateDataBuffer, buffer_s32, round(movvec.x*100))
-		buffer_write(updateDataBuffer, buffer_s32, round(movvec.y*100))
-		buffer_write(updateDataBuffer, buffer_u8, state);
-		buffer_write(updateDataBuffer, buffer_u8, on_ground)
-		buffer_write(updateDataBuffer, buffer_s8, cdir)
-		buffer_write(updateDataBuffer, buffer_u8, slide)
-		buffer_write(updateDataBuffer, buffer_s32, round(mousex*100));
-		buffer_write(updateDataBuffer, buffer_s32, round(mousey*100));
-		network_send_raw(obj_network.server, updateDataBuffer, buffer_get_size(updateDataBuffer));
+		UpdateMessage.x = x;
+		UpdateMessage.y = y;
+		UpdateMessage.movX = movvec.x;
+		UpdateMessage.movY = movvec.y;
+		UpdateMessage.state = state;
+		UpdateMessage.onGround = on_ground;
+		UpdateMessage.orientation = cdir == 1 ? 1 : 0;
+		UpdateMessage.slide = slide;
+		UpdateMessage.mouseX = mousex;
+		UpdateMessage.mouseY = mousey;
+		
+		gameserver_send(UpdateMessage, false);
 
 	}
 

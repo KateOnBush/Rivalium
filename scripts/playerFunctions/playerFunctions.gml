@@ -6,12 +6,10 @@ function perform_flip(_forward, _start){
 	
 	if global.connected && object_index == obj_player {
 	
-		var buff = buffer_create(global.dataSize, buffer_fixed, 1);
-		buffer_seek(buff, buffer_seek_start, 0);
-		buffer_write(buff, buffer_u8, ServerRequest.FLIP);
-		buffer_write(buff, buffer_u8, _forward);
-		buffer_write(buff, buffer_u8, round(_start*100))
-		network_send_raw(obj_network.server, buff, buffer_get_size(buff));
+		var flipMessage = new UReqFlip();
+		flipMessage.forward = _forward;
+		flipMessage.start = _start;
+		gameserver_send(flipMessage);
 	
 	}
 

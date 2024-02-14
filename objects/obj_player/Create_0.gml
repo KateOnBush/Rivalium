@@ -91,7 +91,7 @@ playerEffects = [];
 mousex = 0;
 mousey = 0;
 
-updateDataBuffer = buffer_create(global.dataSize, buffer_fixed, 1);
+UpdateMessage = new UReqPositionUpdate();
 
 animation_playing = 0;
 animation_playing_blend = 0;

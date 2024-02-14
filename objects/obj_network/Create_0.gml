@@ -7,9 +7,10 @@ server_ip = "127.0.0.1";
 
 port = 2003;
 
-server = network_create_socket(network_socket_ws);
+TCPsocket = network_create_socket(network_socket_ws);
+network_connect_raw_async(TCPsocket, server_ip, port);
+UDPsocket = network_create_socket(network_socket_udp);
 
-network_connect_raw_async(server, server_ip, port);
 
 global.dataSize = 64;
 

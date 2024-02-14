@@ -34,15 +34,11 @@ function playerGrapplingMovement(){
 		
 		if global.connected {
 	
-			var buff = buffer_create(global.dataSize, buffer_fixed, 1);
-			buffer_seek(buff, buffer_seek_start, 0);
-			buffer_write(buff, buffer_u8, ServerRequest.GRAPPLING_POSITION);
-			buffer_write(buff, buffer_s32, round(grappling_coords[0]*100))
-			buffer_write(buff, buffer_s32, round(grappling_coords[1]*100))
-			buffer_write(buff, buffer_u8, 1);
-			network_send_raw(obj_network.server, buff, buffer_get_size(buff));
-			
-			buffer_delete(buff);
+			var grapplingPos = new UReqGrapplingPosition();
+			grapplingPos.x = grappling_coords[0];
+			grapplingPos.y = grappling_coords[1];
+			grapplingPos.grappled = true;
+			gameserver_send(grapplingPos);
 	
 		}
 		
