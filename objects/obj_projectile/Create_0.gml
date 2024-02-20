@@ -34,6 +34,9 @@ on_destroy = NULLFUNC;
 
 lastUpdated = current_time;
 
+can_leave_trail = false;
+distance_traveled = 0;
+
 check = function(){
 		
 	return collision_line(x, y, x+lengthdir_x(spd, dir)*global.dt, y+lengthdir_y(spd, dir)*global.dt, obj_impenetrable, false, true);

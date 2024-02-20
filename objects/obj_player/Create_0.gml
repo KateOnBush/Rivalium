@@ -1,6 +1,8 @@
 // @description Insert description here
 // You can write your code in this editor
 
+depth = -10;
+
 playerSurf = -1;
 
 invisible = false;

@@ -5,7 +5,7 @@ var hitcol = merge_color(c_white, c_red, hitind);
 
 if dir==0 dir=1;
 
-//draw_circle(rec_x, rec_y, 5, false)
+draw_circle(rec_x, rec_y, 5, false)
 
 if global.debugmode { 
 	

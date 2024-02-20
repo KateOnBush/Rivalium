@@ -19,3 +19,6 @@ dir = 1;
 
 ani = 0;
 
+details_alpha = 0;
+global_alpha = 1;
+

@@ -22,6 +22,9 @@ return x == 0 ? 0
   : (x < 0.5 ? power(2, 20 * x - 10) / 2
   : (2 - power(2, -20 * x + 10)) / 2));
 }
+function easeInOutExpoEarly(x) {
+	return x < 0.01 ? easeInOutExpo(min(x * 100, 1)) : 1;
+}
 
 
 function easeInOutBack(x) {

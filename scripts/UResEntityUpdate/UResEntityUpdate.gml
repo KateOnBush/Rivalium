@@ -43,7 +43,7 @@ function UResEntityUpdate(): NetworkingPacket(NetworkingChannel.UDP, UDPServerRe
 				
 		if (entity == noone) return;
 				
-		if (ownerID != global.playerid) {
+		if (ownerId != global.playerid) {
 				
 			entity._x = x;
 			entity._y = y;

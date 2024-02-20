@@ -60,10 +60,10 @@ function character_Gramin(){
 				
 						createEvent(0.1, __gramin_basicAttackShoot, self);
 						createEvent(0.2, __gramin_basicAttackShoot, self);
-						createEvent(0.25, __gramin_basicAttackShoot, self);
 						createEvent(0.3, __gramin_basicAttackShoot, self);
-						createEvent(0.35, __gramin_basicAttackShoot, self);
 						createEvent(0.4, __gramin_basicAttackShoot, self);
+						createEvent(0.5, __gramin_basicAttackShoot, self);
+						createEvent(0.6, __gramin_basicAttackShoot, self);
 
 			
 					}
@@ -76,17 +76,16 @@ function character_Gramin(){
 				
 						createEvent(0.1, __gramin_basicAttackShootVisual, self);
 						createEvent(0.2, __gramin_basicAttackShootVisual, self);
-						createEvent(0.25, __gramin_basicAttackShootVisual, self);
 						createEvent(0.3, __gramin_basicAttackShootVisual, self);
-						createEvent(0.35, __gramin_basicAttackShootVisual, self);
 						createEvent(0.4, __gramin_basicAttackShootVisual, self);
-
+						createEvent(0.5, __gramin_basicAttackShootVisual, self);
+						createEvent(0.6, __gramin_basicAttackShootVisual, self);
 			
 					}
 		
 				}, function(n){
 					dir = sign(mousex - x);
-				}, 0, kennability1, 0, false, false),
+				}, 0, gramin_basicattack, 0, false, false),
 		
 			ability1: new Ability(1.5, ability_type.onetime, {},
 			
@@ -116,15 +115,16 @@ function character_Gramin(){
 				
 					dir = sign(mousex - x);
 					
-				}, 0.33, kennability1, 0),
+				}, 0.33, gramin_grenade, 0),
 		
-			ability2: new Ability(5, ability_type.onetime, {}, NULLFUNC, NULLFUNC, NULLFUNC, NULLFUNC, 0, kennability2, 0),
+			ability2: new Ability(5, ability_type.onetime, {}, NULLFUNC, NULLFUNC, NULLFUNC, NULLFUNC, 0, gramin_heal, 0),
 		
 			ultimate: new Ability(0.2, ability_type.activecharges, {charges: 30, cooldown_charge: 0.1, charge_cast_time: 0, charge_time: 0, active_time: 20, active_func: function(){}, 
 			
 				end_func: function(){
 		
 					sprite = base_character_gramin;
+					char.abilities.basic_attack.sprite = gramin_basicattack;
 		
 				}, 
 				castCondition: function(){
@@ -140,6 +140,7 @@ function character_Gramin(){
 					if !char.abilities.ultimate.active{
 			
 						camera_ultimate_zoom(0.7, 5, easeInSixth, 0.4, easeInSixth, 0.4);
+						char.abilities.basic_attack.sprite = gramin_basicattack_ult;
 						return;
 			
 					} else {
@@ -170,7 +171,12 @@ function character_Gramin(){
 		
 					__gramin_basicAttackShootVisual();
 		
-				}, function(){}, 1/0.3, ultimatekenn, #9A1D1C, true, true)
+				}, function(){
+				
+					movvec.x = 0;
+					movvec.y = 0;
+				
+				}, 1/0.3, gramin_ult, #9A1D1C, true, true)
 		
 			}
 

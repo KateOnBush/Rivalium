@@ -58,14 +58,7 @@ function UResPlayerUpdate(): NetworkingPacket(NetworkingChannel.UDP, UDPServerRe
 			return;
 		}
 			
-		if is_undefined(ds_map_find_value(global.players, playerId)) {
-			
-			var player = instance_create_depth(x, y, 0, obj_player_other);
-			player.ID = playerId;
-			ds_map_add(global.players, playerId, player);
-				
-			
-		}
+		if is_undefined(ds_map_find_value(global.players, playerId)) return;
 		
 		var player = global.players[? playerId];
 			

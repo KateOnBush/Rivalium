@@ -24,7 +24,7 @@ onClick = function() {
 	state = buttonState.LOADING;
 	text =  "LOGGING IN";
 
-}
+} 
 
 reset = function(){
 	state = buttonState.ON;

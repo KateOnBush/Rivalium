@@ -7,7 +7,7 @@ life -= global.dt/60;
 
 if life<0 instance_destroy();
 
-if col and spd > 0{
+if col and spd > 0 {
 	
 	var pl = checkPlayer();
 	var plSelf = checkPlayerSelf();
@@ -113,6 +113,7 @@ if col and spd > 0{
 	
 		px += lengthdir_x(spd, dir)*global.dt;
 		py += lengthdir_y(spd, dir)*global.dt;
+		distance_traveled += spd * dtime;
 	
 	} 
 
@@ -120,6 +121,7 @@ if col and spd > 0{
 	
 	px += lengthdir_x(spd, dir)*global.dt;
 	py += lengthdir_y(spd, dir)*global.dt;
+	distance_traveled += spd * dtime;
 
 }
 
@@ -134,7 +136,9 @@ if !collided or bounce {
 	
 }
 
+can_leave_trail = (spd>0 and distance_traveled>256);
+
 image_angle = dir;
 
-x = dtlerp(x, px, 0.8);
-y = dtlerp(y, py, 0.8);
+x = dtlerp(x, px, 0.9);
+y = dtlerp(y, py, 0.9);

@@ -17,9 +17,7 @@ part_type_color2(trail2, #deeaff, #deeaff)
 part_type_alpha2(trail2, 0.8, 0)
 part_type_life(trail2, 5, 5);
 
-
-
-screen_shake_position(100, 100, 0.2, x, y);
+screen_shake_position(0.4, 0.3, 0.2, x, y);
 
 // Inherit the parent event
 event_inherited();

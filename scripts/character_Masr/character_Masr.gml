@@ -23,6 +23,26 @@ function __Masr_alternativeBasicAttackAnim(){
 
 function character_Masr(){
 	
+	static particles = (function(){
+
+		electricity = part_type_create();
+		part_type_sprite(electricity, base_character_masr_slash_part, false, false, true);
+		part_type_alpha3(electricity, .8, 0.6, 0)
+		part_type_size(electricity, .01, .8, 0, 0)
+		part_type_life(electricity, 10, 20)
+		part_type_orientation(electricity, 0, 360, 0, 0, 0);
+		
+		cloud = part_type_create();
+		part_type_sprite(cloud, base_character_masr_cloud, false, false, true);
+		part_type_speed(cloud, 3, 15, -0.05, 0);
+		part_type_alpha2(cloud, 0.8, 0);
+		part_type_size(cloud, 1, 4, -0.05, 0);
+		part_type_life(cloud, 60, 90);
+		
+		return {electricity, cloud};
+
+	})();
+	
 	return {
 
 		name: "Masr",
@@ -49,7 +69,7 @@ function character_Masr(){
 				
 			}, function() {
 				dir = sign(mousex - x);
-			}, 1/1.2, ability_unavailable, 0),
+			}, 1/1.2, masr_basic_attack, 0),
 		
 			ability1: new Ability([0.3], ability_type.onetime, {}, NULLFUNC, NULLFUNC, function(){
 			
@@ -59,13 +79,26 @@ function character_Masr(){
 			
 				dir = sign(mousex - x);
 			
-			}, 0.4, ability_unavailable, 0, false, true),
+			}, 0.4, masr_ability1, 0, false, true),
 		
 			ability2: new Ability([0], ability_type.onetime, {}, NULLFUNC, NULLFUNC, function(){
 			
-			}, NULLFUNC, 0, ability_unavailable, 0),
+				var dir = point_direction(x, y, mousex, mousey);
+				var distance = 300, i = 0;
+				repeat(15) {
+					var _x = lengthdir_x(distance * i/10, dir), _y = lengthdir_y(distance * i/15, dir);
+					_x += random_range(-10, 10); _y += random_range(-10, 10);
+					part_particles_create(global.partSystemBehind, x + _x, y + _y, character_Masr.particles.electricity, random(3));						
+					i++;
+				}
+			
+			}, NULLFUNC, 0, masr_ability2, 0),
 		
-			ultimate: new Ability([10], ability_type.active, {active_time: 20, active_func: NULLFUNC, end_func: NULLFUNC, castCondition: function(){
+			ultimate: new Ability([10], ability_type.active, {active_time: 20, active_func: NULLFUNC, end_func: function(){
+			
+				sprite = base_character_masr;
+			
+			}, castCondition: function(){
 			
 				return on_ground;
 			
@@ -74,11 +107,19 @@ function character_Masr(){
 				var dur = 1/0.15;
 				camera_ultimate_zoom(0.7, dur, easeInOutBack, 0.5, easeInOutBack, 0.5);
 				createEvent(0.38 * dur, function(){
-					screen_shake(2, 5, 0.1);
-				})
-				createEvent(0.6 * dur, function(){
-					screen_shake(2, 0.02, 0.4);
-				})
+					screen_shake(1, 5, 0.1);
+					sprite = base_character_masr_transformed;
+					repeat(40) {
+						var _dir = choose(0, 180);
+						part_type_direction(character_Masr.particles.cloud, _dir, _dir, 0, 0);
+						part_particles_create(global.partSystem, x, y + 20, character_Masr.particles.cloud, random(3));
+					}
+					var distance = 400, i = 0;
+					repeat(40) {
+						part_particles_create(global.partSystemBehind, x, y - (distance * i / 20), character_Masr.particles.electricity, random(3));						
+						i++;
+					}
+				}, self)
 				
 			}, function(){
 			
@@ -89,7 +130,7 @@ function character_Masr(){
 				movvec.x *= 0.1;
 				movvec.y *= 0.1;
 			
-			}, 1/0.15, ability_unavailable, 0, true, true),
+			}, 1/0.15, masr_ult, 0, true, true),
 	
 		}
 

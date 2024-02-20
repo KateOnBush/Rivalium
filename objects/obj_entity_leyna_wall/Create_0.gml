@@ -45,11 +45,28 @@ for(var i = 0; i < growMaxBranches; i++){
 // Inherit the parent event
 event_inherited();
 
+rumble = part_type_create();
+part_type_sprite(rumble, base_character_lenya_explosion_rumble_wall, false, false, true);
+part_type_size(rumble, 1.3, 1.5, -0.03, 0);
+part_type_direction(rumble, 0, 180, 0, 0)
+part_type_speed(rumble, 3, 8, 0, 0);
+part_type_gravity(rumble, grav, -90);
+part_type_life(rumble, 80, 80);
+part_type_alpha3(rumble, 1, 1, 0);
+
 destroy = function(){
 
 	for(var i = 0; i < array_length(blocks); i++){
 	
-		if instance_exists(blocks[i]) instance_destroy(blocks[i]);
+		if instance_exists(blocks[i]) {
+			repeat(20){
+				part_particles_create(global.partSystem, 
+				blocks[i].x + random_range(-5, 5), 
+				blocks[i].y + random_range(-5, 5), 
+				rumble, random(5))	
+			}
+			instance_destroy(blocks[i]);
+		}
 	
 	}
 

@@ -109,13 +109,22 @@ if async_load[? "type"] == network_type_data {
                     constructedPacket = new UResProjectileUpdate();
                     break;
 			case UDPServerResponse.PLAYER_HIT:
-                    constructedPacket = new TResPlayerHit();
+                    constructedPacket = new UResPlayerHit();
                     break;
 		}
-		if (constructedPacket == undefined) exit;
+		if (constructedPacket == undefined) {
+			show_debug_message("[udp] undefined packet");
+			exit;
+		}
 		var length = buffer_read(buffer, buffer_u8);
-		if (constructedPacket.getSize() != length) exit;
-		if (length + 4 != received_size) exit;
+		if (constructedPacket.getSize() != length) {
+			show_debug_message("[udp] inaccurate length {0}", index);
+			exit;
+		}
+		if (length + 4 != received_size) {
+			show_debug_message("[udp] wrong length {0}", index);
+			exit;
+		};
 		var numberOfAttributes = array_length(constructedPacket.attributes), attributes = constructedPacket.attributes;
 		var booleanStreak = 0, readBoolean = 0, checksum = 0, consecutiveXOR = 0;
 		for(var i = 0; i < numberOfAttributes; i++) {
@@ -123,18 +132,15 @@ if async_load[? "type"] == network_type_data {
 			if (attribute.boolean) {
 	            if (booleanStreak == 0) {
 	                readBoolean = buffer_read(buffer, buffer_u8);
-					var valueToCount = readBoolean;
-	                consecutiveXOR ^= readBoolean;
-	                while(valueToCount > 0) {
-	                    checksum += valueToCount & 1;
-	                    valueToCount = valueToCount >> 1;
-	                }
+	                consecutiveXOR = consecutiveXOR ^ readBoolean;
+	                checksum += get_bit_count(readBoolean);
 	            }
 	            constructedPacket[$ attribute.name] = (readBoolean >> booleanStreak) & 1;
 	            booleanStreak++;
 	            if (booleanStreak >= 8) booleanStreak = 0;
 	            continue;
 	        }
+			booleanStreak = 0;
 	        var valueRead = buffer_read(buffer, attribute.type), valueSizeInBytes = 0;
 			switch(attribute.type) {
 					case buffer_u8:
@@ -154,19 +160,19 @@ if async_load[? "type"] == network_type_data {
 				}
 			while(valueSizeInBytes > 0) {
 	            var integer = buffer_peek(buffer, buffer_tell(buffer) - valueSizeInBytes, buffer_u8);
-	            consecutiveXOR ^= integer;
-	            while(integer > 0) {
-	                checksum += integer & 1;
-	                integer = integer >> 1;
-	            }
+	            consecutiveXOR = consecutiveXOR ^ integer;
+	            checksum += get_bit_count(integer);
 	            valueSizeInBytes--;
 	        }
 	        constructedPacket[$ attribute.name] = valueRead / attribute.multiplier;
 		}
-		checksum &= 0xFF;
+		checksum %= 256;
 		var readXOR = buffer_read(buffer, buffer_u8);
-	    var readChecksum = buffer_read(buffer, buffer_u8);
-	    if (readChecksum != checksum || readXOR != consecutiveXOR) exit;
+		var readChecksum = buffer_read(buffer, buffer_u8);
+	    if (readChecksum != checksum || readXOR != consecutiveXOR) {
+			show_debug_message("[udp] wrong checksum {0}, read: {1} {2}, calculated: {3} {4} (s-xor)", index, readChecksum, readXOR, checksum, consecutiveXOR);
+			exit;
+		}
 		constructedPacket.handle();
 	
 	}

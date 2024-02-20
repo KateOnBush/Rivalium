@@ -5,4 +5,10 @@
 event_inherited();
 
 size = .8;
-text = "WARDROBE"
+text = "RIVAL"
+
+onClick = function(){ 
+	
+	global.inWardrobe = true;
+	
+}

@@ -29,6 +29,19 @@ function __leyna_shootVisualRedHand(){
 
 function character_Lenya(){
 
+	static particles = (function(){
+
+		charge = part_type_create();
+		part_type_sprite(charge, base_character_lenya_ult_charge_particle, false, false, true);
+		part_type_size(charge, 0.6, 2.2, -0.05, 0);
+		part_type_orientation(charge, 0, 360, -4, 0, 0)
+		part_type_alpha3(charge, 0.5, 0.8, 0);
+		part_type_life(charge, 20, 30);
+		
+		return {charge};
+
+	})();
+
 	return {
 
 		name: "Lenya",
@@ -65,7 +78,7 @@ function character_Lenya(){
 			
 				dir = sign(mousex - x); 
 			
-			}, 0.1, kennability2, 0),
+			}, 0.1, lenya_basic_attack, 0),
 				
 				
 			ability1: new Ability(0.3, ability_type.onetime, {}, NULLFUNC, 
@@ -88,7 +101,7 @@ function character_Lenya(){
 				else play_animation(char.anims.ability1, 2.8, animation_type_full);
 				
 			
-			}, function(){}, 0, kennability2, 0),
+			}, function(){}, 0, lenya_ability1, 0),
 				
 				
 			//
@@ -117,27 +130,29 @@ function character_Lenya(){
 					play_animation(char.anims.ability2, 4.5, animation_type_full);
 				} else play_animation(char.anims.ability2, 3, animation_type_partial, [0, 1]);
 				
-			}, NULLFUNC, 0, kennability2, 0),
+			}, NULLFUNC, 0, lenya_ability2, 0),
 				
 				
 			ultimate: new Ability(5, ability_type.onetime, {}, NULLFUNC, function(){
 			
 				movvec.x = 0;
 				movvec.y = 0;
-				camera_ultimate_zoom(0.7, 10/3, easeInOutExpo, .5, easeInOutExpo, .5);
+				camera_ultimate_zoom(0.7, 10/3, easeInOutExpo, .5, easeInOutExpoEarly, 5/3 + 0.8);
 				
 			
 			}, function(){
 			
 				play_animation(char.anims.ultimate, 0.3, animation_type_full);
-				screen_shake_position(10, 200, 5/3, x, y);
+				screen_shake_position(0.2, 0.15, 5/3, x, y);
 			
 			}, function(){
 			
+				if (isFpsFrame) and char.abilities.ultimate.cast_time > 10/6
+				part_particles_create(global.partSystem, x, y, character_Lenya.particles.charge, random(3));
 				movvec.x *= 0.1;
 				movvec.y *= 0.1;
 			
-			}, 10/3, kennability2, 0, true, true),
+			}, 10/3, lenya_ult, 0, true, true),
 		
 		}
 

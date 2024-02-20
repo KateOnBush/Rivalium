@@ -24,7 +24,7 @@ function TResEffectAdd(): NetworkingPacket(NetworkingChannel.TCP, TCPServerRespo
 		
 		var data = {};
 			
-		if (type == EFFECT.ACCELERATION || type == EFFECT.SLOW) data.multiplier = multiplier;
+		if (type == EFFECT.SWIFTNESS || type == EFFECT.SLOWNESS) data.multiplier = multiplier;
 			
 		add_effect(type, duration, data, player);
 	

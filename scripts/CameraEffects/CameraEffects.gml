@@ -45,7 +45,7 @@ function screen_shake(aintensity, afrequency, aduration){
 		*/
 		
 		ppfx_id.SetEffectParameter(FX_EFFECT.SHAKE, PP_SHAKE_SPEED, afrequency);
-		ppfx_id.SetEffectParameter(FX_EFFECT.SHAKE, PP_SHAKE_MAGNITUDE, 0.006);
+		ppfx_id.SetEffectParameter(FX_EFFECT.SHAKE, PP_SHAKE_MAGNITUDE, 0.006 * aintensity);
 		createEvent(aduration, function(){
 		
 			ppfx_id.SetEffectParameter(FX_EFFECT.SHAKE, PP_SHAKE_SPEED, 0);

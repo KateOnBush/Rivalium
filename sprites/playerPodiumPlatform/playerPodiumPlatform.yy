@@ -2,10 +2,10 @@
   "resourceType": "GMSprite",
   "resourceVersion": "1.0",
   "name": "playerPodiumPlatform",
-  "bbox_bottom": 671,
+  "bbox_bottom": 550,
   "bbox_left": 0,
   "bbox_right": 1279,
-  "bbox_top": 453,
+  "bbox_top": 426,
   "bboxMode": 0,
   "collisionKind": 1,
   "collisionTolerance": 0,
@@ -13,7 +13,7 @@
   "edgeFiltering": false,
   "For3D": false,
   "frames": [
-    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"6504612a-8a42-472d-be8d-2368575d2b98",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"c5534c58-fb57-4bcf-bc25-64ae7fec7b57",},
   ],
   "gridX": 0,
   "gridY": 0,
@@ -54,7 +54,7 @@
     "timeUnits": 1,
     "tracks": [
       {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"6504612a-8a42-472d-be8d-2368575d2b98","path":"sprites/playerPodiumPlatform/playerPodiumPlatform.yy",},},},"Disabled":false,"id":"6d569bf3-ee83-4b51-979c-250875810bd6","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"c5534c58-fb57-4bcf-bc25-64ae7fec7b57","path":"sprites/playerPodiumPlatform/playerPodiumPlatform.yy",},},},"Disabled":false,"id":"6379e8a9-4627-4965-b02e-0a0dc98ae071","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
           ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange": null,

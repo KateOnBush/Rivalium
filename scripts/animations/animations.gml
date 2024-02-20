@@ -23,6 +23,7 @@ function animations(i){
 				animation_pushed: require_animation_file(ANIMATIONS_PATH + "b1/p.anim"),
 				
 				kenn_basic_attack: require_animation_file(ANIMATIONS_PATH + "b1/k_battack.anim"),
+				kenn_stance: require_animation_file(ANIMATIONS_PATH + "b1/k_stance.anim"),
 				kenn_ultimate: require_animation_file(ANIMATIONS_PATH + "b1/k_ult.anim")
 			}
 

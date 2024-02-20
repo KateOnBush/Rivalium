@@ -1,7 +1,7 @@
 /// @description Insert description here
 // You can write your code in this editor
 
-depth = 1;
+depth = -20;
 
 global.partSystem = part_system_create();
 
@@ -18,3 +18,5 @@ part_system_automatic_update(global.partSystemBehind, false);
 setupParticles();
 
 lastTime = 0;
+
+instance_create_depth(x, y, -5, obj_particles_behind);

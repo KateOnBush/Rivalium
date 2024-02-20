@@ -91,15 +91,11 @@ draw_sprite_part(HUD, 2, 436, 0, (1490-436)*health_blend, 1080, width/2 + (436 -
 
 draw_sprite_part(HUD, 3, 466, 0, (1460-466)*ultimatecharge_blend, 1080, width/2 + (466 - 1920/2), height-1080 + preroundOff);
 
-//sprite_set_offset(HUD, 0, 1080);
-
 draw_sprite(HUD, 4, 0 - preroundOff, height-1080);
-
-//sprite_set_offset(HUD, 1920, 1080);
 
 draw_sprite(HUD, 5, width-1920 + preroundOff, height-1080);
 
-draw_sprite(HUD, 6, (width-1920)/2, 0);
+draw_sprite(HUD_Round, 0, width/2, 0);
 
 
 //part_particles_create(ultimatePart, width-128*1.15+random_range(-64,64), height-128, ult, 50)

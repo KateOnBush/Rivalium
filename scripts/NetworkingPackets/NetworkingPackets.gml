@@ -136,8 +136,6 @@ function gameserver_send(packet, clear = true) {
 	if (!instance_exists(obj_network)) return false;
 	var buffer = packet.bake();
 	
-	show_debug_message("Sending index {0}", packet.index);
-	
 	if (packet.channel == NetworkingChannel.UDP) {
 		network_send_udp_raw(obj_network.UDPsocket, obj_network.server_ip, obj_network.port, buffer, buffer_get_size(buffer));
 	} else {

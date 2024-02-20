@@ -1,7 +1,7 @@
 /// @description Insert description here
 // You can write your code in this editor
 
-depth = 100;
+depth = 5;
 
 vbuff = vertex_create_buffer()
 

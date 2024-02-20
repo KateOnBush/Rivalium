@@ -4,9 +4,9 @@
 event_inherited();
 
 trail = part_type_create();
-part_type_shape(trail, pt_shape_flare);
-part_type_size(trail, .1, .15, 0, 0);
-part_type_color2(trail, #8b09ba, #e897e5);
+part_type_sprite(trail, base_character_lenya_grenade_trail, false, false, true);
+part_type_size(trail, 0.5, 1, 0, 0);
+part_type_color2(trail, #e897e5, #8b09ba);
 part_type_alpha2(trail, .8, 0);
 
 on_destroy = function(){

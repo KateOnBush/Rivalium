@@ -684,6 +684,60 @@ for(var k=0; k<array_length(global.animation); k++){
 
 }
 
+
+var _sortedframe = [];
+for(var i = 0; i < sprite_get_number(sprite); i++){
+	_sortedframe[i] = i;
+}
+
+
+function bone_depth_sorting(bone1, bone2){
+
+	return currentframe[bone2][4] - currentframe[bone1][4];	
+
+}
+
+_sortedframe = array_bubble_sort(_sortedframe, bone_depth_sorting)
+
+for(var e = array_length(_sortedframe)-1; e >= 0;e--){
+
+	var i = _sortedframe[e];
+
+	var bone = base[i];
+	
+	var rotation = currentframe[i][0];
+	var coords = [bone[0],bone[1]];
+	
+	var _bone = base[i]
+	
+	var _parent = [], _parent_b = base[i][2];
+	
+	coords = calculate_bone_position(base, currentframe, i);
+	
+	var _last = array_length(currentframe)-1;
+	
+	pos[i] = [coords[0]*dir+currentframe[_last-3],coords[1]+currentframe[_last-2],rotation + coords[2]];
+
+	selected+=0.001;
+	
+	var _t = 1;
+	if (global.hovered == i) {
+		_t = 1.2;
+		window_set_cursor(cr_handpoint);	
+	}
+	
+	var yscale = currentframe[i][1] * SCALE * _t;
+	var xscale = currentframe[i][5] * SCALE * _t;
+	
+	draw_sprite_ext(sprite,i,x+pos[i][0] * SCALE, y+pos[i][1] * SCALE, xscale, yscale, pos[i][2],c_white,(show_bones and !(global.selected_bone == i)) ? 0.2 : 1 )
+	
+	gpu_set_blendmode_ext(bm_one, bm_one);
+	if global.selected_bone == i or global.hovered == i draw_sprite_ext(sprite,i,x+pos[i][0] * SCALE, y+pos[i][1] * SCALE, xscale, yscale,pos[i][2],c_white,1) 
+	gpu_set_blendmode(bm_normal)
+
+	
+}
+
 if global.playing draw_sprite(animator_keyframes,2, tx - tw/2 + tw * animfr, ty);
 
 moveTemp = max(moveTemp - 1, 0);
@@ -796,11 +850,6 @@ if !global.playing and isInEditor and global.boneSetup == 0{
 
 if show_org draw_sprite_ext(player_collision_mask, 0, x, y, 1, 1, 0, c_white, 0.8);
 
-var _sortedframe = [];
-for(var i = 0; i < sprite_get_number(sprite); i++){
-	_sortedframe[i] = i;
-}
-
 draw_set_color(c_dkgrey)
 draw_set_alpha(0.4)
 draw_rectangle(EDx, EDy, EDx2, EDy2, false)
@@ -809,54 +858,6 @@ draw_set_alpha(.9)
 draw_set_color(c_red)
 draw_line(EDx,y + (79-48) * SCALE, EDx2,y + (79-48) * SCALE)
 draw_set_alpha(1)
-
-
-function bone_depth_sorting(bone1, bone2){
-
-	return currentframe[bone2][4] - currentframe[bone1][4];	
-
-}
-
-_sortedframe = array_bubble_sort(_sortedframe, bone_depth_sorting)
-
-for(var e = array_length(_sortedframe)-1; e >= 0;e--){
-
-	var i = _sortedframe[e];
-
-	var bone = base[i];
-	
-	var rotation = currentframe[i][0];
-	var coords = [bone[0],bone[1]];
-	
-	var _bone = base[i]
-	
-	var _parent = [], _parent_b = base[i][2];
-	
-	coords = calculate_bone_position(base, currentframe, i);
-	
-	var _last = array_length(currentframe)-1;
-	
-	pos[i] = [coords[0]*dir+currentframe[_last-3],coords[1]+currentframe[_last-2],rotation + coords[2]];
-
-	selected+=0.001;
-	
-	var _t = 1;
-	if (global.hovered == i) {
-		_t = 1.2;
-		window_set_cursor(cr_handpoint);	
-	}
-	
-	var yscale = currentframe[i][1] * SCALE * _t;
-	var xscale = currentframe[i][5] * SCALE * _t;
-	
-	draw_sprite_ext(sprite,i,x+pos[i][0] * SCALE, y+pos[i][1] * SCALE, xscale, yscale, pos[i][2],c_white,(show_bones and !(global.selected_bone == i)) ? 0.2 : 1 )
-	
-	gpu_set_blendmode_ext(bm_one, bm_one);
-	if global.selected_bone == i or global.hovered == i draw_sprite_ext(sprite,i,x+pos[i][0] * SCALE, y+pos[i][1] * SCALE, xscale, yscale,pos[i][2],c_white,1) 
-	gpu_set_blendmode(bm_normal)
-
-	
-}
 
 if showrig show_rig = !show_rig;
 
