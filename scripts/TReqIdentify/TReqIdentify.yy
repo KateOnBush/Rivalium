@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "TReqIdentify",
-  "isCompatibility": false,
-  "isDnD": false,
-  "parent": {
-    "name": "Outgoing",
-    "path": "folders/Networking/In-Game/PacketTypes/Outgoing.yy",
+  "$GMScript":"",
+  "%Name":"TReqIdentify",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"TReqIdentify",
+  "parent":{
+    "name":"Outgoing",
+    "path":"folders/Networking/In-Game/PacketTypes/Outgoing.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

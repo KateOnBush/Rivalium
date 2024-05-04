@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "PacketAttributes",
-  "isCompatibility": false,
-  "isDnD": false,
-  "parent": {
-    "name": "In-Game",
-    "path": "folders/Networking/In-Game.yy",
+  "$GMScript":"",
+  "%Name":"PacketAttributes",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"PacketAttributes",
+  "parent":{
+    "name":"In-Game",
+    "path":"folders/Networking/In-Game.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

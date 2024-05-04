@@ -6,6 +6,8 @@ game_set_speed(60, gamespeed_fps);
 view_set_visible(1, false);
 view_set_visible(0, true);
 
+gpu_set_tex_filter(false);
+
 show_rig = false;
 
 clicked_scale = 1;

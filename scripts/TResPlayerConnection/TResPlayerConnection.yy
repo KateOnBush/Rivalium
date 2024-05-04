@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "TResPlayerConnection",
-  "isCompatibility": false,
-  "isDnD": false,
-  "parent": {
-    "name": "Incoming",
-    "path": "folders/Networking/In-Game/PacketTypes/Incoming.yy",
+  "$GMScript":"",
+  "%Name":"TResPlayerConnection",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"TResPlayerConnection",
+  "parent":{
+    "name":"Incoming",
+    "path":"folders/Networking/In-Game/PacketTypes/Incoming.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

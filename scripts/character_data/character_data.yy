@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "character_data",
-  "isCompatibility": false,
-  "isDnD": false,
-  "parent": {
-    "name": "Characters",
-    "path": "folders/In-Game/Characters.yy",
+  "$GMScript":"",
+  "%Name":"character_data",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"character_data",
+  "parent":{
+    "name":"Characters",
+    "path":"folders/In-Game/Characters.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

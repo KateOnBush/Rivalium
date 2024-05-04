@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "UResPlayerHit",
-  "isCompatibility": false,
-  "isDnD": false,
-  "parent": {
-    "name": "Incoming",
-    "path": "folders/Networking/In-Game/PacketTypes/Incoming.yy",
+  "$GMScript":"",
+  "%Name":"UResPlayerHit",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"UResPlayerHit",
+  "parent":{
+    "name":"Incoming",
+    "path":"folders/Networking/In-Game/PacketTypes/Incoming.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

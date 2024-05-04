@@ -1,0 +1,9 @@
+/// @description Insert description here
+// You can write your code in this editor
+
+opacity = 0;
+lastName = "";
+currentName = "";
+
+lastAbility = -1;
+currentAbility = -1;

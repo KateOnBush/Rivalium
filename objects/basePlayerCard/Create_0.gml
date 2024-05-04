@@ -4,6 +4,7 @@ image_alpha = .6;
 empty = false;
 
 loadedCharacter = false;
+currentCharId = -1;
 char = {};
 user = {};
 
@@ -21,4 +22,5 @@ ani = 0;
 
 details_alpha = 0;
 global_alpha = 1;
+inWardrobeAlpha = 0;
 

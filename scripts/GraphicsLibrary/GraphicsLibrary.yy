@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "GraphicsLibrary",
-  "isCompatibility": false,
-  "isDnD": false,
-  "parent": {
-    "name": "libraries",
-    "path": "folders/In-Game/Game Logic/libraries.yy",
+  "$GMScript":"",
+  "%Name":"GraphicsLibrary",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"GraphicsLibrary",
+  "parent":{
+    "name":"libraries",
+    "path":"folders/In-Game/Game Logic/libraries.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

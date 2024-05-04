@@ -18,11 +18,7 @@ if global.debugmode {
 draw_set_color(c_red)
 if state == PlayerState.GRAPPLED or state == PlayerState.GRAPPLE_THROW draw_line(x, y, grappling_coords[0],grappling_coords[1])
 
-/*matrix_set(matrix_world, matrix_build(x,y,0,0,mousex/10,0,10,10,10))
-
-mesh.zabi.Render();
-
-matrix_set(matrix_world, matrix_build(0,0,0,0,0,0,1,1,1))*/
+//mesh.test.Render(sprite_get_texture(big_man_ting, 0));
 
 if state != PlayerState.DEAD {
 	playerDraw(#80ba1c, 0);

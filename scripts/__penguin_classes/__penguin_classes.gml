@@ -21,12 +21,12 @@ function Penguin() constructor {
         self.submeshes = [];
     };
     
-    self.Render = function(index = undefined, upright = true) {
+    self.Render = function(tex = -1, index = undefined, upright = true) {
         if (is_numeric(index)) {
-            self.submeshes[clamp(index, 0, array_length(self.submeshes) - 1)].Render(upright);
+            self.submeshes[clamp(index, 0, array_length(self.submeshes) - 1)].Render(tex, upright);
         } else {
             for (var i = 0, n = array_length(self.submeshes); i < n; i++) {
-                self.submeshes[i].Render(upright);
+                self.submeshes[i].Render(tex, upright);
             }
         }
     };
@@ -40,9 +40,9 @@ function PenguinSubmesh() constructor {
     
     self.material = undefined;
     
-    self.Render = function(upright = false) {
+    self.Render = function(tex = -1, upright = false) {
         // set other material settings...
-        vertex_submit(upright ? self.vbuff : self.reflect_vbuff, pr_trianglelist, self.material ? self.material.diffuse.tex : -1);
+        vertex_submit(upright ? self.vbuff : self.reflect_vbuff, pr_trianglelist, tex);
     };
 }
 

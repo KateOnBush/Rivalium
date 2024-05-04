@@ -11,8 +11,6 @@ function playerProcessEffects(){
 	for(var t = 0; t < array_length(playerEffects); t++){
 	
 		var l = playerEffects[t];
-		if (l.type == EFFECT.SWIFTNESS) lerpspd *= l.data.multiplier;
-		if (l.type == EFFECT.SLOWNESS) lerpspd /= l.data.multiplier;
 		if (l.type == EFFECT.INVISIBILITY) invisible = true;
 	
 	}
@@ -27,6 +25,6 @@ function playerProcessEffects(){
 
 	}
 	
-	spdboost = dtlerp(spdboost, lerpspd, 0.2);
+	spdboost = dtlerp(spdboost, movementBoost, 0.2);
 
 }

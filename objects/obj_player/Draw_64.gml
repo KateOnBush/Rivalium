@@ -83,32 +83,49 @@ var preroundOff = preroundBlend * 800;
 
 //sprite_set_offset(HUD,1920/2, 1080);
 
-draw_sprite(HUD,0,width/2 - 1920/2,height - 1080 + preroundOff)
+draw_sprite(HUD_BM,0,width/2 - 1920/2,height - 1080 + preroundOff);
 
-draw_sprite_part(HUD, 1, 436, 0, (1490-436)*health_blend_red, 1080, width/2 + (436 - 1920/2) , height-1080 + preroundOff);
+draw_sprite_part(HUD_BM, 1, 436, 0, (1490-436)*health_blend_red, 1080, width/2 + (436 - 1920/2) , height-1080 + preroundOff);
 
-draw_sprite_part(HUD, 2, 436, 0, (1490-436)*health_blend, 1080, width/2 + (436 - 1920/2) , height-1080 + preroundOff);
+draw_sprite_part(HUD_BM, 2, 436, 0, (1490-436)*health_blend, 1080, width/2 + (436 - 1920/2) , height-1080 + preroundOff);
 
-draw_sprite_part(HUD, 3, 466, 0, (1460-466)*ultimatecharge_blend, 1080, width/2 + (466 - 1920/2), height-1080 + preroundOff);
+draw_sprite_part(HUD_BM, 3, 466, 0, (1460-466)*ultimatecharge_blend, 1080, width/2 + (466 - 1920/2), height-1080 + preroundOff);
 
-draw_sprite(HUD, 4, 0 - preroundOff, height-1080);
+draw_sprite(HUD_BR, 0, width + preroundOff, height);
 
-draw_sprite(HUD, 5, width-1920 + preroundOff, height-1080);
+draw_sprite(HUD_BL, 0, - preroundOff, height);
 
-draw_sprite(HUD_Round, 0, width/2, 0);
+draw_sprite_part(HUD_Stats, 0, 0, 133 * (1 - lethalityBlend), 159, 133 * lethalityBlend, 249 - preroundOff, 947 + 133 * (1 - lethalityBlend));
+draw_sprite_part(HUD_Stats, 1, 0, 133 * (1 - resistanceBlend), 159, 133 * resistanceBlend, 281 - preroundOff, 947 + 133 * (1 - resistanceBlend));
+draw_sprite_part(HUD_Stats, 2, 0, 133 * (1 - hasteBlend), 159, 133 * hasteBlend, 313 - preroundOff, 947 + 133 * (1 - hasteBlend));
 
+draw_set_font(font_game);
+draw_set_color(c_white);
+draw_set_halign(fa_right);
+draw_set_valign(fa_middle);
+draw_text_transformed(width/2 - 32, height - 70 + preroundOff, playerhealth, 1.1, 1.1, 0);
+draw_text_transformed(width/2 - 32, height - 70 + 25 + preroundOff, ultimatecharge, .9, .9, 0);
+
+draw_set_halign(fa_left);
+draw_text_transformed(width/2 + 32, height - 70 + preroundOff, playerhealthmax, 1.1, 1.1, 0);
+draw_text_transformed(width/2 + 32, height - 70 + 25 + preroundOff, ultimatechargemax, .9, .9, 0);
+
+draw_set_halign(fa_center);
+draw_text_transformed(width/2, height - 70 + preroundOff, "/", 1.1, 1.1, 0);
+draw_text_transformed(width/2, height - 70 + 25 + preroundOff, "/", .9, .9, 0);
 
 //part_particles_create(ultimatePart, width-128*1.15+random_range(-64,64), height-128, ult, 50)
 
-draw_set_font(font_game)
-draw_set_valign(fa_middle)
-draw_set_halign(fa_center)
-draw_set_color(c_white)
+playerDrawGameSpecificHUD(width, height);
 
-draw_line(width/2, 5, width/2, 42);
+playerDrawEffects(width, height);
 
-draw_text(width/2 - 220/4, 22, "Round " + string(obj_gameplay.currentRound));
-draw_text(width/2 + 220/4, 22, timeText);
+playerDrawLeaderboard(width, height);
+
+draw_set_font(font_game);
+draw_set_color(c_white);
+draw_set_halign(fa_center);
+draw_set_valign(fa_middle);
 
 char.abilities.basic_attack.draw(128 - preroundOff, height-128,1, HUDalpha);
 draw_sprite_ext(ability_outline, 0, 128 - preroundOff, height-128, 0.52, 0.52, 0, c_white, HUDalpha)

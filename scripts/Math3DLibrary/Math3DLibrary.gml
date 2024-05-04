@@ -7,7 +7,6 @@ gpu_set_alphatestref(2);
 gpu_set_alphatestenable(true);
 gpu_set_texrepeat(true);
 gpu_set_cullmode(cull_noculling)
-gpu_set_texfilter(false);
 
 vertex_format_begin();
 
@@ -16,6 +15,46 @@ vertex_format_add_texcoord();
 vertex_format_add_color();
 
 global.v_format = vertex_format_end();
+
+vertex_format_begin();
+
+vertex_format_add_position_3d();
+vertex_format_add_normal();
+vertex_format_add_texcoord();
+vertex_format_add_color();
+
+global.v_format_models = vertex_format_end();
+
+global.obj_format_vertices = [];
+global.obj_format_faces = [];
+function vertex_rotate_and_move(Vertex) {
+	var returned = new Vector2(Vertex.x, Vertex.y);
+	returned.polar(Vertex.dir() + image_angle, returned.length());
+	returned.x += x; returned.y += y;
+	returned.z = Vertex.z;
+	return returned;
+}
+function obj_format_add_point(Point) {
+	array_push(global.obj_format_vertices, [Point.x, Point.y, Point.z]);
+}
+function obj_format_save() {
+	var openFile = get_save_filename("", "");
+	if (openFile != "") {
+		var file = file_text_open_write(openFile);
+		for(var i = 0; i < array_length(global.obj_format_vertices); i++) {
+			var vertex = global.obj_format_vertices[i];
+			file_text_write_string(file, string("v {0} {1} {2}", vertex[0], vertex[1], vertex[2]));
+			file_text_writeln(file);
+		}
+		for(var i = 0; i < array_length(global.obj_format_faces); i++) {
+			var face = global.obj_format_faces[i];
+			file_text_write_string(file, string("f {0} {1} {2} {3}", face[0], face[1], face[2], face[3]));
+			file_text_writeln(file);
+		}
+		file_text_close(file);
+		show_message_async("OBJ File Generated");
+	}
+}
 
 function Vector3(_x, _y, _z) constructor{
 	
@@ -183,7 +222,7 @@ function vertex_add_point(VertexBuffer, PositionVector3, TexCoordVector2, Color)
 }
 
 function vertex_add_triangle(VertexBuffer, Pos1Vector3, Pos2Vector3, Pos3Vector3, Tex1Vector2, Tex2Vector2, Tex3Vector2, Color){
-
+	
 	vertex_add_point(VertexBuffer, Pos1Vector3, Tex1Vector2, Color);
 	vertex_add_point(VertexBuffer, Pos2Vector3, Tex2Vector2, Color);
 	vertex_add_point(VertexBuffer, Pos3Vector3, Tex3Vector2, Color);
@@ -222,6 +261,24 @@ function vertex_add_cube_repeated_tex(VertexBuffer, Pos1, Pos2, Color, xamount, 
 	var b = VertexBuffer;
 	
 	var c = vector_generate_cube_coordinates(Pos1, Pos2);
+	
+	var i = array_length(global.obj_format_vertices);
+	
+	obj_format_add_point(vertex_rotate_and_move(c[0]));
+	obj_format_add_point(vertex_rotate_and_move(c[1]));
+	obj_format_add_point(vertex_rotate_and_move(c[2]));
+	obj_format_add_point(vertex_rotate_and_move(c[3]));
+	obj_format_add_point(vertex_rotate_and_move(c[4]));
+	obj_format_add_point(vertex_rotate_and_move(c[5]));
+	obj_format_add_point(vertex_rotate_and_move(c[6]));
+	obj_format_add_point(vertex_rotate_and_move(c[7]));
+
+	array_push(global.obj_format_faces, [i + 1, i + 2, i + 4, i + 3]);
+	array_push(global.obj_format_faces, [i + 1, i + 2, i + 6, i + 5]);
+	array_push(global.obj_format_faces, [i + 3, i + 4, i + 8, i + 7]);
+	array_push(global.obj_format_faces, [i + 1, i + 3, i + 7, i + 5]);
+	array_push(global.obj_format_faces, [i + 2, i + 4, i + 8, i + 6]);
+	array_push(global.obj_format_faces, [i + 5, i + 6, i + 8, i + 7]);
 	
 	vertex_add_square_repeated_tex(b, c[0], c[1], c[2], c[3], xamount, yamount, Color);
 	

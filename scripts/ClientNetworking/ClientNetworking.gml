@@ -1,6 +1,4 @@
 #macro ClientStatus global.__client_status
-#macro AccountServerIP "127.0.0.1"
-#macro AccountServerPort 1840
 #macro EventTimeoutTime 7
 #macro MaxReconnectAttempts 8
 #macro HeartbeatInterval 5

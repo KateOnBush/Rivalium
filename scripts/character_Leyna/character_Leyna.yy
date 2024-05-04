@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "character_Leyna",
-  "isCompatibility": false,
-  "isDnD": false,
-  "parent": {
-    "name": "Leyna",
-    "path": "folders/In-Game/Characters/Leyna.yy",
+  "$GMScript":"",
+  "%Name":"character_Leyna",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"character_Leyna",
+  "parent":{
+    "name":"Leyna",
+    "path":"folders/In-Game/Characters/Leyna.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

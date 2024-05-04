@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "playerProcessCamera",
-  "isCompatibility": false,
-  "isDnD": false,
-  "parent": {
-    "name": "player",
-    "path": "folders/In-Game/Game Logic/scripts/player.yy",
+  "$GMScript":"",
+  "%Name":"playerProcessCamera",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"playerProcessCamera",
+  "parent":{
+    "name":"player",
+    "path":"folders/In-Game/Game Logic/scripts/player.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

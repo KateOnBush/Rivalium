@@ -21,6 +21,7 @@ function animations(i){
 				animation_grounded: require_animation_file(ANIMATIONS_PATH + "b1/gr.anim"),
 				animation_grapple_throw: require_animation_file(ANIMATIONS_PATH + "b1/gthrow.anim"),
 				animation_pushed: require_animation_file(ANIMATIONS_PATH + "b1/p.anim"),
+				animation_vault: require_animation_file(ANIMATIONS_PATH + "b1/vault.anim"),
 				
 				kenn_basic_attack: require_animation_file(ANIMATIONS_PATH + "b1/k_battack.anim"),
 				kenn_stance: require_animation_file(ANIMATIONS_PATH + "b1/k_stance.anim"),
@@ -41,6 +42,7 @@ function animations(i){
 				animation_grounded: require_animation_file(ANIMATIONS_PATH + "b2/gr.anim"),
 				animation_grapple_throw: require_animation_file(ANIMATIONS_PATH + "b2/gthrow.anim"),
 				animation_pushed: require_animation_file(ANIMATIONS_PATH + "b2/p.anim"),
+				animation_vault: require_animation_file(ANIMATIONS_PATH + "b2/vault.anim"),
 				
 				gramin_shoot_dir: require_animation_file(ANIMATIONS_PATH + "b2/g_battack.anim"),
 				gramin_shoot_dir_recoil: require_animation_file(ANIMATIONS_PATH + "b2/g_battack_rec.anim"),
@@ -64,7 +66,7 @@ function animations(i){
 				animation_grounded: require_animation_file(ANIMATIONS_PATH + "b1/gr.anim"),
 				animation_grapple_throw: require_animation_file(ANIMATIONS_PATH + "b1/gthrow.anim"),
 				animation_pushed: require_animation_file(ANIMATIONS_PATH + "b1/p.anim"),
-				
+				animation_vault: require_animation_file(ANIMATIONS_PATH + "b1/vault.anim"),
 				
 				shoot_blue_hand: require_animation_file(ANIMATIONS_PATH + "b3/l_battack_b.anim"),
 				shoot_red_hand: require_animation_file(ANIMATIONS_PATH + "b3/l_battack_r.anim"),
@@ -90,6 +92,7 @@ function animations(i){
 				animation_grounded: require_animation_file(ANIMATIONS_PATH + "b4/gr.anim"),
 				animation_grapple_throw: require_animation_file(ANIMATIONS_PATH + "b4/gthrow.anim"),
 				animation_pushed: require_animation_file(ANIMATIONS_PATH + "b4/p.anim"),
+				animation_vault: require_animation_file(ANIMATIONS_PATH + "b4/vault.anim"),
 				
 				swing: require_animation_file(ANIMATIONS_PATH + "b4/m_battack.anim"),
 				swing_midair: require_animation_file(ANIMATIONS_PATH + "b4/m_battack_air.anim"),

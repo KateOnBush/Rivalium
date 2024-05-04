@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "UserDataLibrary",
-  "isCompatibility": false,
-  "isDnD": false,
-  "parent": {
-    "name": "Client",
-    "path": "folders/Networking/Client.yy",
+  "$GMScript":"",
+  "%Name":"UserDataLibrary",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"UserDataLibrary",
+  "parent":{
+    "name":"Client",
+    "path":"folders/Networking/Client.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

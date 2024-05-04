@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "ClientAutoLogin",
-  "isCompatibility": false,
-  "isDnD": false,
-  "parent": {
-    "name": "Replies",
-    "path": "folders/Networking/Client/Events/Replies.yy",
+  "$GMScript":"",
+  "%Name":"ClientAutoLogin",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"ClientAutoLogin",
+  "parent":{
+    "name":"Replies",
+    "path":"folders/Networking/Client/Events/Replies.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

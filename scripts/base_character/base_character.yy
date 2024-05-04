@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "base_character",
-  "isCompatibility": false,
-  "isDnD": false,
-  "parent": {
-    "name": "data",
-    "path": "folders/In-Game/Game Logic/data.yy",
+  "$GMScript":"",
+  "%Name":"base_character",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"base_character",
+  "parent":{
+    "name":"data",
+    "path":"folders/In-Game/Game Logic/data.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

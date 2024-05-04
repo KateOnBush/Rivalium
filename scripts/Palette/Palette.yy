@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "Palette",
-  "isCompatibility": false,
-  "isDnD": false,
-  "parent": {
-    "name": "Game Client",
-    "path": "folders/Game Client.yy",
+  "$GMScript":"",
+  "%Name":"Palette",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"Palette",
+  "parent":{
+    "name":"Game Client",
+    "path":"folders/Game Client.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

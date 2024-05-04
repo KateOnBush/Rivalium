@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "EventsScript",
-  "isCompatibility": false,
-  "isDnD": false,
-  "parent": {
-    "name": "libraries",
-    "path": "folders/In-Game/Game Logic/libraries.yy",
+  "$GMScript":"",
+  "%Name":"EventsScript",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"EventsScript",
+  "parent":{
+    "name":"libraries",
+    "path":"folders/In-Game/Game Logic/libraries.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

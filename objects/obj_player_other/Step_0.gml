@@ -5,8 +5,17 @@ health_blend = dtlerp(health_blend, playerhealth/playerhealthmax, 0.5);
 health_blend_red = dtlerp(health_blend_red, health_blend, 0.04);
 ultimatecharge_blend = dtlerp(ultimatecharge_blend, ultimatecharge/ultimatechargemax, 0.08);
 
-hitind = dtlerp(hitind, 0, 0.05);
-invisible_blend = dtlerp(invisible_blend, 1 - invisible, 0.1);
+
+invisible_blend = dtlerp(invisible_blend, !invisible, 0.1);
+
+healing_timer -= dtime/60;
+if healing_timer < 0 healing_timer = 0;
+burning_timer -= dtime/60;
+if burning_timer < 0 burning_timer = 0;
+hitind = dtlerp(hitind, burning_timer > 0, 0.01);
+
+respawn_time -= dtime/60;
+respawn_time = max(0, respawn_time);
 
 /*  -----------------------------
 

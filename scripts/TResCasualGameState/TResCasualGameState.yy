@@ -1,0 +1,13 @@
+{
+  "$GMScript":"",
+  "%Name":"TResCasualGameState",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"TResCasualGameState",
+  "parent":{
+    "name":"Incoming",
+    "path":"folders/Networking/In-Game/PacketTypes/Incoming.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

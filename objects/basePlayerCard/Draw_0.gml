@@ -45,9 +45,8 @@ if (!is_undefined(username)) {
 	draw_sprite_ext(rankTierIconSprite, 0, x - _w / 2 + _ss + _s + _wst + _s + _ss/2, y - 90 * sc, _ic, _ic, 0, c_white, details_alpha * global_alpha)
 	draw_text_transformed(x - _w / 2 + _ss + _s + _wst + _s + _ss + _s, y - 90 * sc, rankName, .65, .65, 0);
 	
-	
-	draw_sprite_ext(defaultIconBorder, 0, x, y - 138 * sc, 1.2, 1.2, 0, c_white, details_alpha * global_alpha);
-	draw_sprite_ext(IconList[iconIndex], 0, x, y - 138 * sc, 1.2, 1.2, 0, c_white, details_alpha * global_alpha);
+	draw_sprite_ext(defaultIconBorder, 0, x, y - (138 - inWardrobeAlpha * 20) * sc, 1.2 + 0.8 * inWardrobeAlpha, 1.2 + 0.8 * inWardrobeAlpha, 0, c_white, global_alpha);
+	draw_sprite_ext(IconList[iconIndex], 0, x, y - (138 - inWardrobeAlpha * 20) * sc, 1.2 + 0.8 * inWardrobeAlpha, 1.2 + 0.8 * inWardrobeAlpha, 0, c_white, global_alpha);
 	
 	draw_set_alpha(1);
 

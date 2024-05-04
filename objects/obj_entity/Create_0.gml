@@ -7,6 +7,8 @@ ID = 0;
 
 lifespan = 0;
 
+_x = x;
+_y = y;
 
 physics = false;
 alive = false;

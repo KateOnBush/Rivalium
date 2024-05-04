@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "ClientNetworking",
-  "isCompatibility": false,
-  "isDnD": false,
-  "parent": {
-    "name": "Client",
-    "path": "folders/Networking/Client.yy",
+  "$GMScript":"",
+  "%Name":"ClientNetworking",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"ClientNetworking",
+  "parent":{
+    "name":"Client",
+    "path":"folders/Networking/Client.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

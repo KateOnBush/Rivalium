@@ -1,17 +1,24 @@
 	/// @description Insert description here
 // You can write your code in this editor
 
-parallax_off = 350;
+parallax_off = 200;
 ratio = 9/16;
-size = 9.01;
+size = 6.01;
 
 background_vbuffs = [];
 
 map = MAPS[0];
 
-currentState = GameState.STARTING;
+currentState = 0;
 currentRound = 1;
 startingIn = 0;
+
+defendingTeam = 0;
+firstTeamScore = 0;
+secondTeamScore = 0;
+type = GameType.CASUAL;
+
+teams = [];
 
 
 for(var i = 0; i < array_length(map.backgrounds); i++){

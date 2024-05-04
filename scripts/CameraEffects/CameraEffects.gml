@@ -17,7 +17,7 @@ global.mouse = {
 
 	get_x: function(){
 	
-		update();
+		self.update();
 		
 		return x;
 	
@@ -25,7 +25,7 @@ global.mouse = {
 		
 	get_y: function(){
 	
-		update();
+		self.update();
 		
 		return y;
 	
@@ -35,32 +35,20 @@ global.mouse = {
 
 function screen_shake(aintensity, afrequency, aduration){
 
-	with(obj_player){
-		/*
-		if abs(screenshake.frequency - afrequency)<10{
-			screenshake.intensity += aintensity;
-		} else screenshake.intensity = max(aintensity, screenshake.intensity);
-		screenshake.frequency = max(afrequency, screenshake.frequency);
-		screenshake.duration = aduration;
-		*/
+	global.ppfx.SetEffectParameter(FX_EFFECT.SHAKE, PP_SHAKE_SPEED, afrequency);
+	global.ppfx.SetEffectParameter(FX_EFFECT.SHAKE, PP_SHAKE_MAGNITUDE, 0.006 * aintensity);
+	createEvent(aduration, function(){
 		
-		ppfx_id.SetEffectParameter(FX_EFFECT.SHAKE, PP_SHAKE_SPEED, afrequency);
-		ppfx_id.SetEffectParameter(FX_EFFECT.SHAKE, PP_SHAKE_MAGNITUDE, 0.006 * aintensity);
-		createEvent(aduration, function(){
+		global.ppfx.SetEffectParameter(FX_EFFECT.SHAKE, PP_SHAKE_SPEED, 0);
+		global.ppfx.SetEffectParameter(FX_EFFECT.SHAKE, PP_SHAKE_MAGNITUDE, 0);
 		
-			ppfx_id.SetEffectParameter(FX_EFFECT.SHAKE, PP_SHAKE_SPEED, 0);
-			ppfx_id.SetEffectParameter(FX_EFFECT.SHAKE, PP_SHAKE_MAGNITUDE, 0);
-		
-		}, obj_player)
-		
-
-	}
+	}, obj_player)
 
 }
 
 function camera_ultimate_zoom(amount, time, ease_in_func, easeintime, ease_out_func, easeouttime){
 	
-	with(obj_player){
+	with(obj_camera){
 	
 		ultimate_zoom.amount = amount;
 		ultimate_zoom.time = time;
@@ -73,6 +61,13 @@ function camera_ultimate_zoom(amount, time, ease_in_func, easeintime, ease_out_f
 	
 	}
 
+}
+
+function camera_cancel_zoom() {
+	with(obj_camera){
+		ultimate_zoom.amount = 0;
+		ultimate_zoom.time = 0;
+	}
 }
 
 function screen_shake_position(aintensity, afrequency, aduration, x, y){

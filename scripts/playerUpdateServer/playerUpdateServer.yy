@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "playerUpdateServer",
-  "isCompatibility": false,
-  "isDnD": false,
-  "parent": {
-    "name": "player",
-    "path": "folders/In-Game/Game Logic/scripts/player.yy",
+  "$GMScript":"",
+  "%Name":"playerUpdateServer",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"playerUpdateServer",
+  "parent":{
+    "name":"player",
+    "path":"folders/In-Game/Game Logic/scripts/player.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

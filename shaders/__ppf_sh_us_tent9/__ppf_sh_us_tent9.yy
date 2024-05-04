@@ -1,10 +1,12 @@
 {
-  "resourceType": "GMShader",
-  "resourceVersion": "1.0",
-  "name": "__ppf_sh_us_tent9",
-  "parent": {
-    "name": "Upsampling",
-    "path": "folders/Extensions/PostProcessingFX/Shaders/Upsampling.yy",
+  "$GMShader":"",
+  "%Name":"__ppf_sh_us_tent9",
+  "name":"__ppf_sh_us_tent9",
+  "parent":{
+    "name":"Upsampling",
+    "path":"folders/Extensions/PostProcessingFX/Shaders/Upsampling.yy",
   },
-  "type": 1,
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "type":1,
 }

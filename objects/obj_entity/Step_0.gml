@@ -11,5 +11,5 @@ if physics {
 
 }
 
-x = dtlerp(x, _x, .8);
-y = dtlerp(y, _y, .8);
+x = dtlerp(x, _x, .9);
+y = dtlerp(y, _y, .9);

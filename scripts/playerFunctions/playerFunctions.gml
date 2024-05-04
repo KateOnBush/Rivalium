@@ -57,6 +57,7 @@ function setup_character(n){
 	sprite = char.sprite
 	offset = [sprite_get_xoffset(sprite),sprite_get_yoffset(sprite)]
 	currentframe = animation_get_frame(char.anims.animation_idle, 0);
+	sortedframe = animation_get_frame(char.anims.animation_idle, 0);
 	base = char.base;
 	
 }

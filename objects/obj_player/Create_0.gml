@@ -3,7 +3,36 @@
 
 depth = -10;
 
+enum TimerType {
+
+	NONE,
+	PRE_ROUND,
+    NEXT_SHRINE_SPAWNS,
+    ROUND_END,
+    UNLIMITED_TIME
+
+}
+
+timer_type = TimerType.NONE;
+timer_real = 0;
+timer = 0;
+timer_text = "";
+timer_desc = "";
+
+lethality = 5;
+resistance = 8;
+haste = 5;
+
+movementBoost = 1;
+
+lethalityBlend = 0;
+resistanceBlend = 0;
+hasteBlend = 0;
+
 playerSurf = -1;
+
+gem_holder = false;
+gem_holder_blend = 0;
 
 invisible = false;
 invisible_blend = 1;
@@ -12,17 +41,28 @@ free_blend = 0;
 directional_camera = false;
 
 timeText = "";
+name = "";
+var selfData = userdata_get_self();
+if(selfData) {
+	name = selfData[$ "username"] ?? "";
+}
+
+team = 0;
 
 sortedframe = [];
 rotation_offset = 0;
 length_before_dash = 0;
 cdir = 1;
 preroundBlend = 1;
+dead_blend = 0;
+
+respawn_time = 0;
 
 viewmat = matrix_build_lookat(0, 0, 0, 0, 0, 0, 0, 1, 0);
 projmat = matrix_build_projection_perspective_fov(90, 16/9, 3, 8000);
 
-playerInitShader();
+healing_timer = 0;
+burning_timer = 0;
 
 //INPUTS
 
@@ -41,10 +81,18 @@ input_ability1 = get_input(input.keyboard, ord("Q"));
 input_ability2 = get_input(input.keyboard, ord("E"));
 input_ultimate = get_input(input.keyboard, ord("X"));
 
+input_leaderboard = get_input(input.keyboard, vk_tab);
+leaderboard_blend = 0;
+
 rec_mx = 0;
 rec_my = 0;
 
-state = PlayerState.FREE;
+kills = 0;
+deaths = 0;
+assists = 0;
+gem_plants = 0;
+
+state = PlayerState.BLOCKED;
 
 slide_side = 1;
 
@@ -57,7 +105,9 @@ spd = char.speed;
 sprite = char.sprite
 offset = [sprite_get_xoffset(sprite),sprite_get_yoffset(sprite)]
 currentframe = animation_get_frame(char.anims.animation_idle, 0);
+sortedframe = animation_get_frame(char.anims.animation_idle, 0);
 base = char.base;
+ragdollmode = false;
 
 function bone_depth_sorting(bone1, bone2){
 
@@ -80,7 +130,11 @@ health_red_go = 0;
 
 effects_str = "";
 
-hitind = 1;
+hitind = 0;
+healind = 0;
+
+hitblend = 0;
+healblend = 0;
 
 castedAbility = 0;
 
@@ -109,35 +163,9 @@ HUDalpha = 1;
 
 casting = false;
 
-camera = {
-
-	id: view_camera[0],
-	x: 0,
-	y: 0,
-	z: 0,
-	tilt: 0,
-	fov: 80
-
-}
-
 GUIText = "";
 GUITextDisplay = "";
 GUITextBlend = 0;
-
-ultimate_zoom = {
-
-	amount: 0,
-	time: 0,
-	easeinf: function(n){},
-	easeoutf: function(n){},
-	easeintime: 0,
-	_in: 0,
-	easeouttime: 0,
-	_out: 0
-
-}
-
-spdlarg = 0;
 
 p = 0;
 
@@ -151,15 +179,8 @@ animation_blend_speed = 0.2;
 ssx = 0;
 ssy = 0;
 ftimer = 0;
-screenshake = {
-	
-	intensity: 0,
-	frequency: 0,
-	duration: 0
-	
-}
 
-mesh = penguin_load("COOLSTUFF.derg", global.v_format);
+//mesh = penguin_load("copy for test.derg", global.v_format_models);
 
 healthbefore = 0;
 
@@ -211,10 +232,6 @@ function removeFilter(filter){
 }
 
 spdboost = 1;
-spd = char.speed;
-sprite = char.sprite
-offset = [sprite_get_xoffset(sprite),sprite_get_yoffset(sprite)]
-
 var c = char.abilities.ultimate.color;
 var h, s, v;
 h = color_get_hue(c);
@@ -232,10 +249,6 @@ run_dust = 0;
 pos = [];
 
 ani = 0;
-
-currentframe = animation_get_frame(char.anims.animation_idle, 0);
-
-base = char.base;
 
 vel = 0;
 k_move = false;

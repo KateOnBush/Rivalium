@@ -3,9 +3,9 @@
 
 depth = -100;
 
-server_ip = "127.0.0.1";
+server_ip = GameServerIP;
 
-port = 2003;
+port = GameServerPort;
 
 TCPsocket = network_create_socket(network_socket_ws);
 network_connect_raw_async(TCPsocket, server_ip, port);

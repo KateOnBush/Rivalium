@@ -1,7 +1,13 @@
-function playerHit(visual = true){
+function playerHit(){
 
 	hitind = 1;
-	screen_shake_position(10, 100, 0.05, x, y + random_range(-30, 30));
-	if (visual) part_particles_create(global.partSystem, x, y, gParts.blood, 40);
+	if (object_index == obj_player) screen_shake_position(0.5, 2, 0.05, x, y);
+	part_particles_create(global.partSystem, x, y, gParts.blood, 40);
+
+}
+
+function playerHeal() {
+
+	healind = 1;
 
 }

@@ -89,6 +89,30 @@ function playerFreeMovement(){
 
 	}
 	
+	if !on_ground and (k_right or k_left) {
+
+		var t = k_right ? 1 : -1;
+	
+		if place_meeting(x + movvec.x * dtime + t * 3, y + movvec.y * dtime + 32, obj_solid) and 
+			place_meeting(x + movvec.x * dtime + t * 3, y + movvec.y * dtime - 32, obj_solid){
+				
+			wall_side = t;
+			movvec.y *= 0.2;
+			state = PlayerState.WALL_SLIDING;
+		
+		}
+	
+	}
+	
+	if !on_ground and movvec.length() > 5 and 
+	place_meeting(x + movvec.x * dtime, y + movvec.y * dtime, obj_solid) and
+	place_empty(x + movvec.x * dtime, y + movvec.y * dtime - 32, obj_solid) {
+		var off = 1; 
+		while(place_meeting(x + movvec.x * dtime, y + movvec.y * dtime - off, obj_solid) and off <= 32) off++;
+		y -= off;
+		play_animation(char.anims.animation_vault, 3, animation_type_full);
+	}
+	
 	dash_cooldown = max(dash_cooldown-1*dtime,0);
 	grapple_cooldown = max(grapple_cooldown-dtime,0);
 

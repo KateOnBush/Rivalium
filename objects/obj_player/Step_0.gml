@@ -11,28 +11,63 @@ if healthbefore != playerhealth {
 } else {
 	health_red_go = max(0, health_red_go - dtime/60);
 	if health_red_go == 0 health_blend_red = dtlerp(health_blend_red, health_blend, 0.04);
-
 }
 
 health_blend_red = max(health_blend_red, health_blend);
 
-hitind = dtlerp(hitind, 0, 0.05);
+healing_timer -= dtime/60;
+if healing_timer < 0 healing_timer = 0;
+burning_timer -= dtime/60;
+if burning_timer < 0 burning_timer = 0;
+
+hitind = dtlerp(hitind, burning_timer > 0, 0.01);
+healind = dtlerp(healind, healing_timer > 0, 0.01);
+
+hitblend = dtlerp(hitblend, hitind, 0.5);
+healblend = dtlerp(healblend, healind, 0.5);
+
+lethalityBlend = dtlerp(lethalityBlend, lethality/10, 0.05);
+resistanceBlend = dtlerp(resistanceBlend, resistance/10, 0.05);
+hasteBlend = dtlerp(hasteBlend, haste/10, 0.05);
+
+respawn_time -= dtime/60;
+respawn_time = max(0, respawn_time);
 
 ultimatecharge_blend = dtlerp(ultimatecharge_blend, ultimatecharge/ultimatechargemax, 0.08);
-invisible_blend = dtlerp(invisible_blend, invisible ? 0.2 : 1, 0.1);
+invisible_blend = dtlerp(invisible_blend, invisible ? 0 : 1, 0.1);
 invisible_blend_eff = dtlerp(invisible_blend_eff, invisible, 0.05);
+gem_holder_blend = dtlerp(gem_holder_blend, gem_holder, 0.08);
 
-if keyboard_check_released(vk_enter) {
-	playerDeath();
+leaderboard_blend = dtlerp(leaderboard_blend, input_leaderboard.check(), 0.1);
+
+dead_blend = dtlerp(dead_blend, state == PlayerState.DEAD, 0.1);
+
+if (obj_gameplay.type == GameType.CASUAL) {
+	preroundBlend = dtlerp(preroundBlend, obj_gameplay.currentState == CasualGameState.PREROUND, 0.1);
+} else {
+	preroundBlend = 0;
 }
 
-if obj_gameplay.currentState == GameState.PREROUND or obj_gameplay.currentState == GameState.STARTING {
-	state = PlayerState.BLOCKED;
-	preroundBlend = dtlerp(preroundBlend, 1, 0.1);
-	timeText = string(obj_gameplay.startingIn);
-} else {
-	preroundBlend = dtlerp(preroundBlend, 0, 0.1);
-	timeText = "BATTLE!";
+timer_real -= dtime/60;
+timer = max(ceil(timer_real), 0);
+
+switch(timer_type) {
+	case TimerType.PRE_ROUND:
+		timer_text = string(timer);
+		timer_desc = "ROUND STARTING";
+		break;
+	case TimerType.NEXT_SHRINE_SPAWNS:
+		timer_text = string_format_time(timer);
+		timer_desc = "UNTIL ORBSTONES SPAWN";
+		break;
+	case TimerType.ROUND_END:
+		timer_text = string_format_time(timer);
+		timer_desc = "UNTIL ROUND END";
+		break;
+	default:
+		timer_text = "";
+		timer_desc = "";
+		break;
 }
 
 switch(state){
@@ -50,6 +85,7 @@ switch(state){
 	case PlayerState.WALL_SLIDING: {
 	
 		playerWallSlideMovement();
+		playerFreeCollision();
 		playerGravity(0.1);
 		break;
 	
@@ -94,17 +130,20 @@ playerPostState();
 
 playerProcessAbilities();
 
-ppfx_id.SetEffectParameter(FX_EFFECT.MOTION_BLUR, PP_MOTION_BLUR_ANGLE, movvec.dir());
-ppfx_id.SetEffectParameter(FX_EFFECT.MOTION_BLUR, PP_MOTION_BLUR_RADIUS, dash_blend * 0.18);
+global.ppfx.SetEffectParameter(FX_EFFECT.MOTION_BLUR, PP_MOTION_BLUR_ANGLE, movvec.dir());
+global.ppfx.SetEffectParameter(FX_EFFECT.MOTION_BLUR, PP_MOTION_BLUR_RADIUS, dash_blend * 0.18);
 
 //invisible effect
-ppfx_id.SetEffectParameter(FX_EFFECT.CHROMATIC_ABERRATION, PP_CHROMABER_INTENSITY, invisible_blend_eff * 22);
-ppfx_id.SetEffectParameter(FX_EFFECT.VIGNETTE, PP_VIGNETTE_INTENSITY, invisible_blend_eff * 0.6);
-ppfx_id.SetEffectParameter(FX_EFFECT.LENS_DISTORTION, PP_LENS_DISTORTION_AMOUNT, invisible_blend_eff * -0.28);
-ppfx_id.SetEffectParameter(FX_EFFECT.SHOCKWAVES, PP_SHOCKWAVES_AMOUNT, invisible_blend_eff * 0.75);
+global.ppfx.SetEffectParameter(FX_EFFECT.CHROMATIC_ABERRATION, PP_CHROMABER_INTENSITY, invisible_blend_eff * 22);
+global.ppfx.SetEffectParameter(FX_EFFECT.LENS_DISTORTION, PP_LENS_DISTORTION_AMOUNT, invisible_blend_eff * -0.28);
+global.ppfx.SetEffectParameter(FX_EFFECT.SHOCKWAVES, PP_SHOCKWAVES_AMOUNT, invisible_blend_eff * 0.75);
 
-ppfx_id.SetEffectParameter(FX_EFFECT.SPEEDLINES, PP_SPEEDLINES_CONTRAST, lerp(0.35, 0.55, min(abs(movvec.length() / 40), 1)));
+global.ppfx.SetEffectParameter(FX_EFFECT.SPEEDLINES, PP_SPEEDLINES_CONTRAST, lerp(0.35, 0.55, min(abs(movvec.length() / 40), 1)));
+var vignette_color = make_color_rgb_ppfx(192 * hitblend * invisible_blend, 192 * healblend * invisible_blend, 0);
+global.ppfx.SetEffectParameter(FX_EFFECT.VIGNETTE, PP_VIGNETTE_COLOR, make_color_rgb_ppfx(192 * hitblend, 192 * healblend, 0));
+global.ppfx.SetEffectParameter(FX_EFFECT.VIGNETTE, PP_VIGNETTE_INTENSITY, min(1, healblend + hitblend * 0.5 + (1 - invisible_blend)) * 0.4);
 
+global.ppfx.SetEffectParameter(FX_EFFECT.SATURATION, PP_SATURATION, 1 - 0.5 * dead_blend);
 
 playerProcessEffects();
 
@@ -115,8 +154,6 @@ if state != PlayerState.DEAD {
 playerCalculateFrame(rotation_offset);
 
 playerUpdateServer();
-
-playerProcessCamera();
 
 var new_run_dust = (run_ani * 2) mod 1;
 if movvec.length() > 8 && on_ground && (new_run_dust < run_dust)  {

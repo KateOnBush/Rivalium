@@ -21,7 +21,7 @@ function playerGrappledMovement(){
 		ray = grappling_len;
 		d = point_direction(grappling_coords[0],grappling_coords[1],x,y)
 		
-		var _ang = 2.65 * darcsin(dis/(2*ray));
+		var _ang = 2.65 * darcsin(clamp(dis/(2*max(ray, 1)), -1, 1));
 		
 		movvec.x = (grappling_coords[0] + lengthdir_x(ray, d+_ang*global.dt) - x)/global.dt;
 		movvec.y = (grappling_coords[1] + lengthdir_y(ray, d+_ang*global.dt) - y)/global.dt;

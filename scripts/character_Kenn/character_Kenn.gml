@@ -44,15 +44,32 @@ function character_Kenn(){
 	return {
 
 		name: "Kenn",
-		speed: 23,
+		desc: "Blade of Rivalia",
+		splash_art: kennSplashArt,
+		circle: kennCircle,
+		speed: 20,
 		id: 1,
 		base: base_character(1),
 		sprite: base_character_kennidk,
 		anims: animations(1),
 		attach: [],
+		ability_info: [{
+			name: "Bladeshot",
+			desc: "Kenn throws a blade. ALTERNATIVE CAST: Kenn scatters multiple blades at the direction of the mouse."
+		},{
+			name: "Sentinel's thrust",
+			desc: "Kenn gains Acceleration for 8 seconds. During this time, Kenn's Bladeshot will bleed its target."
+		},{
+			name: "Furry of blades",
+			desc: "Kenn enters a defensive stance, becoming a storm of blades."
+		},{
+			name: "Spectre",
+			desc: "Kenn's spectre takes control for 25 seconds. During this time, Kenn heals when dealing damage with Bladeshot. If Kenn gets a kill, he heals fully and becomes Invisible for 1 second."
+		}
+		],
 		abilities: {
 	
-			basic_attack: new Ability([0.5, 1.5], ability_type.onetime, {},
+			basic_attack: new Ability([0.3, 1], ability_type.onetime, {},
 		
 				function (n) {
 			
@@ -75,7 +92,7 @@ function character_Kenn(){
 				}, 
 				1/4.5, basicattackkenn, 0, false, false),
 		
-			ability1: new Ability(10, ability_type.active, {active_time: 8, active_func: function(){
+			ability1: new Ability(20, ability_type.active, {active_time: 8, active_func: function(){
 			
 				if (isFpsFrame) {
 					if (random(1) > 0.8) part_particles_create(global.partSystemBehind, x, y + 32, gParts.kennSpeedParticle, irandom(2));	
@@ -94,7 +111,7 @@ function character_Kenn(){
 				}, function(){
 				}, 0, kennability2, 0),
 		
-			ability2: new Ability(13, ability_type.onetime, {}, 
+			ability2: new Ability(30, ability_type.onetime, {}, 
 			function(){}, function(){}, function(){ //visual
 			
 				play_animation(char.anims.kenn_stance, 1, animation_type_full);
@@ -114,7 +131,7 @@ function character_Kenn(){
 			
 			}, 3.1, kennability1, 0, false, true),
 		
-			ultimate: new Ability(60, ability_type.active, {active_time: 25, active_func: function(){}, end_func: function(){
+			ultimate: new Ability(80, ability_type.active, {active_time: 25, active_func: function(){}, end_func: function(){
 		
 					removeFilter(base_character_kenn_transformed)
 		
@@ -140,7 +157,7 @@ function character_Kenn(){
 						part_particles_create(global.partSystemBehind, x+irandom_range(-5,5), y+irandom_range(-8,3), character_Kenn.particles.ultpart, 1);
 					}
 		
-				}, 2.5, ultimatekenn, #9A1D1C, true),
+				}, 2.5, ultimatekenn, #9A1D1C, true, true),
 	
 		}
 

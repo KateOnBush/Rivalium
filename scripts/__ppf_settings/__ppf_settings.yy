@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "__ppf_settings",
-  "isCompatibility": false,
-  "isDnD": false,
-  "parent": {
-    "name": "PostProcessingFX",
-    "path": "folders/Extensions/PostProcessingFX.yy",
+  "$GMScript":"",
+  "%Name":"__ppf_settings",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"__ppf_settings",
+  "parent":{
+    "name":"PostProcessingFX",
+    "path":"folders/Extensions/PostProcessingFX.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

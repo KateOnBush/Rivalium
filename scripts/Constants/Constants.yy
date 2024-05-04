@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "Constants",
-  "isCompatibility": false,
-  "isDnD": false,
-  "parent": {
-    "name": "libraries",
-    "path": "folders/In-Game/Game Logic/libraries.yy",
+  "$GMScript":"",
+  "%Name":"Constants",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"Constants",
+  "parent":{
+    "name":"libraries",
+    "path":"folders/In-Game/Game Logic/libraries.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

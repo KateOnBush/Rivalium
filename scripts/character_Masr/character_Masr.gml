@@ -46,15 +46,32 @@ function character_Masr(){
 	return {
 
 		name: "Masr",
-		speed: 24,
+		desc: "Stormblade Sentinel",
+		splash_art: masrSplashArt,
+		circle: masrCircle,
+		speed: 20.5,
 		id: 4,
 		base: base_character(4),
 		sprite: base_character_masr,
 		anims: animations(4),
 		attach: [],
+		ability_info: [{
+			name: "Thunderbolt",
+			desc: "Masr shoots a thunderbolt from his sword. ALTERNATIVE CAST: Masr charges his sword briefly and shoots a powerful bolt that explodes on impact."
+		},{
+			name: "Storm Barrier",
+			desc: "Masr creates a windwall in front of him that blocks all projectiles."
+		},{
+			name: "Tempest Blink",
+			desc: "Masr performs a quick dash in any direction."
+		},{
+			name: "Storm Wrath",
+			desc: "Masr charges his sword with a powerful thunderbolt and enters a powerful stance. During this time, Masr will become invisible when performing Tempest Blink, and his Thunderbolts will bounce."
+		}
+		],
 		abilities: {
 	
-			basic_attack: new Ability([.1, .1], ability_type.onetime, {}, NULLFUNC, NULLFUNC, function(n){
+			basic_attack: new Ability([.3, 1.8], ability_type.onetime, {}, NULLFUNC, NULLFUNC, function(n){
 			
 				if (n == 0) {
 			
@@ -71,7 +88,7 @@ function character_Masr(){
 				dir = sign(mousex - x);
 			}, 1/1.2, masr_basic_attack, 0),
 		
-			ability1: new Ability([0.3], ability_type.onetime, {}, NULLFUNC, NULLFUNC, function(){
+			ability1: new Ability([20], ability_type.onetime, {}, NULLFUNC, NULLFUNC, function(){
 			
 				play_animation(char.anims.ability1_swing, 2.5, animation_type_full, true)
 			
@@ -81,7 +98,7 @@ function character_Masr(){
 			
 			}, 0.4, masr_ability1, 0, false, true),
 		
-			ability2: new Ability([0], ability_type.onetime, {}, NULLFUNC, NULLFUNC, function(){
+			ability2: new Ability([8], ability_type.onetime, {}, NULLFUNC, NULLFUNC, function(){
 			
 				var dir = point_direction(x, y, mousex, mousey);
 				var distance = 300, i = 0;
@@ -94,7 +111,7 @@ function character_Masr(){
 			
 			}, NULLFUNC, 0, masr_ability2, 0),
 		
-			ultimate: new Ability([10], ability_type.active, {active_time: 20, active_func: NULLFUNC, end_func: function(){
+			ultimate: new Ability([80], ability_type.active, {active_time: 20, active_func: NULLFUNC, end_func: function(){
 			
 				sprite = base_character_masr;
 			

@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "globalParticles",
-  "isCompatibility": false,
-  "isDnD": false,
-  "parent": {
-    "name": "Particle System",
-    "path": "folders/In-Game/Environment & Visuals/Particle System.yy",
+  "$GMScript":"",
+  "%Name":"globalParticles",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"globalParticles",
+  "parent":{
+    "name":"Particle System",
+    "path":"folders/In-Game/Environment & Visuals/Particle System.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

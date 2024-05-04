@@ -1,0 +1,13 @@
+{
+  "$GMScript":"",
+  "%Name":"TResOrbPickup",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"TResOrbPickup",
+  "parent":{
+    "name":"Incoming",
+    "path":"folders/Networking/In-Game/PacketTypes/Incoming.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

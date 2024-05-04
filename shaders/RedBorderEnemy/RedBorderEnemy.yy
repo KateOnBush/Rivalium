@@ -1,10 +1,12 @@
 {
-  "resourceType": "GMShader",
-  "resourceVersion": "1.0",
-  "name": "RedBorderEnemy",
-  "parent": {
-    "name": "Shaders",
-    "path": "folders/In-Game/Environment & Visuals/Shaders.yy",
+  "$GMShader":"",
+  "%Name":"RedBorderEnemy",
+  "name":"RedBorderEnemy",
+  "parent":{
+    "name":"Shaders",
+    "path":"folders/In-Game/Environment & Visuals/Shaders.yy",
   },
-  "type": 1,
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "type":1,
 }

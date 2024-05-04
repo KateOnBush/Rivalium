@@ -2,7 +2,7 @@ function playerDraw(color, borderX){
 	
 	if invisible_blend < 0.01 return;
 	
-	var playerAlpha = 0.5 + invisible_blend * 0.5;
+	var playerAlpha = 0.2 + invisible_blend * 0.8;
 
 	for(var o = 0; o < array_length(char.attach); o++){
 
@@ -12,6 +12,8 @@ function playerDraw(color, borderX){
 		var w = char.attach[o][3];
 		
 		if (att[4] >= array_length(sortedframe)) continue;
+	
+		if (array_length(pos) <= att[4]) continue;
 	
 		var _x = pos[att[4]][0];
 		var _y = pos[att[4]][1];

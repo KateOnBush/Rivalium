@@ -17,9 +17,6 @@ if async_load[? "type"] == network_type_data {
 			var index = buffer_read(buffer, buffer_u8);
 			var constructedPacket = undefined;
 			switch(index) {
-                case TCPServerResponse.EFFECT_ADD:
-                        constructedPacket = new TResEffectAdd();
-                        break;
                 case TCPServerResponse.ENTITY_CREATE:
                         constructedPacket = new TResEntityCreate();
                         break;
@@ -29,8 +26,8 @@ if async_load[? "type"] == network_type_data {
                 case TCPServerResponse.EXPLOSION_CREATE:
                         constructedPacket = new TResExplosionCreate();
                         break;
-                case TCPServerResponse.GAME_STATE:
-                        constructedPacket = new TResGameState();
+                case TCPServerResponse.CASUAL_GAME_STATE:
+                        constructedPacket = new TResCasualGameState();
                         break;
                 case TCPServerResponse.PLAYER_ABILITY_CAST:
                         constructedPacket = new TResPlayerAbilityCast();
@@ -58,7 +55,15 @@ if async_load[? "type"] == network_type_data {
                         break;
 				case TCPServerResponse.UDP_CHANNEL_IDENTIFY:
 						constructedPacket = new TResUDPChannel();
-						show_debug_message("received identify udp");
+						break;
+				case TCPServerResponse.TIMER_UPDATE:
+						constructedPacket = new TResTimerUpdate();
+						break;
+				case TCPServerResponse.ORB_CREATE:
+						constructedPacket = new TResOrbCreate();
+						break;
+				case TCPServerResponse.ORB_PICKUP:
+						constructedPacket = new TResOrbPickup();
 						break;
 			}
 			
@@ -90,6 +95,12 @@ if async_load[? "type"] == network_type_data {
 		var index = buffer_read(buffer, buffer_u8);
 		var constructedPacket = undefined;
 		switch(index) {
+			case UDPServerResponse.PLAYER_EFFECT_ADD:
+                    constructedPacket = new UResEffectAdd();
+                    break;
+			case UDPServerResponse.PLAYER_EFFECT_REMOVE:
+                    constructedPacket = new UResEffectRemove();
+                    break;
             case UDPServerResponse.ENTITY_UPDATE:
                     constructedPacket = new UResEntityUpdate();
                     break;
@@ -110,6 +121,9 @@ if async_load[? "type"] == network_type_data {
                     break;
 			case UDPServerResponse.PLAYER_HIT:
                     constructedPacket = new UResPlayerHit();
+                    break;
+			case UDPServerResponse.PLAYER_HEAL:
+                    constructedPacket = new UResPlayerHeal();
                     break;
 		}
 		if (constructedPacket == undefined) {

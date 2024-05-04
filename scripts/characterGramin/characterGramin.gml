@@ -29,9 +29,9 @@ function __gramin_basicAttackShootVisual(){
 	var animation = animation_construct([frame1, frame2], [0, 0.5], [framestyle.linear, framestyle.backease]);
 	
 	if _s != sign(movvec.x) and movvec.length() > 5 {
-		play_animation(animation, 6, animation_type_full,,,0.4);
+		play_animation(animation, 5, animation_type_full,,,0.4);
 	} else {
-		play_animation(animation, 6, animation_type_partial, [0, 1, 2, 10, 11], true, 0.4);
+		play_animation(animation, 5, animation_type_partial, [0, 1, 2, 10, 11], true, 0.4);
 	}
 
 }
@@ -41,15 +41,32 @@ function character_Gramin(){
 	return {
 
 		name: "Gramin",
-		speed: 20,
+		desc: "Commander of Rivalia",
+		splash_art: graminSplashArt,
+		circle: graminCircle,
+		speed: 18,
 		id: 2,
 		base: base_character(2),
 		sprite: base_character_gramin,
 		anims: animations(2),
 		attach: [],
+		ability_info: [{
+			name: "Sunrifle / Dawnbreaker",
+			desc: "Gramin shoots his current weapon. ALTERNATIVE CAST: Gramin shoots multiple shots consecutively."
+		},{
+			name: "Fire in the hole",
+			desc: "Gramin throws his grenade."
+		},{
+			name: "Band-aid",
+			desc: "Gramin heals himself."
+		},{
+			name: "Change of weapons, Same plan",
+			desc: "Gramin charges his Dawnbreaker and gears up with it. During this time, Gramin can shoot basic shots that deal additional damage. RECAST: Gramin shoots a powerful rocket from the Dawnbreaker that propels him back, the rocket explodes into 4 small explosives debris upon impact."
+		}
+		],
 		abilities: {
 		
-			basic_attack: new Ability([0.25, 1.8], ability_type.onetime, {},
+			basic_attack: new Ability([0.1, 2], ability_type.onetime, {},
 			
 				function(n){
 					
@@ -64,7 +81,10 @@ function character_Gramin(){
 						createEvent(0.4, __gramin_basicAttackShoot, self);
 						createEvent(0.5, __gramin_basicAttackShoot, self);
 						createEvent(0.6, __gramin_basicAttackShoot, self);
-
+						createEvent(0.7, __gramin_basicAttackShoot, self);
+						createEvent(0.8, __gramin_basicAttackShoot, self);
+						createEvent(0.9, __gramin_basicAttackShoot, self);
+						createEvent(1, __gramin_basicAttackShoot, self);
 			
 					}
 			
@@ -80,6 +100,10 @@ function character_Gramin(){
 						createEvent(0.4, __gramin_basicAttackShootVisual, self);
 						createEvent(0.5, __gramin_basicAttackShootVisual, self);
 						createEvent(0.6, __gramin_basicAttackShootVisual, self);
+						createEvent(0.7, __gramin_basicAttackShootVisual, self);
+						createEvent(0.8, __gramin_basicAttackShootVisual, self);
+						createEvent(0.9, __gramin_basicAttackShootVisual, self);
+						createEvent(1, __gramin_basicAttackShootVisual, self);
 			
 					}
 		
@@ -87,7 +111,7 @@ function character_Gramin(){
 					dir = sign(mousex - x);
 				}, 0, gramin_basicattack, 0, false, false),
 		
-			ability1: new Ability(1.5, ability_type.onetime, {},
+			ability1: new Ability(10, ability_type.onetime, {},
 			
 				function(){
 		
@@ -117,9 +141,9 @@ function character_Gramin(){
 					
 				}, 0.33, gramin_grenade, 0),
 		
-			ability2: new Ability(5, ability_type.onetime, {}, NULLFUNC, NULLFUNC, NULLFUNC, NULLFUNC, 0, gramin_heal, 0),
+			ability2: new Ability(20, ability_type.onetime, {}, NULLFUNC, NULLFUNC, NULLFUNC, NULLFUNC, 0, gramin_heal, 0),
 		
-			ultimate: new Ability(0.2, ability_type.activecharges, {charges: 30, cooldown_charge: 0.1, charge_cast_time: 0, charge_time: 0, active_time: 20, active_func: function(){}, 
+			ultimate: new Ability(120, ability_type.activecharges, {charges: 3, cooldown_charge: 5, charge_cast_time: 0, charge_time: 0, active_time: 30, active_func: function(){}, 
 			
 				end_func: function(){
 		

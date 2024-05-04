@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "UReqPositionUpdate",
-  "isCompatibility": false,
-  "isDnD": false,
-  "parent": {
-    "name": "Outgoing",
-    "path": "folders/Networking/In-Game/PacketTypes/Outgoing.yy",
+  "$GMScript":"",
+  "%Name":"UReqPositionUpdate",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"UReqPositionUpdate",
+  "parent":{
+    "name":"Outgoing",
+    "path":"folders/Networking/In-Game/PacketTypes/Outgoing.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

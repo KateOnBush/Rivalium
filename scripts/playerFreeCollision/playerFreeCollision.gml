@@ -7,20 +7,6 @@ function forcedSlope(slope){
 
 function playerFreeCollision(){
 
-	if !on_ground and (k_right or k_left){
-
-		var t = k_right ? 1 : -1;
-	
-		if place_meeting(x + movvec.x * dtime + t * 3, y + movvec.y * dtime, obj_solid){
-		
-			wall_side = t;
-			movvec.y *= 0.05;
-			state = PlayerState.WALL_SLIDING;
-		
-		}
-	
-	}
-	
 	if place_meeting(x + movvec.x * dtime, y + movvec.y * dtime, obj_solid) {
 		
 		var vdir = movvec.dir();
@@ -47,7 +33,7 @@ function playerFreeCollision(){
 	
 	if place_meeting(x, y, obj_solid){
 	
-		var s = 32;
+		var s = 64;
 		for(var i = 1; i <= s; i++){
 		
 			if !place_meeting(x + i, y, obj_solid) { x+=i; break; }

@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "playerCheckCast",
-  "isCompatibility": false,
-  "isDnD": false,
-  "parent": {
-    "name": "statemethods",
-    "path": "folders/In-Game/Game Logic/scripts/player/statemethods.yy",
+  "$GMScript":"",
+  "%Name":"playerCheckCast",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"playerCheckCast",
+  "parent":{
+    "name":"statemethods",
+    "path":"folders/In-Game/Game Logic/scripts/player/statemethods.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

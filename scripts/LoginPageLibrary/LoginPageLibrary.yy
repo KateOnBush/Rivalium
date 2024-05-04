@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "LoginPageLibrary",
-  "isCompatibility": false,
-  "isDnD": false,
-  "parent": {
-    "name": "Login Page",
-    "path": "folders/Game Client/Pages/Login Page.yy",
+  "$GMScript":"",
+  "%Name":"LoginPageLibrary",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"LoginPageLibrary",
+  "parent":{
+    "name":"Login Page",
+    "path":"folders/Game Client/Pages/Login Page.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

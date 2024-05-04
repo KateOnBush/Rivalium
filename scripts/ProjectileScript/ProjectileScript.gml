@@ -34,6 +34,12 @@ global.explosions_array = [
 
 function projectile_create(proj, ownerid, x, y, speed, direction, collision, dieoncol, life, damage = 0, bleed = 0, heal = 0, ID = 0, bounce = false, px = 0, py = 0){
 
+	if (proj >= array_length(global.projectiles_array) or proj < 0) return;
+
+	with(global.projectiles_array[proj]) {
+		if (self.ID == 0) instance_destroy();
+	}
+
 	var _o = instance_create_depth(x, y, 0, global.projectiles_array[proj]);
 	_o.ownerID = ownerid;
 	_o.x = x;

@@ -1,10 +1,12 @@
 {
-  "resourceType": "GMShader",
-  "resourceVersion": "1.0",
-  "name": "__ppf_sh_render_chromaber",
-  "parent": {
-    "name": "Render",
-    "path": "folders/Extensions/PostProcessingFX/Shaders/Render.yy",
+  "$GMShader":"",
+  "%Name":"__ppf_sh_render_chromaber",
+  "name":"__ppf_sh_render_chromaber",
+  "parent":{
+    "name":"Render",
+    "path":"folders/Extensions/PostProcessingFX/Shaders/Render.yy",
   },
-  "type": 1,
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "type":1,
 }

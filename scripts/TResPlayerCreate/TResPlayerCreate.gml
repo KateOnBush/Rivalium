@@ -3,6 +3,7 @@ function TResPlayerCreate(): NetworkingPacket(NetworkingChannel.TCP, TCPServerRe
 	static attributes = new PacketAttributeListBuilder()
 		.add("playerId", buffer_u16)
 		.add("isYou", buffer_u8)
+		.add("teamNumber", buffer_u8)
 		.add("characterId", buffer_u8)
 		.add("characterHealth", buffer_u16)
 		.add("characterUltimateCharge", buffer_u16)
@@ -14,6 +15,7 @@ function TResPlayerCreate(): NetworkingPacket(NetworkingChannel.TCP, TCPServerRe
 
 	playerId = 0;
 	isYou = 0;
+	teamNumber = 0;
 	characterId = 0;
 	characterHealth = 0;
 	characterUltimateCharge = 0;
@@ -36,6 +38,7 @@ function TResPlayerCreate(): NetworkingPacket(NetworkingChannel.TCP, TCPServerRe
 				playerhealth = other.characterHealth;
 				ultimatechargemax = other.characterMaxUltimateCharge;
 				ultimatecharge = other.characterUltimateCharge;
+				team = other.teamNumber;
 							
 			}
 			
@@ -45,8 +48,18 @@ function TResPlayerCreate(): NetworkingPacket(NetworkingChannel.TCP, TCPServerRe
 		
 				var player = instance_create_depth(x, y, 0, obj_player_other);
 				player.ID = playerId;
+				var matchTeams = MatchPreMatchData.players;
+				for(var i = 0; i < array_length(matchTeams); i++) {
+					var matchTeam = matchTeams[i];
+					for(var j = 0; j < array_length(matchTeam); j++) {
+						var matchPlayer = matchTeam[j];
+						if matchPlayer.playerId == playerId {
+							var data = userdata_other_get(matchPlayer.userId);
+							if (data) player.name = data[$ "username"] ?? "";
+						}
+					}
+				}
 				ds_map_add(global.players, playerId, player);
-		
 			}
 				
 			var player = global.players[? playerId];
@@ -57,6 +70,7 @@ function TResPlayerCreate(): NetworkingPacket(NetworkingChannel.TCP, TCPServerRe
 				playerhealth = other.characterHealth;
 				ultimatechargemax = other.characterMaxUltimateCharge;
 				ultimatecharge = other.characterUltimateCharge;
+				team = other.teamNumber;
 			}
 			
 		}

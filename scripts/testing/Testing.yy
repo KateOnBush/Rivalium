@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "Testing",
-  "isCompatibility": false,
-  "isDnD": false,
-  "parent": {
-    "name": "Testing Branch",
-    "path": "folders/Testing Branch.yy",
+  "$GMScript":"",
+  "%Name":"Testing",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"Testing",
+  "parent":{
+    "name":"Testing Branch",
+    "path":"folders/Testing Branch.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

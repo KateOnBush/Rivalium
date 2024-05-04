@@ -6,6 +6,8 @@ event_inherited();
 state = buttonState.ON;
 text = "";
 icon = -1;
+iconSize = 1;
+alpha = 1;
 
 _angle = 0;
 
@@ -22,6 +24,8 @@ displayText = text;
 textX = 0;
 textY = 0;
 
+color = c_white;
+
 displayTextX = 0;
 displayTextY = 0;
 
@@ -33,5 +37,7 @@ loadingBlend = 0;
 unavailableBlend = 0;
 
 size = 1;
+
+noBox = false;
 
 mouseIsInside = false;

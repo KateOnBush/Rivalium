@@ -8,8 +8,29 @@ sortedframe = [];
 rotation_offset = 0;
 free_blend = 1;
 
+lethality = 5;
+resistance = 8;
+agility = 5;
+
+movementBoost = 1;
+
+healing_timer = 0;
+burning_timer = 0;
+
+respawn_time = 0;
+
 ux = 0;
 uy = 0;
+
+name = "";
+ping = 0;
+
+team = 0;
+
+kills = 0;
+deaths = 0;
+assists = 0;
+gem_plants = 0;
 
 playerSurf = -1;
 

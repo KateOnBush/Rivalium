@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "UpdateUserSelf",
-  "isCompatibility": false,
-  "isDnD": false,
-  "parent": {
-    "name": "Events",
-    "path": "folders/Networking/Client/Events.yy",
+  "$GMScript":"",
+  "%Name":"UpdateUserSelf",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"UpdateUserSelf",
+  "parent":{
+    "name":"Events",
+    "path":"folders/Networking/Client/Events.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

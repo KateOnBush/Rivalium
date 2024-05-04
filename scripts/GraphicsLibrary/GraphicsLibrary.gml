@@ -40,3 +40,24 @@ function draw_arc(x1,y1,x2,y2,x3,y3,x4,y4,precision){
     draw_primitive_end();
     return 0;
 }
+
+function string_format_time(timer) {
+	return string(timer div 60) + ":" + (timer mod 60 < 10 ? "0" : "") + string(timer mod 60); 
+}
+
+function draw_text_transformed_shadowed(x, y, str, xscale, yscale, angle) {
+
+	var col = draw_get_color();
+	var alpha = draw_get_alpha();
+	draw_set_color(c_black);
+	draw_set_alpha(0.1 * alpha);
+	draw_text_transformed(x + xscale, y, str, xscale, yscale, angle);
+	draw_text_transformed(x + xscale, y + yscale, str, xscale, yscale, angle);
+	draw_text_transformed(x - xscale, y, str, xscale, yscale, angle);
+	draw_text_transformed(x - xscale, y + yscale, str, xscale, yscale, angle);
+	draw_text_transformed(x, y + yscale, str, xscale, yscale, angle);
+	draw_set_color(col);
+	draw_set_alpha(alpha);
+	draw_text_transformed(x, y, str, xscale, yscale, angle);
+
+}

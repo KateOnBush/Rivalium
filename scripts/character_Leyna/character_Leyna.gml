@@ -45,12 +45,29 @@ function character_Lenya(){
 	return {
 
 		name: "Lenya",
-		speed: 21.5,
+		desc: "Blessed Crystalweaver",
+		splash_art: lenyaSplashArt,
+		circle: lenyaCircle,
+		speed: 19,
 		id: 3,
 		base: base_character(3),
 		sprite: base_character_lenya,
 		anims: animations(3),
 		attach: [[base_character_lenya_hair,0,-2,0.7,6]],
+		ability_info: [{
+			name: "Life and Pain",
+			desc: "Lenya shoots her blessful shot, dealing little damage but healing herself. ALTERNATIVE CAST: Lenya shoots her greivous shot, bleeding her target without healing."
+		},{
+			name: "Crystal Barrier",
+			desc: "Lenya creates a destructible wall of crystal in the direction of the mouse. HOLD: Lenya can bend the wall when creating it."
+		},{
+			name: "Vitality capsule",
+			desc: "Lenya throws a crystal capsule that explodes eventually, the explosion will heal nearby allies and deal damage to nearby enemies. RECAST: Lenya can cause the capsule to explode early."
+		},{
+			name: "Blessful Aura",
+			desc: "Lenya charges and releases a blessful aura in a large radius. All allies touched by the aura will heal and continue healing while inside it, and all enemies will be damaged and bleed while inside it."
+		}
+		],
 		abilities: {
 		
 			basic_attack: new Ability([0.1, 0.1], ability_type.onetime, {}, function(n){
@@ -81,7 +98,7 @@ function character_Lenya(){
 			}, 0.1, lenya_basic_attack, 0),
 				
 				
-			ability1: new Ability(0.3, ability_type.onetime, {}, NULLFUNC, 
+			ability1: new Ability(40, ability_type.onetime, {}, NULLFUNC, 
 			
 			function(){
 			
@@ -105,7 +122,7 @@ function character_Lenya(){
 				
 				
 			//
-			ability2: new Ability(.1, ability_type.activecharges, {charges: 1, cooldown_charge: .1, charge_cast_time: 0, charge_time: 0, active_time: 5, active_func: NULLFUNC, end_func: NULLFUNC},
+			ability2: new Ability(18, ability_type.activecharges, {charges: 1, cooldown_charge: .1, charge_cast_time: 0, charge_time: 0, active_time: 5, active_func: NULLFUNC, end_func: NULLFUNC},
 			
 			function(){
 				
@@ -133,7 +150,7 @@ function character_Lenya(){
 			}, NULLFUNC, 0, lenya_ability2, 0),
 				
 				
-			ultimate: new Ability(5, ability_type.onetime, {}, NULLFUNC, function(){
+			ultimate: new Ability(90, ability_type.onetime, {}, NULLFUNC, function(){
 			
 				movvec.x = 0;
 				movvec.y = 0;
