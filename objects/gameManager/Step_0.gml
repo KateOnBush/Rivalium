@@ -14,7 +14,6 @@ if (global.lasttime >= 16000) {
 } else global.__fpsframe = false;
 
 if keyboard_check_released(vk_f1) global.debugmode = !global.debugmode;
-if keyboard_check_released(ord("F")) queue_kinded_message("foundMatch", true);
 
 processEvents();
 

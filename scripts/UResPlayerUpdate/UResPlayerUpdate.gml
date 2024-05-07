@@ -1,6 +1,7 @@
 function UResPlayerUpdate(): NetworkingPacket(NetworkingChannel.UDP, UDPServerResponse.PLAYER_UPDATE) constructor{
 
 	static attributes = new PacketAttributeListBuilder()
+		.add("counter", buffer_u32)
 		.add("playerId", buffer_u16)
 		.add("state", buffer_u8)
 		.add("x", buffer_s32, 100)
@@ -24,6 +25,7 @@ function UResPlayerUpdate(): NetworkingPacket(NetworkingChannel.UDP, UDPServerRe
 		.add("haste", buffer_u8)
 		.build();
 
+	counter = 0;
 	playerId = 0;
 	state = 0;
 	x = 0;
@@ -51,8 +53,13 @@ function UResPlayerUpdate(): NetworkingPacket(NetworkingChannel.UDP, UDPServerRe
 		
 		if (playerId == global.playerid) {
 					
+			if !instance_exists(obj_player) return;
+			
 			with (obj_player) {
 				
+				if counter > other.counter break;
+				
+				counter = other.counter;
 				rec_x = other.x;
 				rec_y = other.y;
 				rec_mx = other.movX;
@@ -77,46 +84,30 @@ function UResPlayerUpdate(): NetworkingPacket(NetworkingChannel.UDP, UDPServerRe
 		if is_undefined(ds_map_find_value(global.players, playerId)) return;
 		
 		var player = global.players[? playerId];
-			
+		
 		with(player){
+	
+			if counter > other.counter break;
+	
+			counter = other.counter;
 			
-			ux = dtlerp(x, other.x, 0.95);
-			uy = dtlerp(y, other.y, 0.95);
-
-			if place_meeting(ux, y, obj_solid){
-
-				var k = 0.95;
-
-				while(place_meeting(ux, y, obj_solid) && k != 0){
-	
-					k -= 0.05;
-					ux = dtlerp(x, other.x, k);
-		
-				}
-
-			}
-
-			if place_meeting(ux, uy, obj_solid){
-
-				var k = 0.95;
-
-				while(place_meeting(ux, uy, obj_solid) && k != 0){
-	
-					k -= 0.05;
-					uy = dtlerp(y, other.y, k);
-		
-				}
-
-			}
-					
+			//checking if it's not a late position
+			var lastMov = new Vector2(last_mov_x, last_mov_y).normalize();
+			var currentMov = new Vector2(other.movX, other.movY).normalize();
+			var diffPos = new Vector2(other.x - x, other.y - y).normalize();
+			
+			if (lastMov.dot(currentMov) > 0.7 and lastMov.dot(diffPos) < -0.8) break;
+			
 			state = other.state;
+			
+			ux = other.x;
+			uy = other.y;
 					
 			movvec.x = other.movX;
-			movvec.y = other.movY;
+			movvec.y = other.movY;		
 			
 			updated = current_time;
 			
-			on_ground = other.onGround;
 			dir = other.direction ? 1 : -1;
 			slide = other.slide;
 			playerhealth = other.health;
@@ -126,6 +117,7 @@ function UResPlayerUpdate(): NetworkingPacket(NetworkingChannel.UDP, UDPServerRe
 			lethality = (other.lethalityAndResistance mod 11);
 			resistance = other.lethalityAndResistance div 11;
 			haste = other.haste;
+			ping = other.ping;
 			movementBoost = other.movementBoost;
 			if (character_id != other.characterId) {
 				setup_character(other.characterId);

@@ -13,8 +13,8 @@ onClick = function(){
 		text = "LEAVING QUEUE"
 		state = buttonState.LOADING;
 		account_server_send_message("party.leave.queue", {}, function(){
-		inQueue = false;
-		reset();	
+			inQueue = false;
+			reset();
 	}, function() {
 		queue_normal_message("Unable to leave queue. Please try again.", "OK", false);
 	})

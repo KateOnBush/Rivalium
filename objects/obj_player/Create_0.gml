@@ -1,8 +1,6 @@
 // @description Insert description here
 // You can write your code in this editor
 
-depth = -10;
-
 enum TimerType {
 
 	NONE,
@@ -12,6 +10,9 @@ enum TimerType {
     UNLIMITED_TIME
 
 }
+
+counter = 0;
+sending_counter = 0;
 
 timer_type = TimerType.NONE;
 timer_real = 0;

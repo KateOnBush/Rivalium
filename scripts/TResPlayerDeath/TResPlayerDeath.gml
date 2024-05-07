@@ -23,12 +23,12 @@ function TResPlayerDeath(): NetworkingPacket(NetworkingChannel.TCP, TCPServerRes
 		if global.playerid == victim {
 			with (obj_player) {
 				playerDeath();
-				respawnTime = other.respawnTime;
+				respawn_time = other.respawnTime;
 			}
 		} else {
 			with (global.players[? victim] ?? noone){
 				playerDeath();
-				respawnTime = other.respawnTime;
+				respawn_time = other.respawnTime;
 			}
 		}
 		

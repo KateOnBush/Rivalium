@@ -23,3 +23,4 @@ if state == PlayerState.GRAPPLED or state == PlayerState.GRAPPLE_THROW draw_line
 if state != PlayerState.DEAD {
 	playerDraw(#80ba1c, 0);
 }
+

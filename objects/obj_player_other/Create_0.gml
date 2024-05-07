@@ -1,6 +1,8 @@
 // @description Insert description here
 // You can write your code in this editor
 
+counter = 0;
+
 state = PlayerState.FREE;
 invisible = false;
 invisible_blend = 0;
@@ -67,7 +69,13 @@ spd = char.speed;
 sprite = char.sprite
 offset = [sprite_get_xoffset(sprite),sprite_get_yoffset(sprite)]
 
+run_ani = 0;
 run = 0
+
+last_pos_x = 0;
+last_pos_y = 0;
+last_mov_x = 0;
+last_mov_y = 0;
 
 ani = 0;
 

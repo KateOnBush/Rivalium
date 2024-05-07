@@ -17,4 +17,6 @@ if global.debugmode {
 
 }
 
-playerDraw(#ff2937, 1);
+if state != PlayerState.DEAD {
+	playerDraw(#ff2937, 1);
+}

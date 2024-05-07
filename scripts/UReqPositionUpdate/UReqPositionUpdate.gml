@@ -1,6 +1,7 @@
 function UReqPositionUpdate(): NetworkingPacket(NetworkingChannel.UDP, UDPServerRequest.POSITION_UPDATE) constructor{
 
 	static attributes = new PacketAttributeListBuilder()
+		.add("counter", buffer_u32)
 		.add("x", buffer_s32, 100)
 		.add("y", buffer_s32, 100)
 		.add("movX", buffer_s32, 100)
@@ -13,6 +14,7 @@ function UReqPositionUpdate(): NetworkingPacket(NetworkingChannel.UDP, UDPServer
 		.add("orientation", buffer_u8).asBoolean()
 		.build();
 
+	counter = 0;
 	x = 0;
 	y = 0;
 	movX = 0;

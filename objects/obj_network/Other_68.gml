@@ -44,6 +44,9 @@ if async_load[? "type"] == network_type_data {
                 case TCPServerResponse.PLAYER_FORCED_DASH:
                         constructedPacket = new TResPlayerForcedDash();
                         break;
+				case TCPServerResponse.PLAYER_RESPAWN:
+                        constructedPacket = new TResPlayerRespawn();
+                        break;
                 case TCPServerResponse.PRE_MATCH:
                         constructedPacket = new TResPreMatch();
                         break;

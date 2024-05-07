@@ -21,7 +21,7 @@ function playerPostState(){
 
 	on_ground = false;
 
-	if place_meeting(x - 2, y + 10, obj_solid) && place_meeting(x + 2, y + 10, obj_solid){
+	if place_meeting(x - 2, y + 10, obj_solid) && place_meeting(x + 2, y + 10, obj_solid) {
 
 		on_ground = true;
 		double_jump = false;

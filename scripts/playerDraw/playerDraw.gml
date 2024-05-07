@@ -1,5 +1,7 @@
 function playerDraw(color, borderX){
 	
+	gpu_set_tex_filter(false);
+	
 	if invisible_blend < 0.01 return;
 	
 	var playerAlpha = 0.2 + invisible_blend * 0.8;
@@ -38,5 +40,7 @@ function playerDraw(color, borderX){
 		}
 
 	}
+	
+	gpu_set_tex_filter(true);
 
 }
