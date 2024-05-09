@@ -44,10 +44,10 @@ global.ppfx = new PPFX_System();
 
 // Create profile with all effects
 var effects = [
-	new FX_Bloom(true, 4, 0.88, 2.66, c_white),
+	new FX_Bloom(true, 8, 0.88, 3.22, c_white),
 	//new FX_SunShafts(true, [0.8, 0.19], 0.8, 10, 1.13, 1, 0.25, true, 1, 1, 0.03, 0.50, undefined, false),
 	new FX_Shake(true, 0, 0),
-	new FX_SpeedLines(true, 0, 12.3, 1, 3, 0.2, 1.69, 0.7),
+	new FX_SpeedLines(true, 0, 12.3, 0.2, 3, 0.2, 1.69, 0.7),
 	new FX_Channels(true, 1.05, 1, 1),
 	new FX_MotionBlur(true),
 		

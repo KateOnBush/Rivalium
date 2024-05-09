@@ -33,10 +33,10 @@ if (playerOwnCard.loadedCharacter) {
 	}
 	
 	draw_set_alpha(opacity)
-	draw_text_transformed(x, y, string_upper(abilityName), 0.9, 0.9, 0);
+	draw_text_transformed(x, y, string_upper(abilityName), 0.45, 0.45, 0);
 	draw_set_font(font_game)
 	draw_set_alpha(0.8 * opacity);
-	draw_text_ext_transformed(x, y + 18, abilityDesc, 18, 600, 0.75, 0.75, 0);
+	draw_text_ext_transformed(x, y + 18, abilityDesc, 38, sprite_width* 2/0.75, 0.75/2, 0.75/2, 0);
 
 }
 

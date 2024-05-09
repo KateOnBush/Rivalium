@@ -27,7 +27,7 @@ draw_set_color(c_black);
 if (cursorCooldown < cursorInterval && selected) {
 	var dist = (string_width(string_copy(displayText, 1, cursorPosition)) - string_width("|")/2) * totalSize;
 	draw_text_transformed(definitionScale * (dist - textOffset), definitionScale * (hh/2 + phOffset),
-	"|", definitionScale, definitionScale, 0)
+	"|", definitionScale * 0.5, definitionScale * 0.5, 0)
 }
 draw_text_transformed(- textOffset * definitionScale, definitionScale * (hh/2 + phOffset), displayText, definitionScale * totalSize, definitionScale * totalSize, 0);
 

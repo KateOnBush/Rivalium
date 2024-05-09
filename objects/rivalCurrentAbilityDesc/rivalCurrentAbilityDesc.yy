@@ -32,8 +32,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"drawableSprite",
-    "path":"sprites/drawableSprite/drawableSprite.yy",
+    "name":"textPlaceholderTL",
+    "path":"sprites/textPlaceholderTL/textPlaceholderTL.yy",
   },
   "spriteMaskId":null,
   "visible":true,

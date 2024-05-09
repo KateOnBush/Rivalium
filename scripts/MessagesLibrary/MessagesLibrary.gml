@@ -116,7 +116,7 @@ function display_next_message() {
 	
 	}
 	
-	var mx = 1280/2, my = 720/2;
+	var mx = 1920/2, my = 1080/2;
 	var ww = currentMessage.width,
 		hh = currentMessage.height;
 	
@@ -154,7 +154,7 @@ function display_next_message() {
 	var oText = instance_create_layer(mx, my - hh * .15, "MessageLayer", baseText);
 	var oField = instance_create_layer(cx, cy, "MessageLayer", field);
 	
-	oField.sprite_index = fieldSecondarySprite;
+	oField.sprite_index = fieldSprite;
 	oField.width = ww;
 	oField.height = hh;
 	oField.z = 1;

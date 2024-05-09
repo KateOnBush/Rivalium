@@ -64,7 +64,7 @@ function character_Kenn(){
 			desc: "Kenn enters a defensive stance, becoming a storm of blades."
 		},{
 			name: "Spectre",
-			desc: "Kenn's spectre takes control for 25 seconds. During this time, Kenn heals when dealing damage with Bladeshot. If Kenn gets a kill, he heals fully and becomes Invisible for 1 second."
+			desc: "Kenn's spectre takes control for 50 seconds. During this time, Kenn heals when dealing damage with Bladeshot. If Kenn gets a kill, he heals fully and becomes Invisible for 1 second."
 		}
 		],
 		abilities: {
@@ -131,7 +131,7 @@ function character_Kenn(){
 			
 			}, 3.1, kennability1, 0, false, true),
 		
-			ultimate: new Ability(80, ability_type.active, {active_time: 25, active_func: function(){}, end_func: function(){
+			ultimate: new Ability(80, ability_type.active, {active_time: 45, active_func: function(){}, end_func: function(){
 		
 					removeFilter(base_character_kenn_transformed)
 		

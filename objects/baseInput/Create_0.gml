@@ -14,7 +14,7 @@ selected = false;
 selectedBlend = 0;
 
 baseSize = .85;
-size = 1;
+size = 0.5;
 
 totalSize = baseSize;
 
@@ -54,7 +54,7 @@ displaySurface = -1;
 
 mouseIsInside = false;
 
-definitionScale = 3;
+definitionScale = 1;
 
 nine = 8;
 ww = sprite_width - nine*2;

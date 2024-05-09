@@ -16,14 +16,14 @@ draw_set_font(mainFont);
 
 var spr = sprite_exists(icon) ? icon : loadingSymbol;
 var tw = string_width(text);
-var hei = string_height("0") * 0.75;
+var hei = string_height("0") * 0.35;
 var s = (sprite_exists(icon) ? iconSize : 1) * hei/sprite_get_width(spr) * loadingBlend;
 loadingDisplay = dtlerp(loadingDisplay, tw/2 - s, .1);
 draw_sprite_ext(spr, 0, x - loadingDisplay, y, s * sign(image_xscale), s * sign(image_yscale), _angle, color, loadingBlend * alpha);
 
 draw_set_alpha(textAlpha);
 draw_set_color(color);
-draw_text_transformed(x + displayTextX, y + displayTextY, displayText, size, size, 0);
+draw_text_transformed(x + displayTextX, y + displayTextY, displayText, size * 0.5, size * 0.5, 0);
 
 draw_set_color(c_white);
 draw_set_alpha(1);

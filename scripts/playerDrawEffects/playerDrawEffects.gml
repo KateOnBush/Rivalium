@@ -19,7 +19,7 @@ function playerDrawEffects(width, height){
 		draw_sprite_part_ext(HUD_DEF, 0, 0, 0, spw * percent, sph, xx - spw * 1.2/2, yy - sph * 1.2/2, 1.2, 1.2, backColor, 0.5 * g_alpha);
 		draw_set_color(textColor);
 		draw_set_alpha(g_alpha);
-		draw_text_transformed(xx - 14, yy, name, 1.1, 1.1, 0);
+		draw_text_transformed(xx - 14, yy, name, 0.5, 0.5, 0);
 		draw_sprite_ext(HUD_EffectIcons, effectType, xx + 1.2 * 155/2 - 28, yy, 0.8, 0.8, 0, textColor, 0.9 * g_alpha);
 		
 		if (isBuff) start_buffs -= 40 else start_nerfs += 40;

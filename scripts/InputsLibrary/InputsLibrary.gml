@@ -39,7 +39,7 @@ function InputKeyboard(inputKey) : Input(inputKey) constructor{
 	
 	draw = function(x, y){
 	
-		draw_text(x, y, shortname);
+		draw_text_transformed(x, y, shortname, 0.5, 0.5, 0);
 	
 	}
 

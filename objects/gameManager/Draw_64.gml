@@ -4,7 +4,7 @@
 var ww = display_get_gui_width(),
 	hh = display_get_gui_height();
 
-draw_set_color(c_black)
+draw_set_color(c_white)
 draw_set_valign(fa_bottom)
 draw_set_halign(fa_left)
 draw_set_alpha(.6);
@@ -22,7 +22,7 @@ var STATUS = [
 ]
 
 draw_set_font(secondaryFont);
-draw_text_transformed(4, hh - 4, $"Client Version: {VERSION} | Status: {STATUS[ClientStatus.connection]} | FPS: {fps}", 0.4, 0.4, 0);
+draw_text_transformed(4, hh - 4, $"Client Version: {VERSION} | Status: {STATUS[ClientStatus.connection]} | FPS: {fps}", 0.3, 0.3, 0);
 draw_set_alpha(1);
 
 draw_set_color(c_black)

@@ -46,9 +46,9 @@ var vx = dtlerp(camera_get_view_x(cam), target, 0.08);
 
 camera_set_view_pos(cam, vx, 0)
 
-var offset = 220;
+var offset = 0;
 var back_target = global.loginSide ? offset : room_width - camera_get_view_width(cam) - offset;
-var bx = dtlerp(layer_get_x("Splash"), back_target, 0.08);
+var bx = camera_get_view_x(cam);
 layer_x("BackSplash", bx);
 layer_x("Splash", bx);
 layer_x("SplashLayer1", bx);

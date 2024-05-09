@@ -6,7 +6,7 @@ event_inherited();
 
 text = ""
 icon = moveIcon;
-color = COLOR_DARK;
+color = COLOR_LIGHT;
 size = .4;
 noBox = true;
 move = 1;

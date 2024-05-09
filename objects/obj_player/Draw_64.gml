@@ -103,16 +103,16 @@ draw_set_font(font_game);
 draw_set_color(c_white);
 draw_set_halign(fa_right);
 draw_set_valign(fa_middle);
-draw_text_transformed(width/2 - 32, height - 70 + preroundOff, playerhealth, 1.1, 1.1, 0);
-draw_text_transformed(width/2 - 32, height - 70 + 25 + preroundOff, ultimatecharge, .9, .9, 0);
+draw_text_transformed(width/2 - 32, height - 71 + preroundOff, playerhealth, 0.5, 0.5, 0);
+draw_text_transformed(width/2 - 32, height - 71 + 25 + preroundOff, ultimatecharge, .4, .4, 0);
 
 draw_set_halign(fa_left);
-draw_text_transformed(width/2 + 32, height - 70 + preroundOff, playerhealthmax, 1.1, 1.1, 0);
-draw_text_transformed(width/2 + 32, height - 70 + 25 + preroundOff, ultimatechargemax, .9, .9, 0);
+draw_text_transformed(width/2 + 32, height - 71 + preroundOff, playerhealthmax, 0.5, 0.5, 0);
+draw_text_transformed(width/2 + 32, height - 71 + 25 + preroundOff, ultimatechargemax, .4, .4, 0);
 
 draw_set_halign(fa_center);
-draw_text_transformed(width/2, height - 70 + preroundOff, "/", 1.1, 1.1, 0);
-draw_text_transformed(width/2, height - 70 + 25 + preroundOff, "/", .9, .9, 0);
+draw_text_transformed(width/2, height - 71 + preroundOff, "/", 0.5, 0.5, 0);
+draw_text_transformed(width/2, height - 71 + 25 + preroundOff, "/", .4, .4, 0);
 
 //part_particles_create(ultimatePart, width-128*1.15+random_range(-64,64), height-128, ult, 50)
 

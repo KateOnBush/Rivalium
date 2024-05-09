@@ -28,4 +28,4 @@ draw_set_color(c_white)
 draw_set_valign(fa_bottom)
 draw_set_halign(fa_left)
 
-draw_text_transformed(x - sprite_width/2 + 3 * d, y + sprite_height/2 - 2 * d, bigText, size * 1.4, size * 1.4, 0);
+draw_text_transformed(x - sprite_width/2 + 3 * d, y + sprite_height/2 - 2 * d, bigText, size * 0.7, size * 0.7, 0);

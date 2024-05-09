@@ -2,9 +2,9 @@
   "$GMSprite":"",
   "%Name":"splashMainLayer2",
   "bboxMode":0,
-  "bbox_bottom":719,
-  "bbox_left":177,
-  "bbox_right":1206,
+  "bbox_bottom":1079,
+  "bbox_left":265,
+  "bbox_right":1809,
   "bbox_top":0,
   "collisionKind":1,
   "collisionTolerance":0,
@@ -16,7 +16,7 @@
   ],
   "gridX":0,
   "gridY":0,
-  "height":720,
+  "height":1080,
   "HTile":false,
   "layers":[
     {"$GMImageLayer":"","%Name":"0ee023b7-4a7c-4a7e-9b7e-bea50e31ef6f","blendMode":0,"displayName":"default","isLocked":false,"name":"0ee023b7-4a7c-4a7e-9b7e-bea50e31ef6f","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
@@ -86,5 +86,5 @@
   },
   "type":0,
   "VTile":false,
-  "width":1280,
+  "width":1920,
 }

@@ -82,9 +82,6 @@ function character_Gramin(){
 						createEvent(0.5, __gramin_basicAttackShoot, self);
 						createEvent(0.6, __gramin_basicAttackShoot, self);
 						createEvent(0.7, __gramin_basicAttackShoot, self);
-						createEvent(0.8, __gramin_basicAttackShoot, self);
-						createEvent(0.9, __gramin_basicAttackShoot, self);
-						createEvent(1, __gramin_basicAttackShoot, self);
 			
 					}
 			
@@ -101,9 +98,6 @@ function character_Gramin(){
 						createEvent(0.5, __gramin_basicAttackShootVisual, self);
 						createEvent(0.6, __gramin_basicAttackShootVisual, self);
 						createEvent(0.7, __gramin_basicAttackShootVisual, self);
-						createEvent(0.8, __gramin_basicAttackShootVisual, self);
-						createEvent(0.9, __gramin_basicAttackShootVisual, self);
-						createEvent(1, __gramin_basicAttackShootVisual, self);
 			
 					}
 		
@@ -200,7 +194,7 @@ function character_Gramin(){
 					movvec.x = 0;
 					movvec.y = 0;
 				
-				}, 1/0.3, gramin_ult, #9A1D1C, true, true)
+				}, 1/0.2, gramin_ult, #9A1D1C, true, true)
 		
 			}
 

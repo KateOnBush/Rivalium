@@ -283,19 +283,19 @@ function Ability(acooldown, atype, atype_data, acast_fake, acast_func, acast_vis
 			draw_set_halign(fa_center)
 			
 			draw_set_alpha(0.6 * (charges != init_charges) * !cooldown_blend * alpha)
-			if type == ability_type.charges draw_text_transformed(x,y+32*scale, secstr(charge_time), 0.8, 0.8, 0);
+			if type == ability_type.charges draw_text_transformed(x,y+32*scale, secstr(charge_time), 0.4, 0.4, 0);
 			
 		} 
 		
 		if type == ability_type.active or type == ability_type.activecharges {
 		
 			draw_set_alpha(0.6*active_blend*alpha)
-			draw_text_transformed(x,y+32*scale, secstr(active_time), 0.8, 0.8, 0);
+			draw_text_transformed(x,y+32*scale, secstr(active_time), 0.4, 0.4, 0);
 		
 		}
 		
 		draw_set_alpha(cooldown_blend*alpha)
-		draw_text(x,y, secstr(cooldown));
+		draw_text_transformed(x,y, secstr(cooldown), 0.5, 0.5, 0);
 		
 		draw_set_alpha(alpha)
 		draw_sprite_ext(ability_unavailable, 0, x, y, scale, scale, 1, c_white, 0.2*cooldown_blend*alpha)

@@ -111,7 +111,7 @@ function character_Masr(){
 			
 			}, NULLFUNC, 0, masr_ability2, 0),
 		
-			ultimate: new Ability([80], ability_type.active, {active_time: 20, active_func: NULLFUNC, end_func: function(){
+			ultimate: new Ability([80], ability_type.active, {active_time: 50, active_func: NULLFUNC, end_func: function(){
 			
 				sprite = base_character_masr;
 			

@@ -9,8 +9,9 @@ var loadingPos = lerp(lerp(hh * 1.5, hh * .75, transitionProgress), hh * 0.95, g
 
 draw_set_alpha(transitionProgress);
 
-draw_set_color(#251404)
+draw_set_color(#1E2266)
 draw_rectangle(0, 0, ww, hh, false);
+draw_sprite_stretched_ext(splashLoading, 0, 0, 0, ww, hh, c_white, 0.1 * transitionProgress);
 
 draw_sprite_ext(logoSprite, 0, 
 	ww/2, 
@@ -20,17 +21,17 @@ draw_sprite_ext(logoSprite, 0,
 	transitionProgress * transitionProgress);
 
 draw_set_font(mainFont);
-draw_set_color(#DEA94D)
+draw_set_color(c_white)
 draw_set_alpha(loadingProgress);
 draw_set_valign(fa_middle);
 draw_set_halign(fa_center);
 
-var textScale = lerp(2.5, 1.2, gameLoadingBlend);
+var textScale = lerp(2.5, 1.2, gameLoadingBlend)/2;
 loadingW = dtlerp(loadingW, string_width(displayLoadingText) * textScale, 0.4);
-var loadingScale = .75 * textScale/2.5;
+var loadingScale = 1.5 * textScale/2.5;
 var spriteW = sprite_get_width(loadingSymbol) * loadingScale;
 
-draw_sprite_ext(loadingSymbol, 0, ww/2 - loadingW / 2 - 12, loadingPos, loadingScale, loadingScale, angle, #DEA94D, loadingProgress * loadingBlend);
+draw_sprite_ext(loadingSymbol, 0, ww/2 - loadingW / 2 - 12, loadingPos, loadingScale, loadingScale, angle, c_white, loadingProgress * loadingBlend);
 draw_text_transformed(ww/2 + spriteW / 2 + 12, loadingPos, displayLoadingText, textScale, textScale, 0);
 	
 

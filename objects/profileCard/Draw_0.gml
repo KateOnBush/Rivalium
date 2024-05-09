@@ -9,14 +9,14 @@ draw_set_font(mainFont);
 draw_set_alpha(.8);
 draw_set_valign(fa_bottom)
 draw_set_halign(fa_left)
-draw_set_color(COLOR_DARK);
+draw_set_color(COLOR_LIGHT);
 
 var dis = .7;
 
-draw_text(x + sprite_width * dis, y - 5, username);
+draw_text_transformed(x + sprite_width * dis, y - 5, username, 0.5, 0.5, 0);
 
 draw_set_valign(fa_middle)
-var sc = .72;
+var sc = .72/2;
 draw_set_alpha(.8);
 draw_text_transformed(x + sprite_width * dis, y, "Skill Tier", sc, sc, 0);
 draw_sprite_ext(skillTierIconSprite, 0, x + sprite_width * dis + string_width("Skill Tier ") * sc + 8, y, .6, .6, 0, c_white, 1);
@@ -29,13 +29,10 @@ draw_sprite_part_ext(progressBarSprite, 1, 0, 0, pww * skillxp/skillxpmax, phh, 
 
 draw_set_valign(fa_bottom)
 draw_set_halign(fa_center)
-draw_set_color(COLOR_DARK)
-draw_text_transformed(x + sprite_width * .5 + psc * pww/2, y + 16, $"{skillxp} / {skillxpmax}", .6, .6, 0);
+draw_set_color(COLOR_LIGHT)
+draw_text_transformed(x + sprite_width * .5 + psc * pww/2, y + 16, $"{skillxp} / {skillxpmax}", .3, .3, 0);
 
-var xx = x + sprite_width * .5 + psc * pww + 32;
-
-draw_line(xx, y - sprite_height/2, xx, y + sprite_height/2);
-xx += 32;
+var xx = room_width/3 + 2/3 * room_width/6;
 
 draw_sprite_ext(rankIconSprite, ranktier, xx + 2 * 16, y, 1.35, 1.35, 0, c_white, 1);
 xx += 2.7 * 32;
@@ -49,7 +46,7 @@ if (division == "A") longDiv = ": Altum"
 
 draw_set_valign(fa_bottom)
 draw_set_halign(fa_left)
-draw_text(xx, y - 5, $"{rank_number_to_name(ranktier)}{longDiv}");
+draw_text_transformed(xx, y - 5, $"{rank_number_to_name(ranktier)}{longDiv}", 0.5, 0.5, 0);
 
 draw_set_valign(fa_middle)
 draw_set_alpha(.8);
@@ -58,12 +55,9 @@ draw_sprite_ext(rankTierIconSprite, 0, xx + string_width("Rank Tier ") * sc + 8,
 draw_text_transformed(xx + string_width("Rank Tier  ") * sc + 16, y, rankName, sc, sc, 0);
 draw_set_alpha(1);
 
-draw_text_transformed(xx, y + 28, $"{rankrating} RR", 1, 1, 0);
+draw_text_transformed(xx, y + 28, $"{rankrating} RR", 0.5, 0.5, 0);
 
-xx += string_width("Rank Tier   Grand Rival: Altum") * 1.1 * sc;
-
-draw_line(xx, y - sprite_height/2, xx, y + sprite_height/2);
-xx += 32;
+xx = room_width/3 + 8/3 * room_width/6;
 
 var ics = .85, diff = 28;
 

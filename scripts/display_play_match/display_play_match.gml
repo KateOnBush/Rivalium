@@ -36,7 +36,7 @@ function display_play_match(){
 	
 	var currentMessage = MessageQueue[0];
 	
-	var mx = 1280/2, my = 720/2;
+	var mx = 1920/2, my = 1080/2;
 	var ww = 1280 * .8,
 		hh = 720 * .8;
 		
@@ -112,7 +112,7 @@ function display_play_match(){
 	array_push(MessageInstances, oCancel);
 		
 	var oField = instance_create_layer(cx, cy, "MessageLayer", field);
-	oField.sprite_index = fieldSecondarySprite;
+	oField.sprite_index = fieldSprite;
 	oField.width = ww;
 	oField.height = hh;
 	

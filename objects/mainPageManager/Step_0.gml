@@ -12,7 +12,7 @@ var rightLayerRival = layer_get_id("RivalLayerRight");
 
 with(all) {
 	if (layer == mainLayer) {
-		y = ystart + other.outmain_animation_blend * 80;
+		y = ystart + other.outmain_animation_blend * 400;
 	} else if (layer == bottomLayerRival) {
 		y = ystart + 400 - other.inwardrobe_animation_blend * 400;
 	} else if (layer == leftLayerRival) {

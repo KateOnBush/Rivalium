@@ -37,14 +37,14 @@ var normalAlpha = displayAlpha * (1 - successBlend) * (1 - errorBlend);
 var successAlpha = displayAlpha * successBlend * (1 - errorBlend);
 var errorAlpha = displayAlpha * (1 - successBlend) * errorBlend;
 
-var normalColor = #49381B,
-	redColor = #d60419,
-	greenColor = #10b52e;
+var normalColor = c_white,
+	redColor = #ff6947,
+	greenColor = #73fc5b;
 	
 var sep = string_height("M") + .3,
-	w = sprite_width/0.7;
+	w = sprite_width/0.35;
 
-var finalSize = size * .7;
+var finalSize = size * .35;
 
 draw_set_font(secondaryFont);
 draw_set_valign(fa_middle)

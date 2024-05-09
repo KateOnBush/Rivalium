@@ -42,8 +42,7 @@ function playerDrawLeaderboard(width, height){
 		array_sort(leaderboardOtherTeam, leaderboard_sorting_function);
 		
 		draw_set_alpha(leaderboard_blend);
-		draw_sprite_ext(HUD_LeaderboardItem, 4, width/2, height/2 - 19, 1, 1, 0, c_white, leaderboard_blend * 0.3);
-		draw_text_transformed_shadowed(width/2, height/2, "VS", 0.8, 0.8, 0);
+		draw_text_transformed_shadowed(width/2, height/2, "VS", 0.4, 0.4, 0);
 		
 		var myTeamCount = array_length(leaderboardMyTeam), otherTeamCount = array_length(leaderboardOtherTeam);
 		
@@ -51,7 +50,7 @@ function playerDrawLeaderboard(width, height){
 		draw_set_valign(fa_bottom);
 		draw_set_halign(fa_left);
 		
-		var sc = 0.7;
+		var sc = 0.35;
 		draw_sprite_ext(HUD_LeaderboardItem, 3, width/2, yy - 38, 1, 1, 0, c_white, leaderboard_blend * 0.5);
 		draw_text_transformed_shadowed(width/2 - 300, yy - 4, "USERNAME", sc, sc, 0);
 		draw_set_halign(fa_center);
@@ -63,7 +62,7 @@ function playerDrawLeaderboard(width, height){
 		draw_text_transformed_shadowed(width/2 + 28 + 48 + 48 + 100 + 102, yy - 4, "PING", sc, sc, 0);
 		
 		draw_set_valign(fa_middle);
-		sc = 0.9;
+		sc = 0.45;
 		
 		for(var i = 0; i < myTeamCount; i++) {
 			draw_set_halign(fa_left);

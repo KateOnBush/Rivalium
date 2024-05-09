@@ -6,7 +6,7 @@ var dt = 0.1;
 
 progress += (dtime/60) / 3;
 
-var ww = 1280, hh = 720;
+var ww = 1920, hh = 1080;
 
 if progress < dt {
 
