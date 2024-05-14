@@ -34,4 +34,11 @@ global.__fpsframe = false;
 
 global.lasttime = 0;
 
+lastMessage = "";
+displayMessage = "";
+textBlend = 0;
+backBlend = 0;
+textDuration = 0;
+
+
 room_goto_next();

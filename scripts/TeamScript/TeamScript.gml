@@ -1,5 +1,5 @@
 function is_an_enemy() {
-	return obj_player.team != team;
+	return instance_exists(obj_player) and obj_player.team != team;
 }
 
 function is_team_based_game() {

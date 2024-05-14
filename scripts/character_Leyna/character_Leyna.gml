@@ -169,7 +169,7 @@ function character_Lenya(){
 				movvec.x *= 0.1;
 				movvec.y *= 0.1;
 			
-			}, 10/3, lenya_ult, 0, true, true),
+			}, 10/3, lenya_ult, #9A49B7, true, true),
 		
 		}
 

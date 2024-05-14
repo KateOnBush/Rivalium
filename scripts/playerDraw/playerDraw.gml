@@ -4,7 +4,7 @@ function playerDraw(color, borderX){
 	
 	if invisible_blend < 0.01 return;
 	
-	var playerAlpha = 0.2 + invisible_blend * 0.8;
+	var playerAlpha = invisible_blend;
 
 	for(var o = 0; o < array_length(char.attach); o++){
 

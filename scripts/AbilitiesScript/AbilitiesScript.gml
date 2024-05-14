@@ -48,6 +48,7 @@ function Ability(acooldown, atype, atype_data, acast_fake, acast_func, acast_vis
 	c = 0;
 	s = -1;
 	availableblend = 0;
+	last_max_cooldown = 1;
 	
 	cooldownHasCondition = false;
 	if variable_struct_exists(typedata, "cooldownCondition"){
@@ -168,6 +169,8 @@ function Ability(acooldown, atype, atype_data, acast_fake, acast_func, acast_vis
 			active = true;
 		
 		}
+		
+		last_max_cooldown = cooldown;
 	
 	}
 	
@@ -241,6 +244,10 @@ function Ability(acooldown, atype, atype_data, acast_fake, acast_func, acast_vis
 		draw_sprite_ext(sprite, 0, x, y, scale, scale, 1, c_white, alpha);
 		draw_sprite_ext(sprite, 1, x, y, scale, scale, 1, c_white, availableblend*alpha);
 		
+		draw_set_alpha(alpha)
+		draw_sprite_ext(ability_unavailable, 0, x, y, scale, scale, 1, c_white, 0.6*cooldown_blend*alpha)
+		draw_sprite_ext(ability_active, 0, x, y, scale, scale, 1, c_white, abs(dsin(c*2))*0.1*active_blend*alpha)
+		
 		if type == ability_type.charges or (type == ability_type.activecharges && active) {
 		
 			if !surface_exists(s) s = surface_create(128, 128)
@@ -297,9 +304,6 @@ function Ability(acooldown, atype, atype_data, acast_fake, acast_func, acast_vis
 		draw_set_alpha(cooldown_blend*alpha)
 		draw_text_transformed(x,y, secstr(cooldown), 0.5, 0.5, 0);
 		
-		draw_set_alpha(alpha)
-		draw_sprite_ext(ability_unavailable, 0, x, y, scale, scale, 1, c_white, 0.2*cooldown_blend*alpha)
-		draw_sprite_ext(ability_active, 0, x, y, scale, scale, 1, c_white, abs(dsin(c*2))*0.1*active_blend*alpha)
 		draw_set_alpha(1)
 	
 	}

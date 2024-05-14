@@ -70,5 +70,3 @@ destroy = function(){
 	instance_destroy();
 
 }
-
-dataBuffer = buffer_create(global.dataSize, buffer_fixed, 1)

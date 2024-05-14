@@ -113,6 +113,16 @@ function display_next_message() {
 			display_found_match();
 			return;
 		}
+		
+		case "addFriend": {
+			display_add_friend();
+			return;
+		}
+		
+		case "friendRequests": {
+			display_requests();
+			return;
+		}
 	
 	}
 	
@@ -199,4 +209,12 @@ function close_current_message() {
 	
 	array_delete(MessageQueue, 0, 1);
 
+}
+
+function display_gui_message(message) {
+	if instance_exists(gameManager) {
+		gameManager.lastMessage = message;
+		if (gameManager.backBlend < 0.2) gameManager.displayMessage = message;
+		gameManager.textDuration = 5;
+	}
 }

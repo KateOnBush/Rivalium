@@ -15,7 +15,7 @@ draw_set_color(c_white);
 draw_set_font(mainFont);
 
 var spr = sprite_exists(icon) ? icon : loadingSymbol;
-var tw = string_width(text);
+var tw = string_width(text)/2;
 var hei = string_height("0") * 0.35;
 var s = (sprite_exists(icon) ? iconSize : 1) * hei/sprite_get_width(spr) * loadingBlend;
 loadingDisplay = dtlerp(loadingDisplay, tw/2 - s, .1);

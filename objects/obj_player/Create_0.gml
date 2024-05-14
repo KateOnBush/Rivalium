@@ -44,7 +44,7 @@ directional_camera = false;
 timeText = "";
 name = "";
 var selfData = userdata_get_self();
-if(selfData) {
+if(selfData != undefined) {
 	name = selfData[$ "username"] ?? "";
 }
 
@@ -59,11 +59,13 @@ dead_blend = 0;
 
 respawn_time = 0;
 
-viewmat = matrix_build_lookat(0, 0, 0, 0, 0, 0, 0, 1, 0);
-projmat = matrix_build_projection_perspective_fov(90, 16/9, 3, 8000);
-
 healing_timer = 0;
 burning_timer = 0;
+
+dead = false;
+blocked = true;
+killer = "";
+killername = "";
 
 //INPUTS
 
@@ -93,7 +95,7 @@ deaths = 0;
 assists = 0;
 gem_plants = 0;
 
-state = PlayerState.BLOCKED;
+state = PlayerState.FREE;
 
 slide_side = 1;
 

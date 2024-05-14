@@ -194,7 +194,7 @@ function character_Gramin(){
 					movvec.x = 0;
 					movvec.y = 0;
 				
-				}, 1/0.2, gramin_ult, #9A1D1C, true, true)
+				}, 1/0.2, gramin_ult, #FA6635, true, true)
 		
 			}
 

@@ -8,12 +8,6 @@ display_set_gui_size(w, h)
 draw_set_halign(fa_left);
 draw_set_valign(fa_top);
 
-var dd = convert_3d_to_2d(viewmat, projmat, x, y - 104, 0);
-var barx = dd.x * w - 50, bary = (1 - dd.y) * h;
-draw_sprite(s_healthbar, 0, barx, bary);
-draw_sprite_part(s_healthbar, 1, 0, 0, 100*health_blend_red, 40, barx, bary);
-draw_sprite_part(s_healthbar, 2, 0, 0, 100*health_blend, 40, barx, bary);
-draw_sprite_part(s_healthbar, 3, 0, 0, 100*ultimatecharge_blend, 40, barx, bary);
 
 if global.debugmode {
 
@@ -128,23 +122,19 @@ draw_set_halign(fa_center);
 draw_set_valign(fa_middle);
 
 char.abilities.basic_attack.draw(128 - preroundOff, height-128,1, HUDalpha);
-draw_sprite_ext(ability_outline, 0, 128 - preroundOff, height-128, 0.52, 0.52, 0, c_white, HUDalpha)
 input_basicAttack.draw(128-20 - preroundOff, height-64+28);
 input_basicAttackAlternate.draw(128+20 - preroundOff, height-64+28);
 
 char.abilities.ultimate.draw(width-128*1.15 + preroundOff, height-128, 1.3, HUDalpha);
 draw_set_alpha(HUDalpha)
-draw_sprite_ext(ability_outline, 0, width-128*1.15 + preroundOff, height-128, 0.02 + 1.3/2, 0.02 + 1.3/2, 0, c_white, HUDalpha);
 input_ultimate.draw(width-128*1.15 + preroundOff, height-128+64*1.3+22);
 
 char.abilities.ability1.draw(width-128*1.15-144 + preroundOff, height-128+32, 0.5, HUDalpha);
 draw_set_alpha(1*HUDalpha)
-draw_sprite_ext(ability_outline, 0, width-128*1.15-144 + preroundOff, height-128+32, 0.02 + 0.25, 0.02 + 0.25, 0, c_white, HUDalpha)
 input_ability1.draw(width-128*1.15-144+32+16 + preroundOff, height-128+32+16)
 
 char.abilities.ability2.draw(width-128*1.15-208 + preroundOff, height-48, 0.5, HUDalpha);
 draw_set_alpha(1*HUDalpha)
-draw_sprite_ext(ability_outline, 0, width-128*1.15-208 + preroundOff, height-48, 0.02 + 0.25, 0.02 + 0.25, 0, c_white, HUDalpha)
 input_ability2.draw(width-128*1.15-208+32+16 + preroundOff, height-48+16);
 draw_set_alpha(1)
 

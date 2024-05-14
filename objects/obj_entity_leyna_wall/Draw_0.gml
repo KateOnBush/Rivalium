@@ -25,20 +25,4 @@ for(var i = 0; i < growbranches; i++){
 
 }
 
-
-var xx = x, yy = y;
-for(var i = 0; i < 4; i++){
-
-	draw_set_color(c_white);
-	var nxx, nyy;
-	nxx = xx + lengthdir_x(dist * 5, parameters[i]);
-	nyy = yy + lengthdir_y(dist * 5, parameters[i]);
-	draw_line(xx, yy, nxx, nyy)
-	draw_text(xx, yy, i);
-	xx = nxx;
-	yy = nyy;
-	
-}
-
-
 event_inherited();

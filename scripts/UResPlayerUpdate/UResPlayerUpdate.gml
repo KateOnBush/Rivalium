@@ -13,6 +13,8 @@ function UResPlayerUpdate(): NetworkingPacket(NetworkingChannel.UDP, UDPServerRe
 		.add("onGround", buffer_u8).asBoolean()
 		.add("slide", buffer_u8).asBoolean()
 		.add("direction", buffer_u8).asBoolean()
+		.add("dead", buffer_u8).asBoolean()
+		.add("blocked", buffer_u8).asBoolean()
 		.add("gemHolder", buffer_u8).asBoolean()
 		.add("characterId", buffer_u8)
 		.add("health", buffer_u16)
@@ -37,6 +39,8 @@ function UResPlayerUpdate(): NetworkingPacket(NetworkingChannel.UDP, UDPServerRe
 	onGround = 0;
 	slide = 0;
 	direction = 0;
+	dead = 0;
+	blocked = 0;
 	gemHolder = 0;
 	characterId = 0;
 	health = 0;
@@ -68,7 +72,9 @@ function UResPlayerUpdate(): NetworkingPacket(NetworkingChannel.UDP, UDPServerRe
 				playerhealthmax = other.maxHealth;
 				ultimatecharge = other.ultimateCharge;
 				ultimatechargemax = other.maxUltimateCharge;
-				gem_holder = other.gemHolder;
+				dead = other.dead == 1;
+				blocked = other.blocked == 1;
+				gem_holder = other.gemHolder == 1;
 				lethality = (other.lethalityAndResistance mod 11);
 				resistance = other.lethalityAndResistance div 11;
 				haste = other.haste;
@@ -118,6 +124,8 @@ function UResPlayerUpdate(): NetworkingPacket(NetworkingChannel.UDP, UDPServerRe
 			resistance = other.lethalityAndResistance div 11;
 			haste = other.haste;
 			ping = other.ping;
+			dead = other.dead == 1;
+			blocked = other.blocked == 1;
 			movementBoost = other.movementBoost;
 			if (character_id != other.characterId) {
 				setup_character(other.characterId);

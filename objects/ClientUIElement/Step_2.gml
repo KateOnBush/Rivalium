@@ -8,4 +8,5 @@ if width != -1 or height != -1 {
 
 }
 
-if followUI stick_to_view();
+if followUI stick_to_ui();
+if instance_exists(viewParent) stick_to_view(viewParent);

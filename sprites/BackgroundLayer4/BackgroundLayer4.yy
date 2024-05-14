@@ -25,8 +25,8 @@
   "nineSlice":null,
   "origin":0,
   "parent":{
-    "name":"Environment & Visuals",
-    "path":"folders/In-Game/Environment & Visuals.yy",
+    "name":"Training",
+    "path":"folders/In-Game/Environment & Visuals/Maps/Training.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

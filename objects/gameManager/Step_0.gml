@@ -1,11 +1,22 @@
 /// @description Insert description here
 // You can write your code in this editor
 
+textDuration -= dtime/60;
+if textDuration < 0 textDuration = 0;
+backBlend = dtlerp(backBlend, textDuration > 0, 0.1);
+if (lastMessage != displayMessage) {
+	textBlend = dtlerp(textBlend, 0, 0.1);
+	if textBlend < 0.01 displayMessage = lastMessage;
+} else {
+	textBlend = dtlerp(textBlend, 1, 0.1);
+}
+
 global.dt = min(delta_time*60/1000000 , 5)*global.gamespeed;
 
 global.__fps = 1000000/delta_time;
 
 global.lasttime += delta_time;
+
 if (global.lasttime >= 16000) {
 
 	global.__fpsframe = true;

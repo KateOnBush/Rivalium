@@ -12,8 +12,6 @@ enum PlayerState {
 	GRAPPLED,
 	WALL_SLIDING,
 	GROUNDED,
-	DEAD,
-	BLOCKED,
 
 }
 

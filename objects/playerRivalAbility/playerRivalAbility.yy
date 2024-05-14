@@ -13,7 +13,10 @@
     "name":"Wardrobe",
     "path":"folders/Game Client/Pages/Wardrobe.yy",
   },
-  "parentObjectId":null,
+  "parentObjectId":{
+    "name":"ClientUIElement",
+    "path":"objects/ClientUIElement/ClientUIElement.yy",
+  },
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,

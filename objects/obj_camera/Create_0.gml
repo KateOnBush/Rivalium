@@ -1,6 +1,11 @@
 /// @description Insert description here
 // You can write your code in this editor
 
+viewmat = [];
+projmat = [];
+
+window_set_cursor(cr_none);
+
 view = {
 
 	id: view_camera[0],
@@ -44,8 +49,8 @@ global.ppfx = new PPFX_System();
 
 // Create profile with all effects
 var effects = [
-	new FX_Bloom(true, 8, 0.88, 3.22, c_white),
-	//new FX_SunShafts(true, [0.8, 0.19], 0.8, 10, 1.13, 1, 0.25, true, 1, 1, 0.03, 0.50, undefined, false),
+	new FX_SunShafts(true, [0.48, 0.9], 1.3, 2, 1.13, 0.6, 0.25, true, 1, 1, 0.03, 0.50, undefined, false),
+	new FX_Bloom(true, 8, 0.91, 3.22, c_white),
 	new FX_Shake(true, 0, 0),
 	new FX_SpeedLines(true, 0, 12.3, 0.2, 3, 0.2, 1.69, 0.7),
 	new FX_Channels(true, 1.05, 1, 1),

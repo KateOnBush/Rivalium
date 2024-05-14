@@ -17,6 +17,7 @@ onClick = function(){
 			reset();
 	}, function() {
 		queue_normal_message("Unable to leave queue. Please try again.", "OK", false);
+		reset();
 	})
 	}
 

@@ -33,6 +33,7 @@ kills = 0;
 deaths = 0;
 assists = 0;
 gem_plants = 0;
+killer = 0;
 
 playerSurf = -1;
 
@@ -48,6 +49,9 @@ ultimatecharge_blend = 0;
 
 mousex = 0;
 mousey = 0;
+
+dead = false;
+blocked = false;
 
 playerEffects = [];
 

@@ -1,6 +1,6 @@
 /// @description Insert description here
 // You can write your code in this editor
-z = 0;
+event_inherited();
 
 opacity = 0;
 currentCircle = -1;

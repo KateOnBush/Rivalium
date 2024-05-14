@@ -48,6 +48,10 @@ function playerDrawGameSpecificHUD(width, height){
 		draw_sprite_ext(HUD_DEF, 0, width/2, height - 160, 1.5, 1.3, 0, #ba0000, 0.6 * HUDalpha * dead_blend);
 		draw_set_alpha(dead_blend * HUDalpha);
 		draw_text_transformed(width/2, height - 160, "RESPAWNING IN " + string(ceil(respawn_time)), 0.6, 0.6, 0);
+		
+		draw_sprite_ext(HUD_DEF, 0, width/2, height - 220, 2, 1.3, 0, #ba0000, 0.6 * HUDalpha * dead_blend);
+		draw_set_alpha(dead_blend * HUDalpha);
+		draw_text_transformed(width/2, height - 220, "KILLED BY " + string(killername), 0.6, 0.6, 0);
 	}
 
 }

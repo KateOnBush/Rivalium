@@ -63,7 +63,7 @@ function character_Masr(){
 			desc: "Masr creates a windwall in front of him that blocks all projectiles."
 		},{
 			name: "Tempest Blink",
-			desc: "Masr performs a quick dash in any direction."
+			desc: "Masr performs a quick dash in any direction and spawns two lightning bolts. During Storm Wrath, Masr will become invisible when performing this dash."
 		},{
 			name: "Storm Wrath",
 			desc: "Masr charges his sword with a powerful thunderbolt and enters a powerful stance. During this time, Masr will become invisible when performing Tempest Blink, and his Thunderbolts will bounce."
@@ -147,7 +147,7 @@ function character_Masr(){
 				movvec.x *= 0.1;
 				movvec.y *= 0.1;
 			
-			}, 1/0.15, masr_ult, 0, true, true),
+			}, 1/0.15, masr_ult, #9CC4F9, true, true),
 	
 		}
 

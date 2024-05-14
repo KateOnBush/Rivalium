@@ -104,7 +104,7 @@ function playerFreeMovement(){
 	
 	}
 	
-	if !on_ground and movvec.length() > 5 and 
+	if !on_ground and movvec.length() > 5 and movvec.y < -4 and 
 	place_meeting(x + movvec.x * dtime, y + movvec.y * dtime, obj_solid) and
 	place_empty(x + movvec.x * dtime, y + movvec.y * dtime - 32, obj_solid) {
 		var off = 1; 

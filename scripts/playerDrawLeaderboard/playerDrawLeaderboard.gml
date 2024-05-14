@@ -4,7 +4,7 @@ function playerDrawLeaderboard(width, height){
 		
 		var leaderboardMyTeam = [{
 			me: true,
-			dead: state == PlayerState.DEAD,
+			dead,
 			respawn_time: ceil(respawn_time),
 			sprite: char.circle,
 			name,
@@ -21,7 +21,7 @@ function playerDrawLeaderboard(width, height){
 			var otherPlayer = instance_find(obj_player_other, i);
 			var infoObject = {
 				me: false,
-				dead: otherPlayer.state == PlayerState.DEAD,
+				dead: otherPlayer.dead,
 				respawn_time: ceil(otherPlayer.respawn_time),
 				sprite: otherPlayer.char.circle,
 				name: otherPlayer.name,

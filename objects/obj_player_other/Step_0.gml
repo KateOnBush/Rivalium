@@ -78,12 +78,20 @@ switch(state) {
 
 on_ground = place_meeting(x - 2, y + 10, obj_solid) && place_meeting(x + 2, y + 10, obj_solid);
 
-x = dtlerp(x, ux, 0.82);
-y = dtlerp(y, uy, 0.82);
+var amt = 0.9 - ping/500; amt = clamp(amt, 0.05, 0.9);
+x = dtlerp(x, ux, amt);
+y = dtlerp(y, uy, amt);
 
 playerStepAbilities();
 
-playerProcessAnimations();
+if dead {
+	movvec.x = 0;
+	movvec.y = 0;
+	mask_index = -1;
+} else {
+	playerProcessAnimations();
+	mask_index = player_collision_mask;
+} 
 
 playerCalculateFrame(rotation_offset);
 

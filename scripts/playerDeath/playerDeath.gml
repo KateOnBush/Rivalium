@@ -1,6 +1,7 @@
 function playerDeath(){
 	
-	deaths++;
+	killername = instance_exists(killer) ? killer.name : "VOID";
+	
 	var limbs = [];
 
 	for(var i = 0; i < array_length(pos); i++) {
@@ -28,6 +29,7 @@ function playerDeath(){
 		}
 	}
 	
-	state = PlayerState.DEAD;
+	movvec.x = 0;
+	movvec.y = 0;
 
 }

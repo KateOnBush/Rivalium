@@ -34,13 +34,13 @@ respawn_time -= dtime/60;
 respawn_time = max(0, respawn_time);
 
 ultimatecharge_blend = dtlerp(ultimatecharge_blend, ultimatecharge/ultimatechargemax, 0.08);
-invisible_blend = dtlerp(invisible_blend, invisible ? 0 : 1, 0.1);
+invisible_blend = dtlerp(invisible_blend, invisible ? 0.3 : 1, 0.1);
 invisible_blend_eff = dtlerp(invisible_blend_eff, invisible, 0.05);
 gem_holder_blend = dtlerp(gem_holder_blend, gem_holder, 0.08);
 
 leaderboard_blend = dtlerp(leaderboard_blend, input_leaderboard.check(), 0.1);
 
-dead_blend = dtlerp(dead_blend, state == PlayerState.DEAD, 0.1);
+dead_blend = dtlerp(dead_blend, dead ? 1 : 0, 0.1);
 
 if (obj_gameplay.type == GameType.CASUAL) {
 	preroundBlend = dtlerp(preroundBlend, obj_gameplay.currentState == CasualGameState.PREROUND, 0.1);
@@ -69,61 +69,61 @@ switch(timer_type) {
 		timer_desc = "";
 		break;
 }
+if not (blocked or dead) {
+	switch(state){
 
-switch(state){
-
-	case PlayerState.FREE: {
+		case PlayerState.FREE: {
 	
-		playerGravity();
-		playerFreeMovement();
-		playerFreeCollision();
-		playerCheckCast();
-		break;
+			playerGravity();
+			playerFreeMovement();
+			playerFreeCollision();
+			playerCheckCast();
+			break;
 	
-	}
+		}
 	
-	case PlayerState.WALL_SLIDING: {
+		case PlayerState.WALL_SLIDING: {
 	
-		playerWallSlideMovement();
-		playerFreeCollision();
-		playerGravity(0.1);
-		break;
+			playerWallSlideMovement();
+			playerFreeCollision();
+			playerGravity(0.1);
+			break;
 	
-	}
+		}
 	
-	case PlayerState.GRAPPLE_THROW: {
+		case PlayerState.GRAPPLE_THROW: {
 	
-		playerGravity()
-		playerGrapplingMovement();
-		playerCollision();
-		break;
+			playerGravity()
+			playerGrapplingMovement();
+			playerCollision();
+			break;
 	
-	}
+		}
 	
-	case PlayerState.GRAPPLED: {
+		case PlayerState.GRAPPLED: {
 	
-		playerGrappledMovement();
-		playerCollision();
-		break;
+			playerGrappledMovement();
+			playerCollision();
+			break;
 		
-	}
+		}
 	
-	case PlayerState.DASHING: {
+		case PlayerState.DASHING: {
 	
-		playerDashMovement();
-		playerCollision();
-		break;
+			playerDashMovement();
+			playerCollision();
+			break;
 	
-	}
+		}
 	
-	case PlayerState.GROUNDED: {
+		case PlayerState.GROUNDED: {
 		
-		playerGroundedMovement();
-		break;
+			playerGroundedMovement();
+			break;
 		
+		}
+	
 	}
-	
-	
 }
 
 playerPostState();
@@ -147,9 +147,14 @@ global.ppfx.SetEffectParameter(FX_EFFECT.SATURATION, PP_SATURATION, 1 - 0.5 * de
 
 playerProcessEffects();
 
-if state != PlayerState.DEAD {
+if dead {
+	movvec.x = 0;
+	movvec.y = 0;
+	mask_index = -1;
+} else {
 	playerProcessAnimations();
-}
+	mask_index = player_collision_mask;
+} 
 
 playerCalculateFrame(rotation_offset);
 

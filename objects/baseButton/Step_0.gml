@@ -3,7 +3,7 @@
 
 if state == buttonState.LOADING {
 	_angle += 10*dtime;
-	var hei = string_height("0") * 0.75;
+	var hei = string_height("0") * 0.7;
 	textX = hei * 0.8;
 	textY = 0;
 } else {

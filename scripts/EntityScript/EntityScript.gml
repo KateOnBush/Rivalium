@@ -10,7 +10,7 @@ function entity_create(entity, owner, ID, x, y, mx, my, hp, armor, life, entityP
 		
 	if entity >= array_length(global.entity_array) return;
 
-	var o = instance_create_depth(x, y, 0, global.entity_array[entity]);
+	var o = instance_create_layer(x, y, "Instances", global.entity_array[entity]);
 	o._x = x;
 	o._y = y;
 	o.ownerID = owner;
@@ -18,6 +18,7 @@ function entity_create(entity, owner, ID, x, y, mx, my, hp, armor, life, entityP
 	o.mx = my;
 	o.my = my;
 	o.hp = hp;
+	o.maxhp = hp;
 	o.armor = armor;
 	o.lifespan = life;
 	

@@ -2,7 +2,7 @@
   "$GMSprite":"",
   "%Name":"player_collision_mask",
   "bboxMode":0,
-  "bbox_bottom":80,
+  "bbox_bottom":75,
   "bbox_left":33,
   "bbox_right":59,
   "bbox_top":17,

@@ -12,11 +12,11 @@ global.maps = [
 
 	new Map([
 	
-		BackgroundLayer0,
-		BackgroundLayer1,
-		BackgroundLayer2,
-		BackgroundLayer3,
-		BackgroundLayer4
+		skyBack,
+		skyClouds1,
+		skyClouds2,
+		skyClouds3,
+		skyClouds4
 	
 	])
 	

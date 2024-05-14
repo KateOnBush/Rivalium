@@ -52,8 +52,12 @@ function UResEntityUpdate(): NetworkingPacket(NetworkingChannel.UDP, UDPServerRe
 			entity.parameters = [param1, param2, param3, param4, param5];
 					
 		}
-				
-		entity.hp = health;
+		
+		if (entity.hp != health) {
+			entity.show_hp_timer = 5;
+			entity.hp = health;
+		}
+		
 		entity.armor = armor;
 	
 	}

@@ -23,6 +23,7 @@ function request_join_queue(queue){
 	account_server_send_message("party.join.queue", {queue}, NULLFUNC, 
 	function() {
 		queue_normal_message("Unable to join queue. Please try again later.", "OK", false);
+		if instance_exists(joinButton) joinButton.reset();
 	})
 
 }

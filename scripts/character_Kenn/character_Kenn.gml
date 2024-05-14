@@ -157,7 +157,7 @@ function character_Kenn(){
 						part_particles_create(global.partSystemBehind, x+irandom_range(-5,5), y+irandom_range(-8,3), character_Kenn.particles.ultpart, 1);
 					}
 		
-				}, 2.5, ultimatekenn, #9A1D1C, true, true),
+				}, 2.5, ultimatekenn, #B22320, true, true),
 	
 		}
 

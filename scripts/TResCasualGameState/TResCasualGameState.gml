@@ -27,14 +27,6 @@ function TResCasualGameState(): NetworkingPacket(NetworkingChannel.TCP, TCPServe
 		obj_gameplay.defendingTeam = defendingTeam;
 		obj_gameplay.firstTeamScore = firstTeamScore;
 		obj_gameplay.secondTeamScore = secondTeamScore;
-				
-		if (newState != CasualGameState.PREROUND && oldState == CasualGameState.PREROUND && instance_exists(obj_player)) {
-			obj_player.state = PlayerState.FREE;
-		}
-		
-		if (oldState != CasualGameState.PREROUND && newState == CasualGameState.PREROUND && instance_exists(obj_player)) {
-			obj_player.state = PlayerState.BLOCKED;
-		}
 	
 	}
 

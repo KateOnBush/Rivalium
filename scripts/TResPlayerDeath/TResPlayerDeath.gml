@@ -19,26 +19,27 @@ function TResPlayerDeath(): NetworkingPacket(NetworkingChannel.TCP, TCPServerRes
 	respawnTime = 0;
 	
 	static handle = function () {
+		
+		var killer = undefined;
+		if global.playerid == killer and instance_exists(obj_player) {
+			killer = obj_player;
+		} else {
+			with (global.players[? killer] ?? noone){
+				killer = self;
+			}
+		}
 				
 		if global.playerid == victim {
 			with (obj_player) {
+				self.killer = killer ?? self;
 				playerDeath();
 				respawn_time = other.respawnTime;
 			}
 		} else {
 			with (global.players[? victim] ?? noone){
+				self.killer = killer ?? self;
 				playerDeath();
 				respawn_time = other.respawnTime;
-			}
-		}
-		
-		if global.playerid == killer {
-			with (obj_player) {
-				kills++;
-			}
-		} else {
-			with (global.players[? killer] ?? noone){
-				kills++;
 			}
 		}
 	

@@ -45,19 +45,29 @@ if col and spd > 0 {
 		}
 		
 		var collidedBlock = instance_place(px+lengthdir_x(n+1,dir), py+lengthdir_y(n+1,dir), obj_impenetrable);
+		var collidedWithEntity = noone;
 		
-		if !bounce and !pl{
-		
-			if collidedBlock {
+		if collidedBlock != noone {
 			
-				var e = collidedBlock.object_index;
-				if (e == obj_obstacle_entity || e == obj_obstacle_entity_imp) collidedBlock.componentTo.damage(damage, ID);
-			
+			var e = collidedBlock.object_index;
+			if (e == obj_obstacle_entity || e == obj_obstacle_entity_imp) {
+				collidedBlock.componentTo.damage(ID);
+				collidedWithEntity = collidedBlock.componentTo;
 			}
+			
+		}
+		
+		if !bounce and !pl {
 		
 			px += lengthdir_x(n,dir);
 			py += lengthdir_y(n,dir);
 			spd = 0;
+			
+			if dieoncol {
+				on_destroy();
+				destroy();
+			}
+			
 		
 		} else if !pl {
 	
@@ -90,8 +100,6 @@ if col and spd > 0 {
 		}
 		
 		if (ownerID == global.playerid) && !pl {
-			
-			if !buffer_exists(dataBuffer) dataBuffer = buffer_create(global.dataSize, buffer_fixed, 1);
 		
 			var projectileUpdate = new UReqProjectileUpdate();
 			
@@ -132,7 +140,7 @@ if !collided or bounce {
 
 	var _add = hasGrav ? dtime * grav : 0;
 	dir = point_direction(0, 0, _x, _y + _add);
-	spd = point_distance(0, 0, _x, _y + _add); 
+	spd = point_distance(0, 0, _x, _y + _add);
 	
 }
 

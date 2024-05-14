@@ -46,7 +46,7 @@ function TResPlayerCreate(): NetworkingPacket(NetworkingChannel.TCP, TCPServerRe
 			
 			if is_undefined(ds_map_find_value(global.players, playerId)) {
 		
-				var player = instance_create_depth(x, y, 0, obj_player_other);
+				var player = instance_create_layer(x, y, "Instances", obj_player_other);
 				player.ID = playerId;
 				var matchTeams = MatchPreMatchData.players;
 				for(var i = 0; i < array_length(matchTeams); i++) {

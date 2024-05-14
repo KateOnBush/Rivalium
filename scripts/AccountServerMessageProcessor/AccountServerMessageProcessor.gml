@@ -54,7 +54,7 @@ function AccountServerMessageProcessor(msg){
 				
 				var replyEventProcess = EventReplyMap[$ repliesTo];
 				if (replyEventProcess != undefined) replyEventProcess(status, content);
-				queued.onReply();
+				queued.onReply(content);
 				array_delete(EventWaitQueue, j, 1);
 				
 				return;

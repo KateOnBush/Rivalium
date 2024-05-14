@@ -40,7 +40,7 @@ function projectile_create(proj, ownerid, x, y, speed, direction, collision, die
 		if (self.ID == 0) instance_destroy();
 	}
 
-	var _o = instance_create_depth(x, y, 0, global.projectiles_array[proj]);
+	var _o = instance_create_layer(x, y, "Instances", global.projectiles_array[proj]);
 	_o.ownerID = ownerid;
 	_o.x = x;
 	_o.y = y;
@@ -68,7 +68,7 @@ function projectile_create_fake(proj, x, y, speed, direction, collision, dieonco
 }
 function explosion_create(explind, ownerid, x, y, radius = 50, damage = 0){
 
-	var _o = instance_create_depth(x, y, 0, global.explosions_array[explind]);
+	var _o = instance_create_layer(x, y, "Instances", global.explosions_array[explind]);
 	
 	_o.damage = damage;
 	_o.lifetime = 5;
